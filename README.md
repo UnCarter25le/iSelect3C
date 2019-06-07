@@ -19,58 +19,61 @@
 ## 2. The structure of my contribution(data acquisition and munging):
 
 ```
-/cralwer
-    |___pchomeApi.py______________________> Crawling date in one main process way via api.
-    |___pchomeApiMulti.py_________________> Crawling date in a multiprocess manner via api.
-    |___momoMulti.py______________________> Crawling date in a multiprocess(selenium) manner. 
-                                            Noting that it must kill chrome process 
-                                            mannally after executing this program.
-    |___bureauEnergyMulti_1.py____________> Crawling date in a multiprocess manner.
-    |___bureauEnergyMulti_2.py____________> Crawling date in a multiprocess manner.
+/cralwer/
+    |___pchomeApi.py________________> Crawling date in one main process way via api.
+    |___pchomeApiMulti.py___________> Crawling date in a multiprocess manner via api.
+    |___momoMulti.py________________> Crawling date in a multiprocess(selenium) manner. 
+    |                                 Noting that it must kill chrome process 
+    |                                 mannally after executing this program.
+    |___bureauEnergyMulti_1.py______> Crawling date in a multiprocess manner.
+    |___bureauEnergyMulti_2.py______> Crawling date in a multiprocess manner.
     
-/dataMunging
+/dataMunging/
     |___pchomeMunging.py____________> Munging date, json format, after having raw data in 
-                                      "/rawData/pchome/冷暖空調/「24h」「kdn」「vdr」".
+    |                                 "/rawData/pchome/冷暖空調/「24h」「kdn」「vdr」".
     |___momoMunging.py______________> Munging date, text format, after having raw data in 
-                                      "/rawData/momo/「冷暖空調」「電冰箱」「除濕機」.., and you name it".
+    |                                 "/rawData/momo/「冷暖空調」「電冰箱」「除濕機」..., and you name it".
     |___bureauEnergyMunging.py______> Munging date, text format, after having raw data in
-                                      "/rawData/bureauEnergy/「冷暖空調」「電冰箱」「除濕機」.., and you name   
-                                      it".
-    
-    |___cleanData___________________> storing the data, json format, which is ready for inserting into DB.
+    |                                 "/rawData/bureauEnergy/「冷暖空調」「電冰箱」「除濕機」..., and you name   
+    |                                 it".
+    |
+    |___cleanData/_ _ _ _ __ _ _ _ _> storing the data, json format, which is ready for inserting into DB.
+    |       |___bureauEnergy/
+    |       |___momo/
+    |       |___pchome/
+    |
+    |___rawData/_ _ _ _ __ _ _ _ __ _> storing the data, json or text format, which is ready for munging 
+            |                          into json files.
             |___bureauEnergy/
+            |       |___無風館空氣調節機
+            |       |       |___overview/
+            |       |       |___deatil/
+            |       |       |___XXX.json
+            |       |       |___OOO.json
+            |       |___ many other you name it.
+            |
             |___momo/
-            |___pchome/
-
-    |___rawData
-            |___bureauEnergy/
-                    |___無風館空氣調節機
-                            |___overview/
-                            |___deatil/
-                            |___XXX.json
-                            |___OOO.json
-                    |___ many other you name it.
-            |___momo/
-                |___冷暖空調/
-                |___ many other you name it.
+            |   |___冷暖空調/
+            |   |___ many other you name it.
+            |
             |___pchome/
                 |___冷暖空調/
                         |___ 24h/
                         |___ kdn/
                         |___ vdr/
 
-/libs
+/libs/
     |___ manipulateDir.py____________> mkdir or rmdir whenever we wanna make crawling or munging.
     |___ multiProcessing.py__________> Needed by programs those operations are in a mulitprocess manner.
     |___ munging.py__________________> Needed by programs which are ready to process raw data.
     |___ regex.py____________________> Used in the situations in which we wanna extract accurate data type
-                                       from raw data.
+    |                                  from raw data.
     |___ splinterBrowser.py__________> Used by programs which require chromdirver to start browser.
     |___ time.py_____________________> Used when the interval peiod is needed in programs' processing.
 
 
 
-/doc
+/doc/
     |___iSelect3C使用案例圖.png________> Overview for use case diagram.
     |___iSelect3C活動圖.png___________> Overview for activity diagram.
 
