@@ -14,16 +14,16 @@ def mkdirForRawData(objectiveFolder, objective, searchword, keyword=""):
     dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/{searchword}/{keyword}"
     if not os.path.isdir(dirRoute):
         os.makedirs(dirRoute)
-        print(f"創建 {dirRoute}")
+        print(f"創建 {dirRoute} 成功！")
     else:
-        print(f"已經存在 {dirRoute} 的資料夾")
+        print(f"已經存在 {dirRoute} 的資料夾，不用再創建。")
         pass
 
 
 def eraseRawData(objectiveFolder, objective, searchword, keyword=""):
     dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/{searchword}/{keyword}"
     if not os.path.isdir(dirRoute):
-        print(f"沒有存在 {dirRoute} 的資料夾")
+        print(f"沒有存在 {dirRoute} 的資料夾，因此不用清空。")
         pass
     else:
         shutil.rmtree(dirRoute)
