@@ -24,6 +24,22 @@ def distributeKeyword(keywordUrlPair, output):
         timeSleepOne() #暫停幾秒來模擬現實狀況。
 
 
+
+_monthsAvailable = [str(row) for row in range(1,13)]
+
+_weatherRecordAvailable = {"2009": _monthsAvailable,
+                        "2010": _monthsAvailable,
+                        "2011": _monthsAvailable,
+                        "2012": _monthsAvailable,
+                        "2013": _monthsAvailable,
+                        "2014": _monthsAvailable,
+                        "2015": _monthsAvailable,
+                        "2016": _monthsAvailable,
+                        "2017": _monthsAvailable,
+                        "2018": _monthsAvailable,
+                        "2019": [str(row) for row in range(1,6)]}
+
+
 _keywordUrlPair = {"無風管空氣調節機":("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
                                 "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=49"
                                 "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
