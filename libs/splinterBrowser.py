@@ -22,7 +22,7 @@ def buildSplinterBrowser(browserName):
     # capabilities = dict(DesiredCapabilities.CHROME)
     # capabilities["acceptCerts"] = True
     # capabilities["acceptInsecureCerts"] = True
-    browser = Browser(driver_name = browserName, headless=True, incognito=True)#, options = chrome_options)
+    browser = Browser(driver_name = browserName, headless=False, incognito=True)#, options = chrome_options)
 #     cookies = {'_gat_gtag_UA_22652017_1': '1',
 #                '_gid': 'GA1.3.515977689.1556715819',
 #                '__auc': '4c27a68a16a737e4e8e40595d79',
@@ -45,3 +45,15 @@ def buildSplinterBrowser(browserName):
 def browserWaitTime(browser):
     browser.wait_time
     timeSleepRandomly()
+
+# scheme of making object
+# class bbb(object):
+#     def __init__(self,num):
+#         self.num = num
+#     def buildSplinterBrowser(self, browserName):
+#         browser = Browser(driver_name = browserName, headless=False, incognito=True)#, options = chrome_options)
+#         return browser
+
+# browser = BBB.buildSplinterBrowser("chrome")
+
+# browser.visit("https://www.google.com/")
