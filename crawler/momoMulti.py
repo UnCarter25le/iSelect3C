@@ -327,7 +327,7 @@ if __name__ == '__main__':
     distributeKeyword(keywordUrlPair, searchword_queue)
     print("=============main process distributeKeyword 已經完成任務了。=============")
     
-     #通知main process 完成事情。
+    #通知main process 完成事情。
     searchword_queue.join()
     url_queue.join()
 
