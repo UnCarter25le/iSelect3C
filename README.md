@@ -20,32 +20,38 @@
 
 ```
 /cralwer/
-    |___pchomeApi.py________________> Crawling date in one main process way via api.
-    |___pchomeApiMulti.py___________> Crawling date in a multiprocess manner via api.
-    |___momoMulti.py________________> Crawling date in a multiprocess(selenium) manner. 
-    |                                 Noting that it must kill chrome process 
-    |                                 mannally after executing this program.
-    |___bureauEnergyMulti_1.py______> Crawling date in a multiprocess manner.
-    |___bureauEnergyMulti_2.py______> Crawling date in a multiprocess manner.
+    |___pchomeApi.py______________________> Crawling date in one main process way via api.
+    |___pchomeApiMulti.py_________________> Crawling date in a multiprocess manner via api.
+    |___momoMulti.py______________________> Crawling date in a multiprocess(selenium) manner. 
+    |                                       Noting that it must kill chrome process 
+    |                                       mannally after executing this program.
+    |___bureauEnergyMulti_1.py____________> Crawling date in a multiprocess manner from official web site.
+    |___bureauEnergyMulti_2.py____________> Crawling date in a multiprocess manner.
+    |___googleNews.py.py__________________> Crawling data in one main process way(selenium) from search result page.
+    |___weatherObservationStation.py.py___> Crawling data in one main process way(selenium) from official web site.
+    |___weatherRecordMulti.py.py__________> Crawling date in a multiprocess manner from official web site.
     
 /dataMunging/
-    |___pchomeMunging.py____________> Munging date, json format, after having raw data in 
-    |                                 "/rawData/pchome/冷暖空調/「24h」「kdn」「vdr」".
-    |___momoMunging.py______________> Munging date, text format, after having raw data in 
-    |                                 "/rawData/momo/「冷暖空調」「電冰箱」「除濕機」..., and you name it".
-    |___bureauEnergyMunging.py______> Munging date, text format, after having raw data in
-    |                                 "/rawData/bureauEnergy/「冷暖空調」「電冰箱」「除濕機」..., and you name   
-    |                                 it".
+    |___pchomeMunging.py__________________> Munging date, json format, after having raw data in 
+    |                                       "/rawData/pchome/冷暖空調/「24h」「kdn」「vdr」".
+    |___momoMunging.py____________________> Munging date, text format, after having raw data in 
+    |                                       "/rawData/momo/「冷暖空調」「電冰箱」「除濕機」..., and you name it".
+    |___bureauEnergyMunging.py____________> Munging date, text format, after having raw data in
+    |                                       "/rawData/bureauEnergy/「冷暖空調」「電冰箱」「除濕機」..., and you name   
+    |                                       it".
     |
-    |___cleanData/_ _ _ _ __ _ _ _ _> storing the data, json format, which is ready for inserting into DB.
+    |___observationStationMunging.py______> Munging data, text format, after having raw data in 
+    |                                       "/rawData/observationStation/overviewData/".
+    |
+    |___cleanData/_ _ _ _ __ _ _ _ _ _ _ _> storing the data, json format, which is ready for inserting into DB.
     |       |___bureauEnergy/
     |       |___momo/
     |       |___pchome/
     |
-    |___rawData/_ _ _ _ __ _ _ _ __ _> storing the data, json or text format, which is ready for munging 
-            |                          into json files.
+    |___rawData/_ _ _ _ __ _ _ _ __ _ _ _ > storing the data, json or text format, which is ready for munging 
+            |                               into json files.
             |___bureauEnergy/
-            |       |___無風館空氣調節機
+            |       |___無風管空氣調節機/
             |       |       |___overview/
             |       |       |___deatil/
             |       |       |___XXX.json
@@ -54,32 +60,57 @@
             |
             |___momo/
             |   |___冷暖空調/
+            |   |   |___1_67_冷暖空調.txt
+            |   |   |___many other you name it.
             |   |___ many other you name it.
             |
             |___pchome/
-                |___冷暖空調/
-                        |___ 24h/
-                        |___ kdn/
-                        |___ vdr/
+            |   |___冷暖空調/
+            |           |___ 24h/
+            |           |   |___1_62_1233_24h冷暖空調.json
+            |           |   |___many other you name it.
+            |           |___ kdn/
+            |           |___ vdr/
+            |
+            |___weather/
+            |   |___2009/
+            |   |   |___2009_1.txt
+            |   |   |___many other you name it.
+            |   |___many other you name it.
+            |   
+            |___observationStation/
+            |   |___overviewData/
+            |       |___observation_2019-06-10-17-13.txt
+            |
+            |___news/
+                |___google/
+            ...
+            ...
+            ...
+            more in the future!
+
+
 
 /libs/
-    |___ manipulateDir.py____________> mkdir or rmdir whenever we wanna make crawling or munging.
-    |___ multiProcessing.py__________> Needed by programs those operations are in a mulitprocess manner.
-    |___ munging.py__________________> Needed by programs which are ready to process raw data.
-    |___ regex.py____________________> Used in the situations in which we wanna extract accurate data type
-    |                                  from raw data.
-    |___ splinterBrowser.py__________> Used by programs which require chromdirver to start browser.
-    |___ time.py_____________________> Used when the interval peiod is needed in programs' processing.
+    |___ manipulateDir.py_________________> mkdir or rmdir whenever we wanna make crawling or munging.
+    |___ multiProcessing.py_______________> Needed by programs those operations are in a mulitprocess manner.
+    |___ munging.py_______________________> Needed by programs which are ready to process raw data.
+    |___ regex.py_________________________> Used in the situations in which we wanna extract accurate data type
+    |                                       from raw data.
+    |___ splinterBrowser.py_______________> Used by programs which require chromdirver to start up browsers.
+    |___ time.py__________________________> Used when the interval peiod is needed in programs' processing.
+    |___ requests.py______________________> Be imported while the useage of the fixed parameters.
 
 
 
 /doc/
-    |___iSelect3C使用案例圖.png________> Overview for use case diagram.
-    |___iSelect3C活動圖.png___________> Overview for activity diagram.
+    |___iSelect3C使用案例圖.png_____________> Overview for use case diagram.
+    |___iSelect3C活動圖.png________________> Overview for activity diagram.
 
 /___
     |___README.md
-    |___requirements.txt_____________> Packages my environment installed.
+    |___.gitignore
+    |___requirements.txt__________________> Packages my environment installed.
 
 
 ```
@@ -107,8 +138,17 @@
     bureauEnergyMulti_1.py  -->  bureauEnergyMulti_2.py  -->  bureauEnergyMunging.py
 
     ```
+- ### 3-4. Central weather bureau, the order of executing:
 
-- ### 3-4. Reviewing the outcome after doing steps 3-1, 3-2, 3-2.
+    ```
+    weatherRecordMulti.py  
+
+    weatherObservationStation.py  -->  observationStationMunging.py
+
+    ```
+
+
+- ### Reviewing the outcome after doing steps on the above.
 
 > It's anticipated that we would have several json files with timestamp in folder dataMunging/cleanData, and these json files are pretty match to the data we need to render on the website.
 
