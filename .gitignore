@@ -15,7 +15,7 @@ requirements_ChineseLiterature.txt
 
 requirements_iSelect3C.txt
 
-READMEInJupyter.ipynb
+*.ipynb
 
 .ipynb_checkpoints
 
