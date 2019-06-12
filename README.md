@@ -6,6 +6,7 @@
 - In addtion, we offer simple but comprehensive calculator to leave users to have better understanding of something worthwhile to watch, such as what possible eletronic fees is and how it cost under the official specifications provided by Bureau of Energy of of Ministry of Economic Affairs.
 - The mvp website is " http://herbmagicwebapi.azurewebsites.net/iselect3C " , and we all know that is not enough to see it as an mature web application. But still, it has enabled users to pick out the products that are validated by government from e-commerce, pchome and momo.
 
+- The powerpoint file's link: https://www.evernote.com/shard/s379/sh/4b48b19f-b712-4353-80c3-44995f91956d/9cac2778c89f5f4b61aa1398921f00dc  .
 --------
 --------
 --------
@@ -47,6 +48,7 @@
     |       |___bureauEnergy/
     |       |___momo/
     |       |___pchome/
+    |       |___observationStation/
     |
     |___rawData/_ _ _ _ __ _ _ _ __ _ _ _ > storing the data, json or text format, which is ready for munging 
             |                               into json files.
