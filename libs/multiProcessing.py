@@ -39,8 +39,7 @@ _weatherRecordAvailable = {"2009": _monthsAvailable,
                         "2018": _monthsAvailable,
                         "2019": [str(row) for row in range(1,6)]}
 
-
-_keywordUrlPair = {"無風管空氣調節機":("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
+_bureauEnergyKeywordUrlPair = {"無風管空氣調節機":("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
                                 "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=49"
                                 "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
                      "除濕機" : ("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
@@ -65,6 +64,50 @@ _keywordUrlPair = {"無風管空氣調節機":("https://ranking.energylabel.org.
                                 "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=54"
                                 "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno=")
                                 }
+
+_googleSearchWord = {"家電促銷":"",
+                     "家電汰舊換新":"",
+                     "家電節能補助":""}
+
+
+_momoKeywordUrlPair = {"溫熱型開飲機":("https://www.momoshop.com.tw/search/searchShop.jsp"
+                        "?keyword=%E6%BA%AB%E7%86%B1%E5%9E%8B%E9%96%8B%E9%A3%B2%E6%A9%9F"
+                        "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType")}
+
+
+# _momoKeywordUrlPair = {"冷暖空調":("https://www.momoshop.com.tw/search/searchShop.jsp"
+#                         "?keyword=%E5%86%B7%E6%9A%96%E7%A9%BA%E8%AA%BF"
+#                         "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType"),
+#                 "除濕機":("https://www.momoshop.com.tw/search/searchShop.jsp"
+#                         "?keyword=%E9%99%A4%E6%BF%95%E6%A9%9F"
+#                         "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType"),
+#                 "電冰箱":("https://www.momoshop.com.tw/search/searchShop.jsp"
+#                         "?keyword=%E9%9B%BB%E5%86%B0%E7%AE%B1"
+#                         "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType"),
+#                 "電熱水瓶":("https://www.momoshop.com.tw/search/searchShop.jsp"
+#                         "?keyword=%E9%9B%BB%E7%86%B1%E6%B0%B4%E7%93%B6"
+#                         "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType"),
+#                 "溫熱型開飲機":("https://www.momoshop.com.tw/search/searchShop.jsp"
+#                         "?keyword=%E6%BA%AB%E7%86%B1%E5%9E%8B%E9%96%8B%E9%A3%B2%E6%A9%9F"
+#                         "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType"),
+#                 "溫熱型飲水機":("https://www.momoshop.com.tw/search/searchShop.jsp?"
+#                         "keyword=%E6%BA%AB%E7%86%B1%E5%9E%8B%E9%A3%B2%E6%B0%B4%E6%A9%9F"
+#                         "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType"),
+#                 "冰溫熱型開飲機":("https://www.momoshop.com.tw/search/searchShop.jsp"
+#                                 "?keyword=%E5%86%B0%E6%BA%AB%E7%86%B1%E5%9E%8B%E9%96%8B%E9%A3%B2%E6%A9%9F"
+#                                 "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType"),
+#                 "冰溫熱型飲水機":("https://www.momoshop.com.tw/search/searchShop.jsp"
+#                                 "?keyword=%E5%86%B0%E6%BA%AB%E7%86%B1%E5%9E%8B%E9%A3%B2%E6%B0%B4%E6%A9%9F"
+#                                 "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType")}
+
+_pchomeKeywordUrlPair = {"冷暖空調":"",
+                         "除濕機":"",
+                         "電冰箱":"",
+                         "電熱水瓶":"",
+                         "溫熱型開飲機":"",
+                         "溫熱型飲水機":"",
+                         "冰溫熱型開飲機":"",
+                         "冰溫熱型飲水機":""}
 
 
 def selectColumn(textSoup, row):
