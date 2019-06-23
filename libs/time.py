@@ -9,7 +9,9 @@ import datetime
 
 
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2]) 
-# sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的module
+sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的module
+from libs.regex import searchNums
+
 
 def timeCalculate():
     return time.time()
@@ -41,3 +43,26 @@ def timeStampGenerator():
     fmt = "%Y-%m-%d-%H-%M"  #"%Y年%m月%d日%H時%M分"
     timeStamp = dateTime.strftime(fmt)
     return timeStamp
+
+
+
+# 新聞發布的時間情況
+# 9 小時前
+# 5 小時前
+# 27 分鐘前
+def timeStampCalculate(hoursOrMinutesAgo):
+    timeList = timeStampGenerator().split("-")[:-2]
+    if "小時" in hoursOrMinutesAgo:
+        # programInitialHour = timeList[-2]
+        # newsHour = str(int(programInitialHour) - int(searchNums(hoursOrMinutesAgo)))
+        # timeList[-2] = newsHour
+        return "-".join(timeList)
+    elif "分鐘" in hoursOrMinutesAgo: # 一律以開始hour扣除1個小時
+        # programInitialHour = timeList[-2]
+        # newsHour = str(int(programInitialHour) - 1)
+        # timeList[-2] = newsHour
+        return "-".join(timeList)
+    else:
+        strfTime = hoursOrMinutesAgo.replace("年","-").replace("月","-").replace("日","")
+        fmt = "%Y-%m-%d"  #"%Y年%m月%d日"
+        return datetime.datetime.strptime(strfTime, fmt).date().__str__()
