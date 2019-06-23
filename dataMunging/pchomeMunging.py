@@ -25,22 +25,12 @@ sys.path.append(_BASE_PATH)
 from libs.manipulateDir import initialFile
 from libs.manipulateDir import mkdirForCleanData
 from libs.munging import EcommerceDataProcessToSet
+from libs.multiProcessing import _pchomeKeywordUrlPair
+from libs.time import timeStampGenerator
 
 
-if __name__ == '__main__':
-
-    objectiveFolder = "rawData"
-
-    objectiveFolderClean = "cleanData"
-
-    objective = "pchome"
-
-    searchword = "冷暖空調"
-
-    dateTime = datetime.datetime.now()
-    fmt = "%Y-%m-%d-%H-%M"  #"%Y年%m月%d日%H時%M分"
-    timeStamp = dateTime.strftime(fmt)
-
+def mungingPchome(_BASE_PATH, searchword, objectiveFolder, objectiveFolderClean, objective):
+    
     dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/{searchword}/"
     dir1 = dirRoute + "24h/"
     dir2 = dirRoute + "vdr/"
@@ -54,24 +44,25 @@ if __name__ == '__main__':
     pchomeDict["dateTime"] = timeStamp
 
     for directory in [dir1, dir2, dir3]:
-        for file in initialFile(directory):
-            with open(directory + file)as f:
-                inn = json.load(f)
+        if initialFile(directory): #有些資料夾下面沒有檔案
+            for file in initialFile(directory):
+                with open(directory + file)as f:
+                    inn = json.load(f)
 
-            for fileinner in inn['prods']:
-                productDict = {}
-                productDict['Id'] = fileinner['Id']
-                productDict['name'] = fileinner['name']
-                productDict['originprice'] = fileinner['originPrice']
-                productDict['pics'] = 'https://d.ecimg.tw'+fileinner['picS']
-                productDict['picb'] = 'https://d.ecimg.tw'+fileinner['picB']
-                productDict["produrl"] = "https://24h.pchome.com.tw/prod/" + fileinner["Id"]
-                productArray.append(productDict)
+                for fileinner in inn['prods']:
+                    productDict = {}
+                    productDict['Id'] = fileinner['Id']
+                    productDict['name'] = fileinner['name']
+                    productDict['originprice'] = fileinner['originPrice']
+                    productDict['pics'] = 'https://d.ecimg.tw'+fileinner['picS']
+                    productDict['picb'] = 'https://d.ecimg.tw'+fileinner['picB']
+                    productDict["produrl"] = "https://24h.pchome.com.tw/prod/" + fileinner["Id"]
+                    productArray.append(productDict)
     pchomeDict['product'] = productArray
 
     source = '_'.join([dirname.split('/')[-2] for dirname in [dir1, dir2, dir3]])
 
-    print("===========進行去重=============")
+    print(f"===========進行 {searchword}(24h_vdr_kdn) 去重=============")
 
     pchomeDict['product'], setNums = EcommerceDataProcessToSet(pchomeDict['product'])
 
@@ -80,4 +71,23 @@ if __name__ == '__main__':
     with open(f"{_BASE_PATH}/dataMunging/{objectiveFolderClean}/{objective}/pchome_{source}_{timeStamp}_{setNums}_{searchword}.json", 'w')as f:
         json.dump(pchomeDict, f, indent=2, ensure_ascii=False)
 
-    print("===========清洗完成=============")
+    print(f"===========完成 {searchword}(24h_vdr_kdn) 清洗！=============")
+
+
+
+if __name__ == '__main__':
+
+    objectiveFolder = "rawData"
+
+    objectiveFolderClean = "cleanData"
+
+    objective = "pchome"
+
+    dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/"
+
+    timeStamp = timeStampGenerator()
+
+    searchwordList = [row for row in _pchomeKeywordUrlPair]
+
+    for searchword in searchwordList:
+        mungingPchome(_BASE_PATH, searchword, objectiveFolder, objectiveFolderClean, objective)
