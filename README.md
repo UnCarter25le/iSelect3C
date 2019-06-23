@@ -28,7 +28,8 @@
     |                                       mannally after executing this program.
     |___bureauEnergyMulti_1.py____________> Crawling date in a multiprocess manner from official web site.
     |___bureauEnergyMulti_2.py____________> Crawling date in a multiprocess manner.
-    |___googleNews.py.py__________________> Crawling data in one main process way(selenium) from search result page.
+    |___googleNews.py_____________________> Crawling data in one main process way(selenium) from search result page.
+    |___googleNewsMulti.py________________> Crawling data in a multiprocess(selenium) manner from search result page.
     |___weatherObservationStation.py.py___> Crawling data in one main process way(selenium) from official web site.
     |___weatherRecordMulti.py.py__________> Crawling date in a multiprocess manner from official web site.
     
@@ -43,6 +44,11 @@
     |
     |___observationStationMunging.py______> Munging data, text format, after having raw data in 
     |                                       "/rawData/observationStation/overviewData/".
+    |
+    |___newsMunging.py____________________> Munging data, json format, after having raw data in 
+    |                                       "/rawData/news/google/「家電促銷」「家電汰舊換新」「家電節能補助」..., 
+    |                                       and you name it".
+    |
     |
     |___cleanData/_ _ _ _ __ _ _ _ _ _ _ _> storing the data, json format, which is ready for inserting into DB.
     |       |___bureauEnergy/
@@ -85,7 +91,13 @@
             |       |___observation_2019-06-10-17-13.txt
             |
             |___news/
-                |___google/
+            |   |___google/
+            |   |   |___家電促銷/
+            |   |   |       |___google_2019-06-22-00-42_216_家電促銷.json
+            |   |   |___ many other you name it.
+            |   |
+            |   |___newsIntegration/
+            |   |   |___news_2019-06-23-23-31_415_家電促銷^家電汰舊換新^家電節能補助.json
             ...
             ...
             ...
@@ -108,6 +120,9 @@
 /doc/
     |___iSelect3C使用案例圖.png_____________> Overview for use case diagram.
     |___iSelect3C活動圖.png________________> Overview for activity diagram.
+    |___chromedriver______________________> according to: http://chromedriver.chromium.org/downloads
+                                            editionInfo: ChromeDriver 75.0.3770.90
+                                            execute `sudo cp chromedriver /usr/local/bin/`
 
 /___
     |___README.md
@@ -130,6 +145,11 @@
 - ### 3-2. momo, the order of executing:
 
     ```
+    Note: Since chrome browsers driven by chromedriver would be definitely watched by momo's IT protection, 
+    the numbers of getPageInARowAdvanced_proc(process ready to be created) has better to be match to the real numbers of pages on momo website.
+
+    We are abel to modify the object "_momoKeywordUrlPair" in multiProcessing.py to complete crawling jobs.
+
     momoMulti.py   -->  momoMunging.py
 
     ```
@@ -148,6 +168,14 @@
     weatherObservationStation.py  -->  observationStationMunging.py
 
     ```
+
+- ### 3-5. google news from specific keywords input, the order of executing:
+
+    ```
+    goodleNewsMulti.py  -->  newsMunging.py
+
+    ```
+
 
 
 - ### Reviewing the outcome after doing steps on the above.
