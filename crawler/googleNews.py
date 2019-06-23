@@ -11,17 +11,36 @@
 
 #
 家電促銷
-家電補助
-家電特價
+家電節能補助
+家電汰舊換新
 
 
 完成！一共耗時：561.1129727363586 秒
+改進後...
+完成！一共耗時：2022.6550385951996 秒
+
+
+output's data structure: 
+{
+    dateTime: ....,
+    keyword: ...,
+    newsTotalNum: ..., 
+    newsUrl:{
+        url: [newsTitle, publisher, date],
+        url: 
+    }
+}
+
+
+
 """
 
 
 
 from bs4 import BeautifulSoup
+from splinter.exceptions import ElementDoesNotExist
 import multiprocessing as mp
+
 import random
 import sys
 import os
@@ -32,9 +51,12 @@ sys.path.append(_BASE_PATH)
 
 
 from libs.requests import _headers
+from libs.regex import discardSpace
 from libs.time import timeSleepRandomly
 from libs.time import timeCalculate
 from libs.time import timeSleepOne
+from libs.time import timeStampGenerator
+from libs.time import timeStampCalculate
 from libs.manipulateDir import mkdirForRawData
 from libs.manipulateDir import eraseRawData
 from libs.multiProcessing import _weatherRecordAvailable
@@ -62,34 +84,47 @@ def findOutNws(browser, topTabList):
         timeSleepOne()
     return findOutNws
 
-def humanSimulate(browser,  keyNews, topTabList):
-    ranNum = random.choice(topTabList)
-    print(ranNum,"================")
-    browser.find_by_xpath(f'//*[@id="hdtb-msb-vis"]/div[{ranNum}]/a').mouse_over()
-    timeSleepRandomly()
-    browser.execute_script('window.scrollTo(0, document.body.scrollHeight);')
-    timeSleepOne()
-    browser.execute_script('window.scrollTo(0,0);')  
-    browser.find_by_xpath('//*[@id="logo"]/img').mouse_over()
+def humanSimulate(browser, topTabList):
+    randomNum = random.choice(topTabList)
+    print(randomNum,"================")
+    try:
+        browser.find_by_xpath(f'//*[@id="hdtb-msb-vis"]/div[{randomNum}]/a').mouse_over()
+        timeSleepRandomly()
+        browser.execute_script('window.scrollTo(0, document.body.scrollHeight);')
+        timeSleepOne()
+        browser.execute_script('window.scrollTo(0,0);')
 
-def elementUrlExtract(browser, keyNews, topTabList, elementUrl, newsDict):
+        if browser.is_element_present_by_xpath('//*[@id="logo"]/img'):
+            browser.find_by_xpath('//*[@id="logo"]/img').mouse_over()
+        elif browser.is_element_present_by_xpath('//*[@id="logocont"]/a/img'):
+            browser.find_by_xpath('//*[@id="logocont"]/a/img').mouse_over()
+    except AttributeError as e: # 找不到element 來mouse_over() ； //*[@id="logocont"]/a/img      //*[@id="logo"]/img    左上叫的google有兩種logo位置
+        print("擬人化操作找不到 Element。", e)
+        pass
+    
+
+def elementUrlExtract(browser, topTabList, elementUrl, newsDictInner):
     try:
         for order in elementUrl:
             broUrl = browser.find_by_xpath(f'//*[@id="rso"]/div/div[{order}]/div/div/h3/a')
             broPublisher = browser.find_by_xpath(f'//*[@id="rso"]/div/div[{order}]/div/div/div[1]/span[1]')
             broDate = browser.find_by_xpath(f'//*[@id="rso"]/div/div[{order}]/div/div/div[1]/span[3]')
             newsUrl = broUrl["href"]
+            newsTitle = broUrl.text
             publisher = broPublisher.text
             date = broDate.text
+
             print(newsUrl)
+            print(newsTitle)
             print(publisher)
             print(date)
-            # timeSleepOne()
-            timeSleepRandomly()
-            newsDict[newsUrl] = [publisher.replace(" ",""), date]
-            humanSimulate(browser, keyNews, topTabList)
             
-    except AttributeError as e: # 新聞標的不到10項時。
+            timeSleepRandomly()
+            newsDictInner[newsUrl] = [newsTitle, discardSpace(publisher), timeStampCalculate(date)]
+
+            humanSimulate(browser, topTabList)
+            
+    except ElementDoesNotExist as e: # 新聞標的不到10項時。
         print("新聞標的不到10項，準備關閉瀏覽器。", e)
         print("成功擷取當前頁的新聞連結。")
         pass
@@ -105,14 +140,14 @@ def judgeNextPage(browser):
         pass
 
 
-def getPageInARow(url, topTabList, elementUrl):
+def getPageInARow(url, searchword, firstPage, topTabList, elementUrl):
 
     browser = buildSplinterBrowser("chrome")
      
     browser.visit(url)
     browserWaitTime(browser)
 
-    searchwordKeyInAndEnter(browser, "家電促銷")
+    searchwordKeyInAndEnter(browser, searchword)
     browser.driver.set_window_size(1024,768)
 
     forSureNws = findOutNws(browser, topTabList)
@@ -120,8 +155,6 @@ def getPageInARow(url, topTabList, elementUrl):
     keyNews = [key for key in forSureNws if forSureNws[key] == '新聞'].pop()
     # 擬人化mouse_over要排除新聞tab
     topTabList.remove(int(keyNews))
-    #加入『更多』
-    topTabList.append(6)
 
     print(f"點擊 {keyNews} 去到 新聞頁")
     #點擊新聞tab
@@ -129,17 +162,25 @@ def getPageInARow(url, topTabList, elementUrl):
     timeSleepRandomly()
 
     newsDict = {}
+    newsDictInner = {}
     while True:
-        elementUrlExtract(browser, keyNews, topTabList, elementUrl, newsDict)
+        print(f"進行 {searchword} 第", firstPage, "頁")
+        elementUrlExtract(browser, topTabList, elementUrl, newsDictInner)
         judgment = judgeNextPage(browser)
         if judgment:
             print("仍有下一頁，繼續爬取！")
+            firstPage += 1
             pass
         else:
+            browser.quit()
             break
-    else:
-        print("break happen！5566")
+
     
+    newsDict["dateTime"] = timeStampGenerator()
+    newsDict["keyword"] = searchword
+    newsDict["newsTotalNum"] = len(newsDictInner)
+    newsDict["newsUrl"] = newsDictInner
+
     return newsDict
 
    
@@ -148,37 +189,28 @@ def getPageInARow(url, topTabList, elementUrl):
 if __name__ == '__main__':
 
     objectiveFolder = "rawData"
-
     objective = "news"
 
-    topTabList = [row for row in range(2,6)] #新聞、圖片、地圖、影片、[更多]
+    searchword = "家電促銷"
+    firstPage = 1
 
-    elementUrl = [row for row in range(1,11)]
+    topTabList = [row for row in range(2,6)] #新聞、圖片、地圖、影片、[更多]__xpath不同，無法準確mouse_over()
+    elementUrl = [row for row in range(1,11)] #一頁有10個標的
 
     url = "https://www.google.com/"
     
     begin = timeCalculate()
 
-    mkdirForRawData(objectiveFolder, objective, "google")
+    mkdirForRawData(objectiveFolder, objective, "google", keyword=searchword)
 
-    #共同佇列
-    # keyword_queue = mp.JoinableQueue()
+    newsDicT = getPageInARow(url, searchword, firstPage, topTabList, elementUrl)
 
-    #啟動進程
-    #主進程
-
-    newsDicT = getPageInARow(url, topTabList, elementUrl)
-
-    with open(f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/google/5566.json", 'w', encoding='utf-8')as f:
+    timeStamp = newsDicT["dateTime"]
+    newsTotalNum = newsDicT["newsTotalNum"]
+    with open(f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/google/{searchword}/google_{timeStamp}_{newsTotalNum}_{searchword}.json", 'w', encoding='utf-8')as f:
         json.dump(newsDicT, f, indent=2, ensure_ascii=False)
     print("寫出！")
-
 
     end = timeCalculate()
     
     print('完成！一共耗時：{0} 秒'.format(end-begin))
-
-
-
-
-
