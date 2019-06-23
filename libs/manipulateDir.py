@@ -44,3 +44,38 @@ def mkdirForCleanData(objectiveFolderClean, objective):
     else:
         print(f"已經存在 {dirRoute} 的資料夾")
         pass
+
+
+def listSecondDirBelowFiles(dirRoute):
+    """
+    1. dirRoute stands for the first layor of directory:
+       /home/bluevc/2019/iSelect3C/dataMunging/rawData/weather
+
+    2. There are many folders right under the folder 『weather』, and all these folders
+        contain only files instead of many other folders.
+
+    3. if there is any files in the layor fo weather, this function will fail.
+
+    """
+    for row in os.walk(dirRoute):
+        judge = 1
+        if row[-1] == []: # 捕捉第二層的各資料夾
+            tmpDirs = sorted(row[1])
+            readyDirs = [row[0] + "/" + rowInner for rowInner in tmpDirs]
+            for rawDir in readyDirs:
+            # if row[-1]: #捕捉到檔案名
+            #     dirRoute = row[0]
+                try:
+                    readyFile = initialFile(rawDir)
+                    for rawFile in readyFile:
+                        completeName = rawDir+ "/" + rawFile
+                        yield completeName
+                except ValueError: #不是合用 initialFile列舉的檔案
+                    readyFile = os.listdir(rawDir)
+                    for rawFile in readyFile:
+                        completeName = rawDir+ "/" + rawFile
+                        yield completeName
+            judge = 0
+        if not judge:
+            break
+
