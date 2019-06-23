@@ -30,7 +30,7 @@ sys.path.append(_BASE_PATH)   # 因為此行生效，所以才能引用他處的
 from libs.time import timeStampGenerator
 from libs.time import timeSleepOne
 from libs.multiProcessing import distributeKeyword
-from libs.multiProcessing import _keywordUrlPair
+from libs.multiProcessing import _bureauEnergyKeywordUrlPair
 from libs.munging import mungingDetailDehumidification
 from libs.munging import mungingDetailAirConditioner
 from libs.munging import mungingDetailWarmDispenser
@@ -163,7 +163,7 @@ if __name__ == '__main__':
 
     # 主行程
     # main process <--join--> dataMunging_proc 
-    distributeKeyword(_keywordUrlPair, keyword_queue)
+    distributeKeyword(_bureauEnergyKeywordUrlPair, keyword_queue)
     print("=============main process distributeKeyword 已經完成任務了。=============")
 
     #通知main process 完成事情。   # 開超過兩個queue，main process程式就無法跑通喔！
