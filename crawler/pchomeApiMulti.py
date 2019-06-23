@@ -10,6 +10,7 @@
         關鍵字 冷暖空調 從kdn上取得資料，一共有 100 頁， 3880筆。
     
     多進程，估計共耗時：998.5998482704163 秒  5/29/2019
+    getPageInARow 累計耗時：2170.309236764908 秒  6/22/2019
 
 備　　註：
 
@@ -22,6 +23,7 @@
 
 from bs4 import BeautifulSoup
 import requests
+from json.decoder import JSONDecodeError
 import json
 # import re
 # import csv
@@ -38,43 +40,53 @@ sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的mo
 from libs.manipulateDir import mkdirForRawData
 from libs.manipulateDir import eraseRawData
 from libs.multiProcessing import distributeKeyword
+from libs.multiProcessing import _pchomeKeywordUrlPair
 from libs.time import timeSleepEight
 from libs.time import timeSleepRandomly
-from libs.time import timeSleepTwo
 from libs.time import timeSleepOne
+from libs.regex import randomChoice
 
-def getPageFirst(keyword, searchword, headers):
+def getPageFirst(searchword, keyword, headers):
     url = "https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page=1&sort=sale/dc".format(keyword, searchword)
     res = requests.get(url, headers=headers)
+    timeSleepRandomly()
     res.encoding = 'utf-8'
     try:
         jsonPage = json.loads(res.text)
         totalPage = jsonPage['totalPage']
         totalRows = jsonPage['totalRows']
-        timeSleepTwo()
-        return totalPage, totalRows
-    except Exception as e:
-        print("getPageFirst這裡發生錯誤   "+str(e)+"正在處理中。")
         timeSleepEight()
+        timeSleepRandomly()
+        return totalPage, totalRows
+    except JSONDecodeError as e:  #拜訪太密集的話，pchome回傳的json檔案格式就不會是正常的格式，因此會發生無法json反序列化的例外。
+        print(f"getPageFirst {keyword}  {searchword} 這裡發生錯誤   "+str(e)+"正在處理中。")
+        timeSleepEight()
+        timeSleepRandomly()
+        
+        res = requests.get(url, headers=headers)
+        res.encoding = 'utf-8'
+        timeSleepRandomly()
+
         jsonPage = json.loads(res.text)
         totalPage = jsonPage['totalPage']
         totalRows = jsonPage['totalRows']
-        timeSleepTwo()
+        timeSleepEight()
         return totalPage, totalRows
 
 # 進程worker不能有關鍵字引數、以及**kwargs
-# 在terminal執行多進程，原本的output.put()  input.get() 的output input，都換成建立的mp.JoinableQueue()
-def getPageInARow(input, searchword, headers, objectiveFolder, objective, *args):
+def getPageInARow(input, headers, objectiveFolder, objective, *args):
     begin = time.time()
     thisPID = os.getpid()
     while True:
         print(thisPID,"===========================================")
-        keyword = input.get()
+        searchwordAndKeyword = input.get()
+        searchword, keyword = searchwordAndKeyword.split("+")
+
         print("getPageInARow is in new process %s, %s " % (getPageInARow_proc, thisPID))
         eraseRawData(objectiveFolder, objective, searchword, keyword=keyword)
         mkdirForRawData(objectiveFolder, objective, searchword, keyword=keyword)
 
-        totalPage, totalRows = getPageFirst(keyword, searchword, headers)
+        totalPage, totalRows = getPageFirst(searchword, keyword, headers)
 
         print(f"關鍵字 {searchword} 從{keyword}上取得資料，一共有 {totalPage} 頁， {totalRows}筆。")
         # countRaws += int(totalRows)
@@ -91,25 +103,30 @@ def getPageInARow(input, searchword, headers, objectiveFolder, objective, *args)
                 jsonPage = json.loads(res.text)
                 with open(f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/{searchword}/{keyword}/{page}_{totalPage}_{totalRows}_{keyword+searchword}.json", 'w', encoding='utf-8')as f:
                     json.dump(jsonPage, f, indent=2, ensure_ascii=False)
-                print("成功寫出  {0}  第{1}頁".format(keyword+searchword, page))
+                print("成功寫出  {0}  第 {1} 頁，共 {2} 頁".format(keyword+searchword, page, totalPage))
                 timeSleepEight()
+                timeSleepRandomly()
+            except JSONDecodeError as e:
+                print(f"getPageInARow這裡發生錯誤  {keyword}_{searchword}_{page} "+str(e)+"正在處理中。")
+                timeSleepEight()
+                timeSleepRandomly()
+                
+                res = requests.get(url, headers=headers)
+                res.encoding = 'utf-8'
+                timeSleepRandomly()
 
-            except Exception as e:
-                print("getPageInARow這裡發生錯誤   "+str(e)+"正在處理中。")
-                timeSleepEight()
                 jsonPage = json.loads(res.text)
                 with open(f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/{searchword}/{keyword}/{page}_{totalPage}_{totalRows}_{keyword+searchword}.json", 'w', encoding='utf-8')as f:
                     json.dump(jsonPage, f, indent=2, ensure_ascii=False)
-                print("成功寫出  {0}  第{1}頁".format(keyword+searchword, page))
+                print("成功寫出  {0}  第 {1} 頁，共 {2} 頁".format(keyword+searchword, page, totalPage))
                 timeSleepEight()
-        print(f"這裡是getPageInARow_{thisPID}，準備完成工作。 ")
+
+        print(f"這裡是getPageInARow_{thisPID}，準備完成{keyword}_{searchword}工作。 ")
         print()
         end = time.time()
         print('getPageInARow 累計耗時：{0} 秒'.format(end-begin))
         input.task_done()  #通知main process此次的input處理完成！
         timeSleepOne() #暫停幾秒來模擬現實狀況。
-
-
 
 if __name__ == '__main__':
 
@@ -120,8 +137,6 @@ if __name__ == '__main__':
 
     objective = "pchome"
 
-    searchword = "冷暖空調"
-
     begin = time.time()
     print('start in main process %s' %os.getpid())
 
@@ -130,8 +145,8 @@ if __name__ == '__main__':
 
     # 啟動行程
     Process_1 = []
-    for p in range(3):
-        getPageInARow_proc = mp.Process(target=getPageInARow, args=(keyword_queue, searchword, headers, objectiveFolder, objective,))#*args
+    for p in range(5): #開5個進程時，沒有出錯。
+        getPageInARow_proc = mp.Process(target=getPageInARow, args=(keyword_queue, headers, objectiveFolder, objective,))#*args
         getPageInARow_proc.daemon = True
         getPageInARow_proc.start()
         print(f'建立第{p}個 getPageInARow_proc, {os.getpid()}, {getPageInARow_proc}')
@@ -141,8 +156,8 @@ if __name__ == '__main__':
     # 主行程    
     keywordList = ["24h", "vdr", "kdn"]# 24小時、購物中心、代購服務
 
-    distributeKeyword(keywordList, keyword_queue)
-
+    searchwordAndKeyword = [rowOutside + "+" + rowInside for rowOutside in _pchomeKeywordUrlPair for rowInside in keywordList]
+    distributeKeyword(searchwordAndKeyword, keyword_queue)
 
     keyword_queue.join()
     # for proc in process:
