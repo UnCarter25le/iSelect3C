@@ -4,6 +4,7 @@
 import os
 import sys
 import re
+import random
 from math import ceil
 
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2]) 
@@ -29,3 +30,12 @@ def floatDiv(Anum,Bnum):
     A = float(searchFloatNums(Anum))
     B = float(searchFloatNums(Bnum))
     return round(A / B,2)
+
+
+def discardSpace(word):
+    return word.replace(" ","")
+
+
+def randomChoice(arrayList):
+    return random.choice(arrayList)
+
