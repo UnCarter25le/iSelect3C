@@ -41,7 +41,12 @@ def buildSplinterBrowser(browserName):
 #                'NSC_MC-xxx.npnptipq.dpn.ux*80': 'ffffffff0934543045525d5f4f58455e445a4a4229a0'}
 #     browser.cookies.add(browser.cookies.all())
     return browser
-        
+
+def buildSplinterBrowserHeadless(browserName):
+    browser = Browser(driver_name = browserName, headless=False, incognito=True)
+    return browser
+
+
 def browserWaitTime(browser):
     browser.wait_time
     timeSleepRandomly()
