@@ -86,7 +86,7 @@ def distributeMonthAvailable(input, output, _weatherRecordAvailable, objectiveFo
             print(f'這裡是distributeMonthAvailable，準備送給  getPageInARow  處理: {year}年_{month}月 ')
         input.task_done()
         end = timeCalculate()
-        print(f'{thisPID}_distributeMonthAvailable 累計耗時：{0} 秒'.format(end-begin))
+        print(f'{thisPID}_distributeMonthAvailable 累計耗時：{end-begin} 秒')
         timeSleepOne()
         
 def getPageInARaw(input, _headers, objectiveFolder, objective, *args):
@@ -104,14 +104,14 @@ def getPageInARaw(input, _headers, objectiveFolder, objective, *args):
 
         soup = BeautifulSoup(res.text,'html.parser')
 
-        with open(f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/{year}/{year}_{month}.txt", 'w', encoding='utf-8')as f:
+        with open(f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/{year}/{month}_{year}.txt", 'w', encoding='utf-8')as f:
             f.write(str(soup))
         print()
-        print(f'{thisPID}  成功寫出  {year}_{month}.txt ')
+        print(f'{thisPID}  成功寫出  {month}_{year}.txt ')
 
         input.task_done()
         end = timeCalculate()
-        print(f'{thisPID}_getPageInARaw 累計耗時：{0} 秒'.format(end-begin))
+        print(f'{thisPID}_getPageInARaw 累計耗時：{end-begin} 秒')
         timeSleepOne()
 
 
