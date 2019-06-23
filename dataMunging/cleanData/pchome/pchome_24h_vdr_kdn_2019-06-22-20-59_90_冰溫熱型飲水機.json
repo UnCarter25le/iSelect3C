@@ -1,0 +1,726 @@
+{
+  "keyword": "冰溫熱型飲水機(24h_vdr_kdn)",
+  "dateTime": "2019-06-22-20-59",
+  "product": [
+    {
+      "Id": "DMAW27-A9006X2KY",
+      "name": "Coway濾淨智控飲水機 冰溫瞬熱桌上型 CHP-241N",
+      "originprice": 49300,
+      "pics": "https://d.ecimg.tw/items/DMAW27A9006X2KY/000002_1560501229.jpg",
+      "picb": "https://d.ecimg.tw/items/DMAW27A9006X2KY/000001_1560501229.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/DMAW27-A9006X2KY"
+    },
+    {
+      "Id": "DMAW27-19009UJ35",
+      "name": "【超值組】Coway冰溫瞬熱桌上型 CHP-241N+濾芯組",
+      "originprice": 48800,
+      "pics": "https://d.ecimg.tw/items/DMAW2719009UJ35/000002_1560501280.jpg",
+      "picb": "https://d.ecimg.tw/items/DMAW2719009UJ35/000001_1560501280.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/DMAW27-19009UJ35"
+    },
+    {
+      "Id": "ACAC5F-A9005JDM6",
+      "name": "賀眾牌桌上型冰溫熱飲水機UW-672AW-1",
+      "originprice": 15800,
+      "pics": "https://d.ecimg.tw/items/ACAC5FA9005JDM6/000002_1533540704.jpg",
+      "picb": "https://d.ecimg.tw/items/ACAC5FA9005JDM6/000001_1533540704.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/ACAC5F-A9005JDM6"
+    },
+    {
+      "Id": "ACAC5F-A80077989",
+      "name": "賀眾牌智能型冰溫熱磁化飲水機UR-632AW-1",
+      "originprice": 20900,
+      "pics": "https://d.ecimg.tw/items/ACAC5FA80077989/000002_1531902860.jpg",
+      "picb": "https://d.ecimg.tw/items/ACAC5FA80077989/000001_1531902860.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/ACAC5F-A80077989"
+    },
+    {
+      "Id": "QBAU0F-A9009NAQW",
+      "name": "阿波羅桌上型冰溫熱桶裝水飲水機",
+      "originprice": 3500,
+      "pics": "https://d.ecimg.tw/items/QBAU0FA9009NAQW/000002_1544580083.png",
+      "picb": "https://d.ecimg.tw/items/QBAU0FA9009NAQW/000001_1544580082.png",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0F-A9009NAQW"
+    },
+    {
+      "Id": "QBAU0G-A9009N8TJ",
+      "name": "阿波羅 直立型冰溫熱桶裝水飲水機",
+      "originprice": 4800,
+      "pics": "https://d.ecimg.tw/items/QBAU0GA9009N8TJ/000002_1544522428.png",
+      "picb": "https://d.ecimg.tw/items/QBAU0GA9009N8TJ/000001_1544522428.png",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0G-A9009N8TJ"
+    },
+    {
+      "Id": "QBAU0S-A900691M4",
+      "name": "《千山》WD-583AM桌上型冰溫熱飲水機",
+      "originprice": 18500,
+      "pics": "https://d.ecimg.tw/items/QBAU0SA900691M4/000002_1478454374.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0SA900691M4/000001_1478454374.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0S-A900691M4"
+    },
+    {
+      "Id": "QBAU0S-A9008WH5S",
+      "name": "《千山》智慧型冰溫熱飲水機 CR-9833AM",
+      "originprice": 26800,
+      "pics": "https://d.ecimg.tw/items/QBAU0SA9008WH5S/000002_1522633666.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0SA9008WH5S/000001_1522633666.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0S-A9008WH5S"
+    },
+    {
+      "Id": "QFAX6E-A9007ALT6",
+      "name": "賀眾牌智能型冰溫熱磁化飲水機 UR-632AW-1",
+      "originprice": 20900,
+      "pics": "https://d.ecimg.tw/items/QFAX6EA9007ALT6/000002_1532403764.jpg",
+      "picb": "https://d.ecimg.tw/items/QFAX6EA9007ALT6/000001_1532403764.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QFAX6E-A9007ALT6"
+    },
+    {
+      "Id": "QBAU0S-A900691ZE",
+      "name": "《千山》WS-1153AM落地型冰溫熱飲水機",
+      "originprice": 18500,
+      "pics": "https://d.ecimg.tw/items/QBAU0SA900691ZE/000002_1478454397.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0SA900691ZE/000001_1478454397.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0S-A900691ZE"
+    },
+    {
+      "Id": "QFAX6E-A9007AJB3",
+      "name": "賀眾牌桌上型冰溫熱飲水機UW-672AW-1",
+      "originprice": 15800,
+      "pics": "https://d.ecimg.tw/items/QFAX6EA9007AJB3/000002_1533537855.jpg",
+      "picb": "https://d.ecimg.tw/items/QFAX6EA9007AJB3/000001_1533537855.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QFAX6E-A9007AJB3"
+    },
+    {
+      "Id": "QBAU0S-A9006B4MG",
+      "name": "【千山】 落地型冰溫熱飲水機 WS-1153AM",
+      "originprice": 18500,
+      "pics": "https://d.ecimg.tw/items/QBAU0SA9006B4MG/000002_1478460757.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0SA9006B4MG/000001_1478460757.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0S-A9006B4MG"
+    },
+    {
+      "Id": "QBAU11-A90099VU8",
+      "name": "【LCW 龍泉】程控型冰溫熱飲水機 (LC-1176AB)",
+      "originprice": 24000,
+      "pics": "https://d.ecimg.tw/items/QBAU11A90099VU8/000002_1533187596.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU11A90099VU8/000001_1533187596.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU11-A90099VU8"
+    },
+    {
+      "Id": "QBAI44-A90069232",
+      "name": "《千山》WD-583AM桌上型冰溫熱飲水機",
+      "originprice": 18500,
+      "pics": "https://d.ecimg.tw/items/QBAI44A90069232/000002_1478454408.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAI44A90069232/000001_1478454408.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAI44-A90069232"
+    },
+    {
+      "Id": "QBAU0S-A90066MDL",
+      "name": "【千山】智慧型冰溫熱飲水機 CR-9833AM",
+      "originprice": 26800,
+      "pics": "https://d.ecimg.tw/items/QBAU0SA90066MDL/000002_1478445339.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0SA90066MDL/000001_1478445339.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0S-A90066MDL"
+    },
+    {
+      "Id": "QBAU0Y-A9008YF63",
+      "name": "元山 YS-8211RWSAB 觸控式冰溫熱落地型飲水機(內置五道RO機)",
+      "originprice": 28800,
+      "pics": "https://d.ecimg.tw/items/QBAU0YA9008YF63/000002_1524209215.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0YA9008YF63/000001_1524209215.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0Y-A9008YF63"
+    },
+    {
+      "Id": "QBAU0W-A9009I842",
+      "name": "【普德Buder】BD-5135 冰溫熱數位式 落地型飲水機(含五道式RO逆透純水機)",
+      "originprice": 31800,
+      "pics": "https://d.ecimg.tw/items/QBAU0WA9009I842/000002_1540333094.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0WA9009I842/000001_1540333094.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0W-A9009I842"
+    },
+    {
+      "Id": "QBAU0K-A9009NCQA",
+      "name": "元山 立地型RO濾淨式冰溫熱飲水機(含基本安裝) YS-8211RWSAB",
+      "originprice": 25800,
+      "pics": "https://d.ecimg.tw/items/QBAU0KA9009NCQA/000002_1544594637.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0KA9009NCQA/000001_1544594637.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0K-A9009NCQA"
+    },
+    {
+      "Id": "QBAI44-A9006922Z",
+      "name": "《千山》WS-1153AM落地型冰溫熱飲水機",
+      "originprice": 18500,
+      "pics": "https://d.ecimg.tw/items/QBAI44A9006922Z/000002_1478454406.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAI44A9006922Z/000001_1478454406.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAI44-A9006922Z"
+    },
+    {
+      "Id": "QFAXAV-A9009HOKU",
+      "name": "【Toppuror 泰浦樂】桌上型RO三溫冰溫熱飲水機(TPR-WD08)",
+      "originprice": 16391,
+      "pics": "https://d.ecimg.tw/items/QFAXAVA9009HOKU/000002_1539768167.jpg",
+      "picb": "https://d.ecimg.tw/items/QFAXAVA9009HOKU/000001_1539768167.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QFAXAV-A9009HOKU"
+    },
+    {
+      "Id": "QBAU0Y-A9008L8NG",
+      "name": "【EssenPure】水蘋果 WA-190 冰溫熱三溫桌上型飲水機含UV紫外線(內置KT RO機)",
+      "originprice": 20800,
+      "pics": "https://d.ecimg.tw/items/QBAU0YA9008L8NG/000002_1512113301.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0YA9008L8NG/000001_1512113301.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0Y-A9008L8NG"
+    },
+    {
+      "Id": "QFAX68-A9008COGZ",
+      "name": "冰溫熱三溫立地型智慧數位飲水機HM-900",
+      "originprice": 29500,
+      "pics": "https://d.ecimg.tw/items/QFAX68A9008COGZ/000002_1503113402.jpg",
+      "picb": "https://d.ecimg.tw/items/QFAX68A9008COGZ/000001_1503113402.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QFAX68-A9008COGZ"
+    },
+    {
+      "Id": "QBAH3Y-A90085AXC",
+      "name": "豪星冰溫熱三溫立地型智慧數位RO飲水機HM-290",
+      "originprice": 23500,
+      "pics": "https://d.ecimg.tw/items/QBAH3YA90085AXC/000002_1495771670.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAH3YA90085AXC/000001_1495771669.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAH3Y-A90085AXC"
+    },
+    {
+      "Id": "QBAU2L-A9009N45H",
+      "name": "HS-190 豪星冰溫熱桌上智慧型飲水機",
+      "originprice": 21900,
+      "pics": "https://d.ecimg.tw/items/QBAU2LA9009N45H/000002_1544427541.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU2LA9009N45H/000001_1544427541.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU2L-A9009N45H"
+    },
+    {
+      "Id": "QBAU0R-A9007IW5H",
+      "name": "賀眾牌桌上型極緻淨化飲水機UR-6602AW-1",
+      "originprice": 29900,
+      "pics": "https://d.ecimg.tw/items/QBAU0RA9007IW5H/000002_1534920893.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0RA9007IW5H/000001_1534920893.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0R-A9007IW5H"
+    },
+    {
+      "Id": "QBAU11-A90077K8Q",
+      "name": "【LCW 龍泉】桌上型冰溫熱水鑽飲水機 (LC-7571-1AB / LC-7571-2AB)",
+      "originprice": 30800,
+      "pics": "https://d.ecimg.tw/items/QBAU11A90077K8Q/000002_1478526079.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU11A90077K8Q/000001_1478526079.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU11-A90077K8Q"
+    },
+    {
+      "Id": "QBAU2L-A9009N46X",
+      "name": "HS-1687R 豪星冰溫熱三溫落地型飲水機",
+      "originprice": 24500,
+      "pics": "https://d.ecimg.tw/items/QBAU2LA9009N46X/000002_1544427776.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU2LA9009N46X/000001_1544427776.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU2L-A9009N46X"
+    },
+    {
+      "Id": "QBAU2L-A9009N46P",
+      "name": "HS-290 豪星冰溫熱三溫落地型飲水機",
+      "originprice": 23500,
+      "pics": "https://d.ecimg.tw/items/QBAU2LA9009N46P/000002_1544427619.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU2LA9009N46P/000001_1544427619.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU2L-A9009N46P"
+    },
+    {
+      "Id": "QFAX9F-A9009N452",
+      "name": "HS-900B 豪星冰溫熱三溫落地型飲水機-黑",
+      "originprice": 29900,
+      "pics": "https://d.ecimg.tw/items/QFAX9FA9009N452/000002_1559791053.jpg",
+      "picb": "https://d.ecimg.tw/items/QFAX9FA9009N452/000001_1559791053.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QFAX9F-A9009N452"
+    },
+    {
+      "Id": "QBAU3X-A9009O7I0",
+      "name": "【元山牌】落地型RO濾淨式冰溫熱飲水機(YS-8211RWSAB)",
+      "originprice": 25800,
+      "pics": "https://d.ecimg.tw/items/QBAU3XA9009O7I0/000002_1545298217.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU3XA9009O7I0/000001_1545298217.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU3X-A9009O7I0"
+    },
+    {
+      "Id": "ACAC5F-A77215419",
+      "name": "賀眾牌微電腦節能型飲水機 UN-1322AG-1-L",
+      "originprice": 26900,
+      "pics": "https://d.ecimg.tw/items/ACAC5FA77215419/000002_1533547388.jpg",
+      "picb": "https://d.ecimg.tw/items/ACAC5FA77215419/000001_1533547388.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/ACAC5F-A77215419"
+    },
+    {
+      "Id": "QBAU11-A90077KA0",
+      "name": "【LCW 龍泉】落地型冰溫熱水鑽飲水機 ( LC-7572-1AB / LC-7572-2AB)",
+      "originprice": 32800,
+      "pics": "https://d.ecimg.tw/items/QBAU11A90077KA0/000002_1478526081.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU11A90077KA0/000001_1478526081.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU11-A90077KA0"
+    },
+    {
+      "Id": "QBAU3F-A900959IV",
+      "name": "泰浦樂 Toppuror桌上型三溫RO飲水機(冰溫熱)",
+      "originprice": 19283,
+      "pics": "https://d.ecimg.tw/items/QBAU3FA900959IV/000002_1532324212.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU3FA900959IV/000001_1532324212.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU3F-A900959IV"
+    },
+    {
+      "Id": "QFAXAV-A900986EZ",
+      "name": "泰浦樂 Toppuror桌上型三溫RO飲水機(冰溫熱)",
+      "originprice": 16391,
+      "pics": "https://d.ecimg.tw/items/QFAXAVA900986EZ/000002_1532324095.jpg",
+      "picb": "https://d.ecimg.tw/items/QFAXAVA900986EZ/000001_1532324095.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QFAXAV-A900986EZ"
+    },
+    {
+      "Id": "QFAX68-A90086DDW",
+      "name": "冰溫熱三溫桌上智慧型數位RO飲水機HM-190",
+      "originprice": 21900,
+      "pics": "https://d.ecimg.tw/items/QFAX68A90086DDW/000002_1496911931.jpg",
+      "picb": "https://d.ecimg.tw/items/QFAX68A90086DDW/000001_1496911931.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QFAX68-A90086DDW"
+    },
+    {
+      "Id": "QFAX68-A900865PU",
+      "name": "冰溫熱三溫立地型智慧數位RO飲水機HM-290",
+      "originprice": 22900,
+      "pics": "https://d.ecimg.tw/items/QFAX68A900865PU/000002_1496737689.jpg",
+      "picb": "https://d.ecimg.tw/items/QFAX68A900865PU/000001_1496737689.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QFAX68-A900865PU"
+    },
+    {
+      "Id": "QBAU0R-A9009W3H3",
+      "name": "賀眾牌直立式極緻淨化飲水機UN-6802AW-1",
+      "originprice": 36900,
+      "pics": "https://d.ecimg.tw/items/QBAU0RA9009W3H3/000002_1553248451.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0RA9009W3H3/000001_1553248451.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0R-A9009W3H3"
+    },
+    {
+      "Id": "QBAU0Y-A9008L9E3",
+      "name": "【EssenPure】水蘋果 WA-190 冰溫熱三溫桌上型飲水機+WA505活礦機",
+      "originprice": 28800,
+      "pics": "https://d.ecimg.tw/items/QBAU0YA9008L9E3/000002_1512119983.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0YA9008L9E3/000001_1512119983.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0Y-A9008L9E3"
+    },
+    {
+      "Id": "ACAC5F-A77213156",
+      "name": "賀眾牌微電腦節能型飲水機  UN-1322AG-1-R",
+      "originprice": 29900,
+      "pics": "https://d.ecimg.tw/items/ACAC5FA77213156/000002_1533548463.jpg",
+      "picb": "https://d.ecimg.tw/items/ACAC5FA77213156/000001_1533548463.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/ACAC5F-A77213156"
+    },
+    {
+      "Id": "QBAU0F-A9006KZIB",
+      "name": "桌上型桶裝水飲水機",
+      "originprice": 3200,
+      "pics": "https://d.ecimg.tw/items/QBAU0FA9006KZIB/000002_1544523499.png",
+      "picb": "https://d.ecimg.tw/items/QBAU0FA9006KZIB/000001_1544523499.png",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0F-A9006KZIB"
+    },
+    {
+      "Id": "QBAU0T-A900A2R3U",
+      "name": "(福利品)Coway濾淨智控飲水機 冰溫瞬熱桌上型 CHP-241N",
+      "originprice": 29990,
+      "pics": "https://d.ecimg.tw/items/QBAU0TA900A2R3U/000002_1560325088.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0TA900A2R3U/000001_1560325088.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0T-A900A2R3U"
+    },
+    {
+      "Id": "QFAX9F-A9009MWF4",
+      "name": "HS-190 豪星冰溫熱桌上智慧型飲水機",
+      "originprice": 21900,
+      "pics": "https://d.ecimg.tw/items/QFAX9FA9009MWF4/000002_1544168371.jpg",
+      "picb": "https://d.ecimg.tw/items/QFAX9FA9009MWF4/000001_1544168371.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QFAX9F-A9009MWF4"
+    },
+    {
+      "Id": "QBAV1S-A9007R2QG",
+      "name": "千山淨水 智慧型冰溫熱飲水機-白色 (RO過濾) CR-9833AM",
+      "originprice": 26800,
+      "pics": "https://d.ecimg.tw/items/QBAV1SA9007R2QG/000002_1484133886.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAV1SA9007R2QG/000001_1484133886.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAV1S-A9007R2QG"
+    },
+    {
+      "Id": "QBAU0G-A9007BWF6",
+      "name": "阿波羅直立型桶裝水飲水機",
+      "originprice": 4500,
+      "pics": "https://d.ecimg.tw/items/QBAU0GA9007BWF6/000002_1544672832.png",
+      "picb": "https://d.ecimg.tw/items/QBAU0GA9007BWF6/000001_1544672832.png",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0G-A9007BWF6"
+    },
+    {
+      "Id": "QBAU0Y-A9008L9DO",
+      "name": "【EssenPure】水蘋果 WA-290 冰溫熱三溫落地型飲水機內含UV紫外線)(內置KT RO機)",
+      "originprice": 20800,
+      "pics": "https://d.ecimg.tw/items/QBAU0YA9008L9DO/000002_1512119611.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0YA9008L9DO/000001_1512119611.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0Y-A9008L9DO"
+    },
+    {
+      "Id": "QFAX9F-A9009MWSF",
+      "name": "HS-900B 豪星冰溫熱三溫落地型飲水機-黑",
+      "originprice": 29900,
+      "pics": "https://d.ecimg.tw/items/QFAX9FA9009MWSF/000002_1544172827.jpg",
+      "picb": "https://d.ecimg.tw/items/QFAX9FA9009MWSF/000001_1544172827.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QFAX9F-A9009MWSF"
+    },
+    {
+      "Id": "QBAU0T-A9006X2NW",
+      "name": "Coway濾淨智控飲水機 冰溫瞬熱桌上型 CHP-241N",
+      "originprice": 41184,
+      "pics": "https://d.ecimg.tw/items/QBAU0TA9006X2NW/000002_1553776472.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0TA9006X2NW/000001_1553776472.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0T-A9006X2NW"
+    },
+    {
+      "Id": "QFAX9F-A9009N2DF",
+      "name": "HS-1687R 豪星冰溫熱三溫落地型飲水機",
+      "originprice": 24500,
+      "pics": "https://d.ecimg.tw/items/QFAX9FA9009N2DF/000002_1544404604.jpg",
+      "picb": "https://d.ecimg.tw/items/QFAX9FA9009N2DF/000001_1544404604.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QFAX9F-A9009N2DF"
+    },
+    {
+      "Id": "QFAX9F-A9009MWR5",
+      "name": "HS-290 豪星冰溫熱三溫落地型飲水機",
+      "originprice": 23500,
+      "pics": "https://d.ecimg.tw/items/QFAX9FA9009MWR5/000002_1544172231.jpg",
+      "picb": "https://d.ecimg.tw/items/QFAX9FA9009MWR5/000001_1544172231.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QFAX9F-A9009MWR5"
+    },
+    {
+      "Id": "QBAU0Y-A9008L9F7",
+      "name": "【EssenPure】水蘋果 WA-290 冰溫熱三溫落地型飲水機+WA505活礦機",
+      "originprice": 28800,
+      "pics": "https://d.ecimg.tw/items/QBAU0YA9008L9F7/000002_1512120297.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0YA9008L9F7/000001_1512120297.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0Y-A9008L9F7"
+    },
+    {
+      "Id": "QBAU0T-A9009TTUI",
+      "name": "Coway濾淨智控飲水機 冰溫瞬熱桌上型 CHP-241N主機+首年份濾芯組 合購優惠",
+      "originprice": 49800,
+      "pics": "https://d.ecimg.tw/items/QBAU0TA9009TTUI/000002_1553776556.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0TA9009TTUI/000001_1553776556.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0T-A9009TTUI"
+    },
+    {
+      "Id": "QFAX6E-A9007AJ9R",
+      "name": "賀眾牌微電腦節能型飲水機  UN-1322AG-1-R",
+      "originprice": 29900,
+      "pics": "https://d.ecimg.tw/items/QFAX6EA9007AJ9R/000002_1533548144.jpg",
+      "picb": "https://d.ecimg.tw/items/QFAX6EA9007AJ9R/000001_1533548144.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QFAX6E-A9007AJ9R"
+    },
+    {
+      "Id": "QBAU0G-A9007UIXM",
+      "name": "【悅氏】S‧A‧Y智慧型飲水機",
+      "originprice": 15800,
+      "pics": "https://d.ecimg.tw/items/QBAU0GA9007UIXM/000002_1485230232.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0GA9007UIXM/000001_1485230232.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0G-A9007UIXM"
+    },
+    {
+      "Id": "QFAX6E-A9007AJBF",
+      "name": "賀眾牌微電腦節能型飲水機 UN-1322AG-1-L",
+      "originprice": 26900,
+      "pics": "https://d.ecimg.tw/items/QFAX6EA9007AJBF/000002_1533546989.jpg",
+      "picb": "https://d.ecimg.tw/items/QFAX6EA9007AJBF/000001_1533546989.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QFAX6E-A9007AJBF"
+    },
+    {
+      "Id": "QBAU0R-A9007HA1C",
+      "name": "賀眾牌桌上型極緻淨化飲水機UR-6602AW-1",
+      "originprice": 29900,
+      "pics": "https://d.ecimg.tw/items/QBAU0RA9007HA1C/000002_1534920923.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0RA9007HA1C/000001_1534920923.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0R-A9007HA1C"
+    },
+    {
+      "Id": "QBAU0G-A9007UIYV",
+      "name": "【悅氏】S‧A‧Y智慧型飲水機",
+      "originprice": 15800,
+      "pics": "https://d.ecimg.tw/items/QBAU0GA9007UIYV/000002_1485230503.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0GA9007UIYV/000001_1485230503.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0G-A9007UIYV"
+    },
+    {
+      "Id": "QBAU0G-A9007UIV6",
+      "name": "【悅氏】S‧A‧Y智慧型飲水機",
+      "originprice": 15800,
+      "pics": "https://d.ecimg.tw/items/QBAU0GA9007UIV6/000002_1485230140.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0GA9007UIV6/000001_1485230140.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0G-A9007UIV6"
+    },
+    {
+      "Id": "QBAU0G-A9008WJF5",
+      "name": "174 實惠型雙溫飲水機",
+      "originprice": 18500,
+      "pics": "https://d.ecimg.tw/items/QBAU0GA9008WJF5/000002_1522651141.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0GA9008WJF5/000001_1522651141.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0G-A9008WJF5"
+    },
+    {
+      "Id": "QBAU0F-A9008VAA3",
+      "name": "水蘋果 WA-1687 冰溫熱三溫飲水機(內置10英吋五道RO純水機)",
+      "originprice": 22800,
+      "pics": "https://d.ecimg.tw/items/QBAU0FA9008VAA3/000002_1521621844.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0FA9008VAA3/000001_1521621844.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0F-A9008VAA3"
+    },
+    {
+      "Id": "ACACAE-A9005GFC1",
+      "name": "【LCW 龍泉】桌上型氣泡水飲水機 LC-7871-2AB (典雅紅)",
+      "originprice": 35800,
+      "pics": "https://d.ecimg.tw/items/ACACAEA9005GFC1/000002_1478351916.jpg",
+      "picb": "https://d.ecimg.tw/items/ACACAEA9005GFC1/000001_1478351916.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/ACACAE-A9005GFC1"
+    },
+    {
+      "Id": "QFAX6E-A9009W3JB",
+      "name": "賀眾牌直立式極緻淨化飲水機UN-6802AW-1",
+      "originprice": 36900,
+      "pics": "https://d.ecimg.tw/items/QFAX6EA9009W3JB/000002_1553248909.jpg",
+      "picb": "https://d.ecimg.tw/items/QFAX6EA9009W3JB/000001_1553248909.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QFAX6E-A9009W3JB"
+    },
+    {
+      "Id": "QBAU11-A9007DO5O",
+      "name": "【LCW 龍泉】彩鋼架逆滲透純水機 (LC-R-107)",
+      "originprice": 10000,
+      "pics": "https://d.ecimg.tw/items/QBAU11A9007DO5O/000002_1478539942.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU11A9007DO5O/000001_1478539942.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU11-A9007DO5O"
+    },
+    {
+      "Id": "QBAU11-A9009URH2",
+      "name": "【LCW 龍泉】桌上型氣泡水飲水機 LC-7871-1AB (時尚白)",
+      "originprice": 35800,
+      "pics": "https://d.ecimg.tw/items/QBAU11A9009URH2/000002_1552019806.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU11A9009URH2/000001_1552019806.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU11-A9009URH2"
+    },
+    {
+      "Id": "QBAU0F-A9008VA9R",
+      "name": "水蘋果 WA-1687 冰溫熱三溫飲水機(搭配WARO便捷式純水機)",
+      "originprice": 22800,
+      "pics": "https://d.ecimg.tw/items/QBAU0FA9008VA9R/000002_1521622033.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0FA9008VA9R/000001_1521622033.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0F-A9008VA9R"
+    },
+    {
+      "Id": "QBAU0G-A9008WJDR",
+      "name": "536 數位型雙溫飲水機",
+      "originprice": 21000,
+      "pics": "https://d.ecimg.tw/items/QBAU0GA9008WJDR/000002_1522651038.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0GA9008WJDR/000001_1522651038.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0G-A9008WJDR"
+    },
+    {
+      "Id": "QBAU0W-A9009I843",
+      "name": "【普德Buder】CJ-173 三溫水塔式熱交換型飲水機(內置五道式RO逆滲透過濾)",
+      "originprice": 23800,
+      "pics": "https://d.ecimg.tw/items/QBAU0WA9009I843/000002_1540334444.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0WA9009I843/000001_1550735731.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0W-A9009I843"
+    },
+    {
+      "Id": "QBAU11-A9006S9QW",
+      "name": "【LCW 龍泉】全罩式殺菌型逆滲透純水機 (LC-R-105)",
+      "originprice": 14900,
+      "pics": "https://d.ecimg.tw/items/QBAU11A9006S9QW/000002_1478500587.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU11A9006S9QW/000001_1478500587.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU11-A9006S9QW"
+    },
+    {
+      "Id": "QBAU0F-A9008VA4K",
+      "name": "水蘋果 WA-900 數位式冰溫熱三溫飲水機(搭配WA-505活礦機)",
+      "originprice": 37500,
+      "pics": "https://d.ecimg.tw/items/QBAU0FA9008VA4K/000002_1521620504.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0FA9008VA4K/000001_1521620504.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0F-A9008VA4K"
+    },
+    {
+      "Id": "QBAU0G-A9008WJE3",
+      "name": "173 實惠型三溫飲水機",
+      "originprice": 22000,
+      "pics": "https://d.ecimg.tw/items/QBAU0GA9008WJE3/000002_1522650872.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0GA9008WJE3/000001_1522650872.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0G-A9008WJE3"
+    },
+    {
+      "Id": "QBAU11-A9006S9T9",
+      "name": "【LCW 龍泉】彩鋼架逆滲透純水機 (LC-R-107)",
+      "originprice": 10000,
+      "pics": "https://d.ecimg.tw/items/QBAU11A9006S9T9/000002_1478500590.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU11A9006S9T9/000001_1478500590.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU11-A9006S9T9"
+    },
+    {
+      "Id": "QBAU0F-A9008VA1U",
+      "name": "水蘋果 WA-900 數位式冰溫熱三溫飲水機(搭配WARO便捷式純水機)",
+      "originprice": 29500,
+      "pics": "https://d.ecimg.tw/items/QBAU0FA9008VA1U/000002_1521619857.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0FA9008VA1U/000001_1521619857.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0F-A9008VA1U"
+    },
+    {
+      "Id": "QBAU11-A9007DO4Q",
+      "name": "【LCW 龍泉】全罩式殺菌型逆滲透純水機 (LC-R-105)",
+      "originprice": 14900,
+      "pics": "https://d.ecimg.tw/items/QBAU11A9007DO4Q/000002_1478539943.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU11A9007DO4Q/000001_1478539943.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU11-A9007DO4Q"
+    },
+    {
+      "Id": "QBAU0F-A9008VA7Z",
+      "name": "水蘋果 WA-3187 冰溫熱三溫飲水機(搭配WARO便捷式純水機)",
+      "originprice": 27800,
+      "pics": "https://d.ecimg.tw/items/QBAU0FA9008VA7Z/000002_1521621349.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0FA9008VA7Z/000001_1521621349.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0F-A9008VA7Z"
+    },
+    {
+      "Id": "QBAU0F-A9008VA8O",
+      "name": "水蘋果 WA-3187 冰溫熱三溫飲水機(搭配WA-505活礦機)",
+      "originprice": 35800,
+      "pics": "https://d.ecimg.tw/items/QBAU0FA9008VA8O/000002_1521621591.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0FA9008VA8O/000001_1521621591.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0F-A9008VA8O"
+    },
+    {
+      "Id": "QBAU0F-A9008VAAI",
+      "name": "水蘋果 WA-1687 冰溫熱三溫飲水機(搭配WA-505活礦機)",
+      "originprice": 30800,
+      "pics": "https://d.ecimg.tw/items/QBAU0FA9008VAAI/000002_1521622204.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0FA9008VAAI/000001_1521622204.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0F-A9008VAAI"
+    },
+    {
+      "Id": "QBAU0F-A9008VA1L",
+      "name": "水蘋果 WA-900 數位式冰溫熱三溫飲水機(內置10英吋五道RO純水機)",
+      "originprice": 29500,
+      "pics": "https://d.ecimg.tw/items/QBAU0FA9008VA1L/000002_1521620256.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0FA9008VA1L/000001_1521620256.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0F-A9008VA1L"
+    },
+    {
+      "Id": "QBAU0G-A9008VZNX",
+      "name": "556 程控型雙溫飲水機",
+      "originprice": 23000,
+      "pics": "https://d.ecimg.tw/items/QBAU0GA9008VZNX/000002_1522241987.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0GA9008VZNX/000001_1522241987.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0G-A9008VZNX"
+    },
+    {
+      "Id": "QBAU0F-A9008VA7I",
+      "name": "水蘋果 WA-3187 數位式冰溫熱三溫飲水機(內置10英吋五道RO純水機)",
+      "originprice": 27800,
+      "pics": "https://d.ecimg.tw/items/QBAU0FA9008VA7I/000002_1521621061.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0FA9008VA7I/000001_1521621061.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0F-A9008VA7I"
+    },
+    {
+      "Id": "QBAU0G-A9008WJEQ",
+      "name": "535 數位型三溫飲水機",
+      "originprice": 24000,
+      "pics": "https://d.ecimg.tw/items/QBAU0GA9008WJEQ/000002_1522651092.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0GA9008WJEQ/000001_1522651092.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0G-A9008WJEQ"
+    },
+    {
+      "Id": "QBAU0Y-A9008DHBW",
+      "name": "【EssenPure】水蘋果 WAQ7-3H 按鍵式冰溫熱三溫飲水機(內置WARO便捷式純水機)",
+      "originprice": 26500,
+      "pics": "https://d.ecimg.tw/items/QBAU0YA9008DHBW/000002_1521611919.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0YA9008DHBW/000001_1521611919.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0Y-A9008DHBW"
+    },
+    {
+      "Id": "QBAU0K-A9009DX7P",
+      "name": "【元山牌】桌上型RO濾淨式冰溫熱飲水機(YS-8210RWI)",
+      "originprice": 20800,
+      "pics": "https://d.ecimg.tw/items/QBAU0KA9009DX7P/000002_1536146430.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0KA9009DX7P/000001_1536146430.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0K-A9009DX7P"
+    },
+    {
+      "Id": "QBAU0K-A9009IWK0",
+      "name": "【元山】RO冰溫熱型落地式飲水機YS-8014RWMA",
+      "originprice": 23800,
+      "pics": "https://d.ecimg.tw/items/QBAU0KA9009IWK0/000002_1540977896.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0KA9009IWK0/000001_1540977896.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0K-A9009IWK0"
+    },
+    {
+      "Id": "QBAU0K-A9008QA6C",
+      "name": "【元山牌】桌上型不銹鋼冰溫熱桶裝飲水機(YS-8201BWIB)",
+      "originprice": 6280,
+      "pics": "https://d.ecimg.tw/items/QBAU0KA9008QA6C/000002_1516593411.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0KA9008QA6C/000001_1516593411.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0K-A9008QA6C"
+    },
+    {
+      "Id": "QBAU3Z-A90096OSF",
+      "name": "【BLOCEAN藍海淨水科技】觸控式桌上型飲水機﹝冰溫熱﹞BO-7212 + 藍海淨水生飲設備BO-8113",
+      "originprice": 24000,
+      "pics": "https://d.ecimg.tw/items/QBAU3ZA90096OSF/000002_1530699355.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU3ZA90096OSF/000001_1530699355.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU3Z-A90096OSF"
+    },
+    {
+      "Id": "QBAU3X-A9008UKNO",
+      "name": "【元山牌】桌上型不銹鋼冰溫熱桶裝飲水機(YS-8201BWIB)",
+      "originprice": 6000,
+      "pics": "https://d.ecimg.tw/items/QBAU3XA9008UKNO/000002_1521007641.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU3XA9008UKNO/000001_1521007641.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU3X-A9008UKNO"
+    },
+    {
+      "Id": "QBAU0S-A9009A8LU",
+      "name": "【千山】桌上型冰溫熱飲水機 WD-583AM",
+      "originprice": 18500,
+      "pics": "https://d.ecimg.tw/items/QBAU0SA9009A8LU/000002_1533523995.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0SA9009A8LU/000001_1533523995.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0S-A9009A8LU"
+    },
+    {
+      "Id": "QBAU0K-A9009IWHW",
+      "name": "【元山】不鏽鋼桌上型冰溫熱RO濾淨式飲水機YS-8210RWI",
+      "originprice": 20800,
+      "pics": "https://d.ecimg.tw/items/QBAU0KA9009IWHW/000002_1540977577.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU0KA9009IWHW/000001_1540977577.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU0K-A9009IWHW"
+    },
+    {
+      "Id": "QBAU3X-A9009LIVS",
+      "name": "【元山牌】桌上型RO濾淨式冰溫熱飲水機(YS-8210RWI)",
+      "originprice": 20800,
+      "pics": "https://d.ecimg.tw/items/QBAU3XA9009LIVS/000002_1542880311.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAU3XA9009LIVS/000001_1542880311.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAU3X-A9009LIVS"
+    },
+    {
+      "Id": "QBAV1S-A9007R2BM",
+      "name": "千山淨水 落地型 RO 冰溫熱飲水機 (白)  WS-1153AM",
+      "originprice": 18500,
+      "pics": "https://d.ecimg.tw/items/QBAV1SA9007R2BM/000002_1482312876.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAV1SA9007R2BM/000001_1482312876.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAV1S-A9007R2BM"
+    },
+    {
+      "Id": "QBAV1S-A90093BAT",
+      "name": "【元山】桌上型濾淨冰溫熱飲水機(含基本安裝)YS-8210RWI",
+      "originprice": 23500,
+      "pics": "https://d.ecimg.tw/items/QBAV1SA90093BAT/000002_1528106877.jpg",
+      "picb": "https://d.ecimg.tw/items/QBAV1SA90093BAT/000001_1528106877.jpg",
+      "produrl": "https://24h.pchome.com.tw/prod/QBAV1S-A90093BAT"
+    }
+  ]
+}
