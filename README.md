@@ -61,9 +61,15 @@
             |___bureauEnergy/
             |       |___無風管空氣調節機/
             |       |       |___overview/
+            |       |       |   |___1_797_無風管空氣調節機.txt
+            |       |       |   |___many other you name it.
             |       |       |___deatil/
-            |       |       |___XXX.json
-            |       |       |___OOO.json
+            |       |       |   |___1_7964_無風管空氣調節機.txt
+            |       |       |   |___many other you name it.
+            |       |       |  
+            |       |       |___jsonIntegration/
+            |       |           |___bureauEnergy_detail_2019-06-24-16-09_7964_無風管空氣調節機.json
+            |       |           |___bureauEnergy_overview_2019-06-24-16-09_7964_無風管空氣調節機.json
             |       |___ many other you name it.
             |
             |___momo/
