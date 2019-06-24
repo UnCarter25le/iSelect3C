@@ -21,7 +21,7 @@ https://www.energylabel.org.tw/
 
 from bs4 import BeautifulSoup
 import requests
-import time
+# import time
 import os
 import sys
 # import random
@@ -35,20 +35,26 @@ from libs.manipulateDir import mkdirForRawData
 from libs.manipulateDir import eraseRawData
 from libs.manipulateDir import initialFile
 from libs.multiProcessing import distributeKeyword
+from libs.multiProcessing import _bureauEnergyKeywordUrlPair
 from libs.time import timeSleepRandomly
 from libs.time import timeSleepTwo
 from libs.time import timeSleepOne
 from libs.time import timeStampGenerator
+from libs.time import timeCalculate
 
 
 def dataMunging(input, output, dirRoute,objectiveFolder, objective, domainUrl, *args):
-    begin = time.time()
+    begin = timeCalculate()
     thisPID = os.getpid()
     while True:
         print(thisPID,"===========================================")
         searchword = input.get() 
         dirNameAccepted = dirRoute + f"{searchword}/overview/"
         dirNameWriteOut = dirRoute + f"{searchword}/"
+
+        #莫把檢查資料夾的工作放到爬蟲時才做，那樣會對資料夾開開刪刪。
+        eraseRawData(objectiveFolder, objective, searchword, keyword="jsonIntegration")
+        mkdirForRawData(objectiveFolder, objective, searchword, keyword="jsonIntegration")
 
         print('dataMunging is in new process %s, %s ' % (dataMunging_proc, thisPID))
         print()
@@ -100,14 +106,15 @@ def dataMunging(input, output, dirRoute,objectiveFolder, objective, domainUrl, *
             
         bureauEnergyDict['product'] = productArray
         bureauEnergyDict['keyword'] = searchword
-        bureauEnergyDict["dateTime"] = timeStampGenerator()
+        timeStamp = timeStampGenerator()
+        bureauEnergyDict["dateTime"] = timeStamp
 
         totalNums = len(bureauEnergyDict['product'])
         
-        with open(dirNameWriteOut + f"{objective}_overview_{totalNums}_{searchword}.json","w",encoding="utf-8")as f:
+        with open(dirNameWriteOut + f"jsonIntegration/{objective}_overview_{timeStamp}_{totalNums}_{searchword}.json","w",encoding="utf-8")as f:
             json.dump(bureauEnergyDict, f, indent=2, ensure_ascii=False)
         
-        print(f'這裡是 dataMunging ，處理{searchword}完成: ' + dirNameWriteOut)
+        print(f'這裡是 dataMunging ，處理{searchword}完成: ' + dirNameWriteOut + "jsonIntegration/")
 
 
         # ＝＝＝＝＝＝＝＝＝ 如果只想要洗 overview html，此區可以註解掉。＝＝＝＝＝＝＝＝＝＝
@@ -131,7 +138,7 @@ def dataMunging(input, output, dirRoute,objectiveFolder, objective, domainUrl, *
 
 
 
-        end = time.time()
+        end = timeCalculate()
         print('dataMunging 累計耗時：{0} 秒'.format(end-begin))
         input.task_done()
         timeSleepOne() #暫停幾秒來模擬現實狀況。
@@ -139,7 +146,7 @@ def dataMunging(input, output, dirRoute,objectiveFolder, objective, domainUrl, *
 
 
 def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
-    begin = time.time()
+    begin = timeCalculate()
     thisPID = os.getpid()
     while True:
         print(thisPID,"===========================================")
@@ -171,7 +178,7 @@ def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
         timeSleepRandomly()
 
         print('這裡是 detailPageInARow 完成: ' + fileName + " 的爬取。")
-        end = time.time()
+        end = timeCalculate()
         print('detailPageInARow 累計耗時：{0} 秒'.format(end-begin))
         input.task_done()
         
@@ -182,33 +189,8 @@ if __name__ == '__main__':
 
     headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36",
           "Accept-Language": "zh-TW,zh;q=0.8,en-US;q=0.6,en;q=0.4","Connection":"close"}
-    
-    keywordUrlPair = {"無風管空氣調節機":("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=49"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
-                     "除濕機" : ("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=55"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
-                     "電冰箱" : ("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=56"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
-                     "電熱水瓶" :  ("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=47"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
-                     "溫熱型開飲機" : ("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=50"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
-                     "溫熱型飲水機" : ("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=53"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
-                     "冰溫熱型開飲機" : ("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=52"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
-                     "冰溫熱型飲水機" : ("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=54"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno=")
-                                }    
-    begin = time.time()
+      
+    begin = timeCalculate()
 
     objectiveFolder = "rawData"
 
@@ -247,7 +229,7 @@ if __name__ == '__main__':
 
     # 主行程
     # main process <--join--> dataMunging_proc ; dataMunging_proc <--join-->  detailUriDitributor_proc  
-    distributeKeyword(keywordUrlPair, keyword_queue)
+    distributeKeyword(_bureauEnergyKeywordUrlPair, keyword_queue)
     print("=============main process distributeKeyword 已經完成任務了。=============")
 
 
@@ -268,6 +250,6 @@ if __name__ == '__main__':
         print(f'{proc} has terminated!')
 
     
-    end = time.time()
+    end = timeCalculate()
     
     print('完成！一共耗時：{0} 秒'.format(end-begin))
