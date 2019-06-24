@@ -33,6 +33,7 @@ from libs.manipulateDir import mkdirForRawData
 from libs.manipulateDir import eraseRawData
 from libs.manipulateDir import initialFile
 from libs.multiProcessing import distributeKeyword
+from libs.multiProcessing import _bureauEnergyKeywordUrlPair
 from libs.time import timeSleepRandomly
 from libs.time import timeSleepOne
 
@@ -124,33 +125,7 @@ if __name__ == '__main__':
     headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36",
           "Accept-Language": "zh-TW,zh;q=0.8,en-US;q=0.6,en;q=0.4","Connection":"close"}
     
-
-    # urlDehumidifier   urlRefri   urlElectricThermos
-    keywordUrlPair = {"無風管空氣調節機":("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=49"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
-                     "除濕機" : ("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=55"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
-                     "電冰箱" : ("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=56"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
-                     "電熱水瓶" :  ("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=47"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
-                     "溫熱型開飲機" : ("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=50"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
-                     "溫熱型飲水機" : ("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=53"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
-                     "冰溫熱型開飲機" : ("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=52"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno="),
-                     "冰溫熱型飲水機" : ("https://ranking.energylabel.org.tw/product/Approval/list.aspx"
-                                "?&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=54"
-                                "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno=")
-                                }    
+  
     begin = time.time()
 
     objectiveFolder = "rawData"
@@ -172,7 +147,7 @@ if __name__ == '__main__':
     # 啟動進程
     Process_1 = []  #發送overviewUri
     for x in range(8):
-        overviewUriDistributor_proc = mp.Process(target=overviewUriDistributor, args=(keyword_queue, overviewUri_queue, keywordUrlPair, headers,dirRoute,objectiveFolder, objective,))
+        overviewUriDistributor_proc = mp.Process(target=overviewUriDistributor, args=(keyword_queue, overviewUri_queue, _bureauEnergyKeywordUrlPair, headers,dirRoute,objectiveFolder, objective,))
         overviewUriDistributor_proc.daemon = True
         overviewUriDistributor_proc.start()
         print(f'建立第{x}個 overviewUriDistributor_proc, {os.getpid()}, {overviewUriDistributor_proc}')
@@ -189,7 +164,7 @@ if __name__ == '__main__':
 
     # 主行程
     # main process <--join--> overviewUriDistributor_proc ; overviewUriDistributor_proc <--join--> getPageInARow_proc
-    distributeKeyword(keywordUrlPair, keyword_queue)
+    distributeKeyword(_bureauEnergyKeywordUrlPair, keyword_queue)
     print("=============main process distributeKeyword 已經完成任務了。=============")
 
 
