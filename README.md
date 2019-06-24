@@ -15,6 +15,23 @@
 
 ## 1. Environment:
 - python 3.6.8
+- Packages my environment installed and it can be found in `requirements.txt`.
+
+```
+autopep8==1.4.4
+beautifulsoup4==4.7.1
+certifi==2019.3.9
+chardet==3.0.4
+idna==2.8
+pycodestyle==2.5.0
+requests==2.22.0
+selenium==3.141.0
+six==1.12.0
+soupsieve==1.9.1
+splinter==0.10.0
+urllib3==1.25.3
+
+```
 
 
 ## 2. The structure of my contribution(data acquisition and munging):
@@ -133,7 +150,7 @@
 /___
     |___README.md
     |___.gitignore
-    |___requirements.txt__________________> Packages my environment installed.
+    |___requirements.txt___________________> Packages my environment installed.
 
 
 ```
