@@ -19,7 +19,7 @@ https://www.energylabel.org.tw/
 
 import json
 # from bs4 import BeautifulSoup
-import time
+# import time
 import sys
 import os
 import multiprocessing as mp
@@ -28,6 +28,7 @@ sys.path.append(_BASE_PATH)   # 因為此行生效，所以才能引用他處的
 
 
 from libs.time import timeStampGenerator
+from libs.time import timeCalculate
 from libs.time import timeSleepOne
 from libs.multiProcessing import distributeKeyword
 from libs.multiProcessing import _bureauEnergyKeywordUrlPair
@@ -44,7 +45,7 @@ from libs.manipulateDir import mkdirForCleanData
 
 # 清洗除濕機＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
-# detailJson檔案中，一家進overviewJson檔案的欄位。
+# detailJson檔案中，一加進overviewJson檔案的欄位。
 def zipJsonObject(modelPool, comparedValue, bureauEnergyDetail):
     index = modelPool.index(comparedValue)
     test_report_of_energy_efficiency = bureauEnergyDetail['productDetail'][index]['test_report_of_energy_efficiency']
@@ -55,24 +56,25 @@ def zipJsonObject(modelPool, comparedValue, bureauEnergyDetail):
 
 
 def dataMunging(input, dirRoute, objectiveFolderClean, objective):
-    begin = time.time()
+    begin = timeCalculate()
     thisPID = os.getpid()
     while True:
         print(thisPID,"===========================================")
         searchword = input.get()
 
-        dirNameWriteOut = dirRoute + f"{searchword}/"
+        dirNameCheck = dirRoute + f"{searchword}/"
         directory = dirRoute + f"{searchword}/detail/"
+        dirNameWriteOut = dirRoute + f"{searchword}/jsonIntegration/"
 
         print('dataMunging is in new process %s, %s ' % (dataMunging_proc, thisPID))
         print()
-        print('------接下來要處理資料夾路徑「 ' + dirNameWriteOut + '」---------')
+        print('------接下來要處理資料夾路徑「 ' + dirNameWriteOut  + '」---------')
         print()
 
 
         mkdirForCleanData(objectiveFolderClean, objective)
 
-        if not os.listdir(dirNameWriteOut):
+        if not os.listdir(dirNameCheck):
             print(f"============={objective} {searchword} 資料夾沒有東西，此進程準備結束。=============")
             input.task_done()
             timeSleepOne()
@@ -98,7 +100,7 @@ def dataMunging(input, dirRoute, objectiveFolderClean, objective):
             bureauEnergyDetail, totalNums = mungingDetailColdWarmDispenser(searchword, directory)
 
 
-        with open(dirNameWriteOut + f"{objective}_detail_{totalNums}_{searchword}.json",'w',encoding='utf-8')as f:
+        with open(dirNameWriteOut + f"{objective}_detail_{timeStampGenerator()}_{totalNums}_{searchword}.json",'w',encoding='utf-8')as f:
             json.dump(bureauEnergyDetail, f, indent=2, ensure_ascii=False)
 
         # 找出 overviewJsonFile ，開始與detailJsonFile合併：
@@ -119,14 +121,15 @@ def dataMunging(input, dirRoute, objectiveFolderClean, objective):
             # print('done '+str(index))
 
         # 新增欄位的Json檔案更新時間。
-        bureauEnergyOverview["dateTime"] = timeStampGenerator()
+        timeStamp = timeStampGenerator()
+        bureauEnergyOverview["dateTime"] = timeStamp
         
-        with open(f"{_BASE_PATH}/dataMunging/{objectiveFolderClean}/{objective}/{objective}_{timeStampGenerator()}_{totalNums}_{searchword}.json",'w',encoding='utf-8')as f:
+        with open(f"{_BASE_PATH}/dataMunging/{objectiveFolderClean}/{objective}/{objective}_{timeStamp}_{totalNums}_{searchword}.json",'w',encoding='utf-8')as f:
             json.dump(bureauEnergyOverview, f, indent=2, ensure_ascii=False)
 
         print(f"這裡是dataMunging_{thisPID}，準備完成工作。 ")
         print()
-        end = time.time()
+        end = timeCalculate()
         print('dataMunging 累計耗時：{0} 秒'.format(end-begin))
         input.task_done()  #通知main process此次的input處理完成！
         timeSleepOne() #暫停幾秒來模擬現實狀況。
@@ -145,7 +148,7 @@ if __name__ == '__main__':
     # dirRouteClean = f"{_BASE_PATH}/dataMunging/{objectiveFolderClean}/{objective}/"
 
 
-    begin = time.time()
+    begin = timeCalculate()
 
     #共同佇列
     keyword_queue = mp.JoinableQueue() # 發出關鍵字，讓接收的進程清洗該關鍵字的detail資料夾，同時合併detail and overview file。
@@ -176,6 +179,6 @@ if __name__ == '__main__':
         proc.terminate()
         print(f'{proc} has terminated!')
 
-    end = time.time()
+    end = timeCalculate()
     
     print('完成！一共耗時：{0} 秒'.format(end-begin))
