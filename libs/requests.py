@@ -20,7 +20,7 @@ def proxiesIpGenerator():
     proxy ips for reference : https://cn-proxy.com/
     """
     proxy_ips = ['124.156.108.71:82', '60.217.143.23:8060', '116.114.19.204:443']
-    proxy_ip = randomChoice(proxy_ips)
+    proxy_ip = random.Choice(proxy_ips)
     res = requests.get(url, headers=headers, proxies = {"http": "http://"+proxy_ip })
 
     print('Use', ip)
