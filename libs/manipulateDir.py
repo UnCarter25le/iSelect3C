@@ -70,7 +70,7 @@ def listSecondDirBelowFiles(dirRoute):
                     for rawFile in readyFile:
                         completeName = rawDir+ "/" + rawFile
                         yield completeName
-                except ValueError: #不是合用 initialFile列舉的檔案
+                except ValueError: #不適合用 initialFile列舉的檔案
                     readyFile = os.listdir(rawDir)
                     for rawFile in readyFile:
                         completeName = rawDir+ "/" + rawFile
@@ -79,3 +79,6 @@ def listSecondDirBelowFiles(dirRoute):
         if not judge:
             break
 
+#check
+# for row in listSecondDirBelowFiles("/home/bluevc/2019/iSelect3C/dataMunging/rawData/news/google"):
+#     print(row)
