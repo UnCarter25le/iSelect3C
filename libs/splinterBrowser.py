@@ -43,7 +43,7 @@ def buildSplinterBrowser(browserName):
     return browser
 
 def buildSplinterBrowserHeadless(browserName):
-    browser = Browser(driver_name = browserName, headless=False, incognito=True)
+    browser = Browser(driver_name = browserName, headless=True, incognito=True)
     return browser
 
 
