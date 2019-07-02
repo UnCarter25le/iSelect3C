@@ -57,6 +57,7 @@ from libs.manipulateDir import eraseRawData
 from libs.multiProcessing import distributeKeyword
 from libs.multiProcessing import _googleSearchWord
 from libs.splinterBrowser import buildSplinterBrowser
+from libs.splinterBrowser import buildSplinterBrowserHeadless
 from libs.splinterBrowser import browserWaitTime
 
 
@@ -144,7 +145,7 @@ def getPageInARow(input, url, firstPage, topTabList, elementUrl, objectiveFolder
         searchword = input.get()
 
         mkdirForRawData(objectiveFolder, objective, "google", keyword=searchword)
-        browser = buildSplinterBrowser("chrome")
+        browser = buildSplinterBrowserHeadless("chrome")
         
         browser.visit(url)
         browserWaitTime(browser)
