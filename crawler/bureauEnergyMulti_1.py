@@ -1,25 +1,42 @@
 # -*- coding:utf-8 -*-
 
 """
-程式名稱：以『關鍵搜索字』爬蟲 經濟部能源局（經濟部能源局節能標章）。
+程式名稱：bureauEnergyMulti_1.py
+
 程式描述：
 
+    1. 以『關鍵分類搜索字』爬蟲 經濟部能源局（經濟部能源局節能標章）https://ranking.energylabel.org.tw/product/Approval/list.aspx。
 
-https://www.energylabel.org.tw/
+    _bureauEnergyKeywordUrlPair = {"無風管空氣調節機":"",
+                        "除濕機" : (""),
+                        "電冰箱" : (""),
+                        "電熱水瓶" : (""),
+                        "溫熱型開飲機" : (""),
+                        "溫熱型飲水機" : (""),
+                        "冰溫熱型開飲機" : (""),
+                        "冰溫熱型飲水機" : (""),
+                        "貯備型電熱水器": (""),
+                        "瓦斯熱水器(即熱式燃氣熱水器)": (""),
+                        "瓦斯爐(燃氣台爐)" : (""),
+                        "安定器內藏式螢光燈泡": ("")}
 
 
-30個進程，完成！一共耗時：211.93192338943481 秒
+    2. 
+
+    input: _bureauEnergyKeywordUrlPair 的資訊。
+
+    Output: 將每個類別的各頁 html，以txt形式儲存本地。見/dataMunging/bureauEnergy/關鍵字/overview/。
 
 備　　註：
 
-
+30個進程，完成！一共耗時：659.8574628829956 秒 。能源局官網上的類別12個都載下來。
 
 """
 
 
 from bs4 import BeautifulSoup
 import requests
-import time
+# import time
 import os
 import sys
 # import random
@@ -35,12 +52,14 @@ from libs.manipulateDir import initialFile
 from libs.multiProcessing import distributeKeyword
 from libs.multiProcessing import _bureauEnergyKeywordUrlPair
 from libs.time import timeSleepRandomly
+from libs.time import timeCalculate
 from libs.time import timeSleepOne
+from libs.requests import _headers
 
 
 
 def overviewUriDistributor(input, output, keywordUrlPair, headers, dirRoute,objectiveFolder, objective, *args):
-    begin = time.time()
+    begin = timeCalculate()
     thisPID = os.getpid()
     while True:
         print(thisPID,"===========================================")
@@ -66,7 +85,7 @@ def overviewUriDistributor(input, output, keywordUrlPair, headers, dirRoute,obje
         print(f'這裡是 overviewUriDistributor_{thisPID}，準備送給  getPageInARow  處理 {totalPage} 頁的 overviewUri')
         print()            
             
-        end = time.time()
+        end = timeCalculate()
         print('overviewUriDistributor 累計耗時：{0} 秒'.format(end-begin))
         input.task_done()  #通知main process此次的input處理完成！
         timeSleepOne() #暫停幾秒來模擬現實狀況。
@@ -88,14 +107,16 @@ def getPageFirst(url, headers):
 
     
 def getPageInARow(input, headers, objectiveFolder, objective, *args):
-    begin = time.time()
+    begin = timeCalculate()
     thisPID = os.getpid()
     while True:
         print(thisPID,"===========================================")
         consecutiveUrl = input.get()
-        searchword = consecutiveUrl.split("+")[0]
-        correctUrl = consecutiveUrl.split("+")[1]
-        txtFileRoute = consecutiveUrl.split("+")[2]
+        searchword, correctUrl, txtFileRoute = consecutiveUrl.split("+")
+        # searchword = consecutiveUrl.split("+")[0]
+        # correctUrl = consecutiveUrl.split("+")[1]
+        # txtFileRoute = consecutiveUrl.split("+")[2]
+
         fileName = txtFileRoute.split("/")[-1]
         page = fileName.split("_")[0]
         totalPage = fileName.split("_")[1]
@@ -113,7 +134,7 @@ def getPageInARow(input, headers, objectiveFolder, objective, *args):
         with open(txtFileRoute, 'w', encoding='utf-8')as f:
             f.write(str(soup))
         print(f"成功寫出  {searchword}  第 {page} 頁， 共 {totalPage} 頁。")
-        end = time.time()
+        end = timeCalculate()
         print('getPageInARow 累計耗時：{0} 秒'.format(end-begin))
         input.task_done()  #通知main process此次的input處理完成！
         timeSleepOne() #暫停幾秒來模擬現實狀況。
@@ -122,11 +143,9 @@ def getPageInARow(input, headers, objectiveFolder, objective, *args):
 if __name__ == '__main__':
     
 
-    headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36",
-          "Accept-Language": "zh-TW,zh;q=0.8,en-US;q=0.6,en;q=0.4","Connection":"close"}
+    headers = _headers
     
-  
-    begin = time.time()
+    begin = timeCalculate()
 
     objectiveFolder = "rawData"
 
@@ -145,8 +164,8 @@ if __name__ == '__main__':
     overviewUri_queue = mp.JoinableQueue()  #接收到overviewUri的進程爬取html。
     
     # 啟動進程
-    Process_1 = []  #發送overviewUri
-    for x in range(8):
+    Process_1 = []  #發送overviewUri，總計有12個分類
+    for x in range(12):
         overviewUriDistributor_proc = mp.Process(target=overviewUriDistributor, args=(keyword_queue, overviewUri_queue, _bureauEnergyKeywordUrlPair, headers,dirRoute,objectiveFolder, objective,))
         overviewUriDistributor_proc.daemon = True
         overviewUriDistributor_proc.start()
@@ -182,6 +201,6 @@ if __name__ == '__main__':
         proc.terminate()
         print(f'{proc} has terminated!')
     
-    end = time.time()
+    end = timeCalculate()
     
     print('完成！一共耗時：{0} 秒'.format(end-begin))
