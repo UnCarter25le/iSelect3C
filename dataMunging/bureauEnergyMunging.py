@@ -8,12 +8,12 @@
 https://www.energylabel.org.tw/
 
 
-8個進程，完成！一共耗時：200.35461688041687 秒
-
-備　　註：
 
 
 
+* detail的產品型號要同overview一樣清洗。
+
+12個完成！一共耗時：314.3869659900665 秒 總數量 : 0
 """
 
 
@@ -32,31 +32,31 @@ from libs.time import timeCalculate
 from libs.time import timeSleepOne
 from libs.multiProcessing import distributeKeyword
 from libs.multiProcessing import _bureauEnergyKeywordUrlPair
-from libs.munging import mungingDetailDehumidification
-from libs.munging import mungingDetailAirConditioner
-from libs.munging import mungingDetailWarmDispenser
-from libs.munging import mungingDetailColdWarmDispenser
-from libs.munging import mungingDetailWarmDrinkMachine
-from libs.munging import mungingDetailColdWarmDrinkMachine
-from libs.munging import mungingDetailElectricWarmer
-from libs.munging import mungingDetailRefrigerator
+from libs.munging import bureauEnergyMunging
 from libs.manipulateDir import mkdirForCleanData
 
 
 # 清洗除濕機＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
 # detailJson檔案中，一加進overviewJson檔案的欄位。
-def zipJsonObject(modelPool, comparedValue, bureauEnergyDetail):
-    index = modelPool.index(comparedValue)
-    test_report_of_energy_efficiency = bureauEnergyDetail['productDetail'][index]['test_report_of_energy_efficiency']
-    benchmark = bureauEnergyDetail['productDetail'][index]['efficiency_benchmark']
-    annual = bureauEnergyDetail['productDetail'][index]['annual_power_consumption_degrees_dive_year']
-    return index, test_report_of_energy_efficiency, benchmark, annual
+def zipJsonObject(modelPoolDict, comparedValue, bureauEnergyDetail):
+    # index = modelPool.index(comparedValue)
+    # KeyError: 'HO-K85H'  'CU-M130HA2'#冷氣
+    try:
+        index = modelPoolDict[comparedValue]
+        test_report_of_energy_efficiency = bureauEnergyDetail['productDetail'][index]['test_report_of_energy_efficiency']
+        benchmark = bureauEnergyDetail['productDetail'][index]['efficiency_benchmark']
+        annual = bureauEnergyDetail['productDetail'][index]['annual_power_consumption_degrees_dive_year']
+        labelUri = bureauEnergyDetail['productDetail'][index]['energy_efficiency_label_innerUri']
+    except KeyError as e:
+        print(e)
+        index, test_report_of_energy_efficiency, benchmark, annual, labelUri = 999999, "KeyError", "KeyError", "KeyError", "KeyError"
+    return index, test_report_of_energy_efficiency, benchmark, annual, labelUri
 
 
 
 def dataMunging(input, dirRoute, objectiveFolderClean, objective):
-    begin = timeCalculate()
+    # begin = timeCalculate()
     thisPID = os.getpid()
     while True:
         print(thisPID,"===========================================")
@@ -83,21 +83,29 @@ def dataMunging(input, dirRoute, objectiveFolderClean, objective):
 
         # '無風管空氣調節機', '除濕機', '電冰箱', '電熱水瓶', '溫熱型開飲機', '溫熱型飲水機', '冰溫熱型開飲機', '冰溫熱型飲水機'
         if searchword == "除濕機":
-            bureauEnergyDetail, totalNums = mungingDetailDehumidification(searchword, directory)
+            bureauEnergyDetail, totalNums = bureauMunging.detailDehumidification(searchword, directory)
         elif searchword == "無風管空氣調節機":
-            bureauEnergyDetail, totalNums = mungingDetailAirConditioner(searchword, directory)
+            bureauEnergyDetail, totalNums = bureauMunging.detailAirConditioner(searchword, directory)
         elif searchword == "電冰箱":
-            bureauEnergyDetail, totalNums = mungingDetailRefrigerator(searchword, directory)
+            bureauEnergyDetail, totalNums = bureauMunging.detailRefrigerator(searchword, directory)
         elif searchword == "電熱水瓶":
-            bureauEnergyDetail, totalNums = mungingDetailElectricWarmer(searchword, directory)
+            bureauEnergyDetail, totalNums = bureauMunging.detailElectricWarmer(searchword, directory)
         elif searchword == "溫熱型開飲機":
-            bureauEnergyDetail, totalNums = mungingDetailWarmDrinkMachine(searchword, directory)
+            bureauEnergyDetail, totalNums = bureauMunging.detailWarmDrinkMachine(searchword, directory)
         elif searchword == "溫熱型飲水機":
-            bureauEnergyDetail, totalNums = mungingDetailWarmDispenser(searchword, directory)
+            bureauEnergyDetail, totalNums = bureauMunging.detailWarmDispenser(searchword, directory)
         elif searchword == "冰溫熱型開飲機":
-            bureauEnergyDetail, totalNums = mungingDetailColdWarmDrinkMachine(searchword, directory)
+            bureauEnergyDetail, totalNums = bureauMunging.detailColdWarmDrinkMachine(searchword, directory)
         elif searchword == "冰溫熱型飲水機":
-            bureauEnergyDetail, totalNums = mungingDetailColdWarmDispenser(searchword, directory)
+            bureauEnergyDetail, totalNums = bureauMunging.detailColdWarmDispenser(searchword, directory)
+        elif searchword == "貯備型電熱水器":
+            bureauEnergyDetail, totalNums = bureauMunging.detailStorageWaterHeaters(searchword, directory)
+        elif searchword == "瓦斯熱水器":
+            bureauEnergyDetail, totalNums = bureauMunging.detailGasWaterHeaters(searchword, directory)
+        elif searchword == "瓦斯爐":
+            bureauEnergyDetail, totalNums = bureauMunging.detailGasStove(searchword, directory)
+        elif searchword == "安定器內藏式螢光燈泡":
+            bureauEnergyDetail, totalNums = bureauMunging.detailCompactFluorescentLamp(searchword, directory)
 
 
         with open(dirNameWriteOut + f"{objective}_detail_{timeStampGenerator()}_{totalNums}_{searchword}.json",'w',encoding='utf-8')as f:
@@ -109,15 +117,18 @@ def dataMunging(input, dirRoute, objectiveFolderClean, objective):
             bureauEnergyOverview = json.load(f)
 
         modelPool = [comparedValue['product_model'] for comparedValue in bureauEnergyDetail['productDetail']]
+        modelPoolDict = { v: k  for k, v in enumerate(modelPool)}
+
 
         #打開overviewJson檔案，為每個產品增加欄位。  
         for jsonObject in bureauEnergyOverview['product']:
-            index, test_report_of_energy_efficiency, benchmark, annual = zipJsonObject(modelPool, jsonObject['product_model'], bureauEnergyDetail)
+            index, test_report_of_energy_efficiency, benchmark, annual, labelUri = zipJsonObject(modelPoolDict, jsonObject['product_model'], bureauEnergyDetail)
             
             # print('正在處理索引值： '+str(index))
             jsonObject['test_report_of_energy_efficiency'] = test_report_of_energy_efficiency
             jsonObject['efficiency_benchmark'] = benchmark
             jsonObject['annual_power_consumption_degrees_dive_year'] = annual
+            jsonObject['energy_efficiency_label_innerUri'] = labelUri
             # print('done '+str(index))
 
         # 新增欄位的Json檔案更新時間。
@@ -126,6 +137,8 @@ def dataMunging(input, dirRoute, objectiveFolderClean, objective):
         
         with open(f"{_BASE_PATH}/dataMunging/{objectiveFolderClean}/{objective}/{objective}_{timeStamp}_{totalNums}_{searchword}.json",'w',encoding='utf-8')as f:
             json.dump(bureauEnergyOverview, f, indent=2, ensure_ascii=False)
+
+        statistic.append(totalNums)
 
         print(f"這裡是dataMunging_{thisPID}，準備完成工作。 ")
         print()
@@ -146,7 +159,9 @@ if __name__ == '__main__':
     dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/"
 
     # dirRouteClean = f"{_BASE_PATH}/dataMunging/{objectiveFolderClean}/{objective}/"
+    bureauMunging = bureauEnergyMunging()
 
+    statistic = []
 
     begin = timeCalculate()
 
@@ -181,4 +196,5 @@ if __name__ == '__main__':
 
     end = timeCalculate()
     
-    print('完成！一共耗時：{0} 秒'.format(end-begin))
+    TOTAL = sum(statistic)
+    print('完成！一共耗時：{0} 秒'.format(end-begin), f'總數量 : {TOTAL}')
