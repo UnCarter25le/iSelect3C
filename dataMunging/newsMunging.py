@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     begin = timeCalculate()
 
-    eraseRawData(objectiveFolder, objective, "newsIntegration")
+    # eraseRawData(objectiveFolder, objective, "newsIntegration")
     mkdirForRawData(objectiveFolder, objective, "newsIntegration")
 
     dirRouteToFiles = listSecondDirBelowFiles(dirRoute)
