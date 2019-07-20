@@ -47,7 +47,7 @@ urllib3==1.25.3
     |___bureauEnergyMulti_2.py____________> Crawling date in a multiprocess manner.
     |___googleNews.py_____________________> Crawling data in one main process way(selenium) from search result page.
     |___googleNewsMulti.py________________> Crawling data in a multiprocess(selenium) manner from search result page.
-    |___weatherObservationStation.py.py___> Crawling data in one main process way(selenium) from official web site.
+    |___weatherObservationStation.py______> Crawling data in one main process way(selenium) from official web site.
     |___weatherRecordMulti.py.py__________> Crawling date in a multiprocess manner from official web site.
     
 /dataMunging/
@@ -70,8 +70,9 @@ urllib3==1.25.3
     |___cleanData/_ _ _ _ __ _ _ _ _ _ _ _> storing the data, json format, which is ready for inserting into DB.
     |       |___bureauEnergy/
     |       |___momo/
-    |       |___pchome/
+    |       |___news/
     |       |___observationStation/
+    |       |___pchome/
     |
     |___rawData/_ _ _ _ __ _ _ _ __ _ _ _ > storing the data, json or text format, which is ready for munging 
             |                               into json files.
@@ -87,7 +88,7 @@ urllib3==1.25.3
             |       |       |___jsonIntegration/
             |       |           |___bureauEnergy_detail_2019-06-24-16-09_7964_無風管空氣調節機.json
             |       |           |___bureauEnergy_overview_2019-06-24-16-09_7964_無風管空氣調節機.json
-            |       |___ many other you name it.
+            |       |___ many other you name it. Already have all categories of consumer electronics!
             |
             |___momo/
             |   |___冷暖空調/
@@ -105,7 +106,7 @@ urllib3==1.25.3
             |
             |___weather/
             |   |___2009/
-            |   |   |___2009_1.txt
+            |   |   |___1_2009.txt
             |   |   |___many other you name it.
             |   |___many other you name it.
             |   
@@ -126,31 +127,43 @@ urllib3==1.25.3
             ...
             more in the future!
 
+/dataMining/
+    |___dictionary/
+    |   |___jiebaCut_resultOfNewsTitle.json
+    |   |___newsTitle_stop_words.txt
+    |   |___newsTitle_wanted_words.txt
+    |   |___TFIDF_resultOfNewsTitle.json
+    |
+    |___calculateForNewsPulisher.py_______> As for the integration of google news, gain the distribution 
+    |                                       of news publisher.
+    |___copewithNewsUrl.py________________> Extract the accurate and acceptable news Urls with reference to the
+    |                                       result of TF-IDF.
+    |___jiebaForNewsTitle.py______________> Produce the analysis result of TF-IDF from the integration of google news.
 
 
 /libs/
-    |___ manipulateDir.py_________________> mkdir or rmdir whenever we wanna make crawling or munging.
-    |___ multiProcessing.py_______________> Needed by programs those operations are in a mulitprocess manner.
-    |___ munging.py_______________________> Needed by programs which are ready to process raw data.
-    |___ regex.py_________________________> Used in the situations in which we wanna extract accurate data type
+    |___manipulateDir.py__________________> mkdir or rmdir whenever we wanna make crawling or munging.
+    |___multiProcessing.py________________> Needed by programs those operations are in a mulitprocess manner.
+    |___munging.py________________________> Needed by programs which are ready to process raw data.
+    |___regex.py__________________________> Used in the situations in which we wanna extract accurate data type
     |                                       from raw data.
-    |___ splinterBrowser.py_______________> Used by programs which require chromdirver to start up browsers.
-    |___ time.py__________________________> Used when the interval peiod is needed in programs' processing.
-    |___ requests.py______________________> Be imported while the useage of the fixed parameters.
+    |___splinterBrowser.py________________> Used by programs which require chromdirver to start up browsers.
+    |___time.py___________________________> Used when the interval peiod is needed in programs' processing.
+    |___requests.py_______________________> Be imported while the useage of the fixed parameters.
 
 
 
 /doc/
-    |___iSelect3C使用案例圖.png_____________> Overview for use case diagram.
-    |___iSelect3C活動圖.png________________> Overview for activity diagram.
-    |___chromedriver______________________> according to: http://chromedriver.chromium.org/downloads
+    |___iSelect3C使用案例圖.png______________> Overview for use case diagram.
+    |___iSelect3C活動圖.png_________________> Overview for activity diagram.
+    |___chromedriver_______________________> according to: http://chromedriver.chromium.org/downloads
                                             editionInfo: ChromeDriver 75.0.3770.90
                                             execute `sudo cp chromedriver /usr/local/bin/`
 
 /___
     |___README.md
     |___.gitignore
-    |___requirements.txt___________________> Packages my environment installed.
+    |___requirements.txt____________________> Packages my environment installed.
 
 
 ```
@@ -168,11 +181,6 @@ urllib3==1.25.3
 - ### 3-2. momo, the order of executing:
 
     ```
-    Note: Since chrome browsers driven by chromedriver would be definitely watched by momo's IT protection, 
-    the numbers of getPageInARowAdvanced_proc(process ready to be created) has better to be match to the real numbers of pages on momo website.
-
-    We are abel to modify the object "_momoKeywordUrlPair" in multiProcessing.py to complete crawling jobs.
-
     momoMulti.py   -->  momoMunging.py
 
     ```
@@ -199,7 +207,15 @@ urllib3==1.25.3
 
     ```
 
+- ### 3-6. generate TF-IDF analysis with the usage of integration of google news:
 
+    ```
+
+    After doing 3-5., calculateForNewsPulisher.py
+
+    After doing 3-5., jiebaForNewsTitle.py  -->  copewithNewsUrl.py
+
+    ```
 
 - ### Reviewing the outcome after doing steps on the above.
 
