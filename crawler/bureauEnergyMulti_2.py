@@ -1,19 +1,59 @@
 # -*- coding:utf-8 -*-
 
 """
-程式名稱：以『關鍵搜索字』爬蟲 經濟部能源局（經濟部能源局節能標章）。
+程式名稱：bureauEnergyMulti_2.py
+
 程式描述：
 
+    1. 以『關鍵分類搜索字』清洗爬蟲 經濟部能源局 的結果；再針對overview裡面的detailUrl進行詳細規格的爬蟲。
 
-https://www.energylabel.org.tw/
+    _bureauEnergyKeywordUrlPair = {"無風管空氣調節機":"",
+                        "除濕機" : (""),
+                        "電冰箱" : (""),
+                        "電熱水瓶" : (""),
+                        "溫熱型開飲機" : (""),
+                        "溫熱型飲水機" : (""),
+                        "冰溫熱型開飲機" : (""),
+                        "冰溫熱型飲水機" : (""),
+                        "貯備型電熱水器": (""),
+                        "瓦斯熱水器(即熱式燃氣熱水器)": (""),
+                        "瓦斯爐(燃氣台爐)" : (""),
+                        "安定器內藏式螢光燈泡": ("")}
+        * overview的產品型號要進行「源頭」清洗，將
+        「\n」
+        「" "」
+        「非產品型號相關的 :UW-999(220V)、QB R 80 V 2,5K TW、LP-CH-910A(220V)附RO逆滲透純水機」
+        等等都洗乾淨
 
 
-    
+    2. 
+
+    input: _bureauEnergyKeywordUrlPair 的資訊。
+
+    Output: 1. 將每個類別overview的 html，清洗好後存成json。
+            2. 再將每個分類json裡面的detailUrl拿出來爬蟲，以txt形式儲存本地。
+            3. 見/dataMunging/bureauEnergy/關鍵字/detail/  or /dataMunging/bureauEnergy/關鍵字/jsonIntegration/。
+            
+            
 
 備　　註：
 
 
-50個進程，完成！一共耗時：1236.2417197227478 秒
+30個進程，
+
+
+備　　註：
+5076 ===========================================
+這裡是 detailPageInARow 完成: 8054_8055_無風管空氣調節機.txt 的爬取。
+detailPageInARow 累計耗時：6977.335040330887 秒
+5048 ===========================================
+這裡是 detailPageInARow 完成: 8052_8055_無風管空氣調節機.txt 的爬取。
+detailPageInARow 累計耗時：6978.0827560424805 秒
+5073 ===========================================
+這裡是 detailPageInARow 完成: 8051_8055_無風管空氣調節機.txt 的爬取。
+detailPageInARow 累計耗時：6978.326544046402 秒
+5071 ===========================================
+
 
 
 """
@@ -27,6 +67,7 @@ import sys
 # import random
 import json
 import multiprocessing as mp
+from urllib.parse import urlparse, parse_qs
 
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2])
 sys.path.append(_BASE_PATH)
@@ -41,11 +82,17 @@ from libs.time import timeSleepTwo
 from libs.time import timeSleepOne
 from libs.time import timeStampGenerator
 from libs.time import timeCalculate
+from libs.regex import bureauEnergyReplace
+from libs.regex import discardSpace
+from libs.requests import _headers
+
+
 
 
 def dataMunging(input, output, dirRoute,objectiveFolder, objective, domainUrl, *args):
     begin = timeCalculate()
     thisPID = os.getpid()
+    energyLabelUrl = "https://ranking.energylabel.org.tw/_Upload/applyMain/applyp/"
     while True:
         print(thisPID,"===========================================")
         searchword = input.get() 
@@ -72,7 +119,7 @@ def dataMunging(input, output, dirRoute,objectiveFolder, objective, domainUrl, *
         productArray= [] 
         
         for file in initialFile(dirNameAccepted):
-            print(" start " + file + " ! ")
+            # print(" start " + file + " ! ")
                 
             with open(dirNameAccepted + file)as f:
                 inn = f.read()
@@ -84,22 +131,39 @@ def dataMunging(input, output, dirRoute,objectiveFolder, objective, domainUrl, *
             for i in range(10): #每頁有十項，每7個元素一組
                 oneset = textSoup.find_all('div',{'class':'col-md-12 column'})[-1].find_all('td',{'align':'left'})[a:b]
                 if oneset != []:
-
+                    
+                    detailUrl =  domainUrl + oneset[2].a.attrs.get('href')
+                    
+                    parseUrl = urlparse(detailUrl)
+                    qsDict = parse_qs(parseUrl.query)
+                    p1 = qsDict['id'].pop() #id是p1
+                    p0 = qsDict['p0'].pop()
+                    
                     productDict = {}
-                    productDict['Id'] = oneset[2].a.attrs.get('href').split('id=')[1]
+                    productDict['Id'] = p1 #oneset[2].a.attrs.get('href').split('id=')[1]
                     #  檔案裡面有髒值  冰箱"product_model": "B23KV-81RE\n", "IB 7030 F TW"     空調"product_model": "PAX-K500CLD ",
-                    productDict['product_model'] = oneset[0].text.replace("\n","").replace(" ","")
+                    productDict['product_model'] = bureauReplace.productModel(oneset[0].text)
                     productDict['brand_name'] = oneset[1].text
                     productDict['login_number'] = oneset[2].text
-                    productDict['detailUri'] = domainUrl + oneset[2].a.attrs.get('href')
+                    productDict['detailUri'] = detailUrl
                     productDict['labeling_company'] = oneset[3].text
                     productDict['efficiency_rating'] = oneset[4].text
-                    productDict['from_date_of_expiration'] = oneset[5].text.replace('/','-')
+                    productDict['from_date_of_expiration'] = bureauReplace.date(oneset[5].text)
+                    
+                    # 我們可以組裝outerUri
+                    # https://ranking.energylabel.org.tw/product/Approval/file_list.aspx?p1=20901&p0=82409
+                    productDict['energy_efficiency_label_outerUri'] = f"{domainUrl}file_list.aspx?p1={p1}&p0={p0}"
+                    
+                    # 我們想要的InnerUri
+                    # https://ranking.energylabel.org.tw/_Upload/applyMain/applyp/20901/SB_photo1/EF2R-13DEX1.jpg
+                    # productDict['energy_efficiency_label_innerUri'] = ... 因為這邊要做判斷，因此在 「bureauEnergyMunging.py」再處理，以不影響爬蟲的進度。
+
+
                     productArray.append(productDict)
 
                     a += 7
                     b += 7
-                    print('done ' + file + ' 的第' + str(i+1) + '份。')
+                    # print('done ' + file + ' 的第' + str(i+1) + '份。')
                 else:
                     print('在 ' + file + ' 的第' + str(i+1) + '處，發現空值！')
                     break
@@ -131,8 +195,8 @@ def dataMunging(input, output, dirRoute,objectiveFolder, objective, domainUrl, *
             consecutiveData = searchword + "+" + detailUri + "+" + readyTxtFileRoute
 
             output.put(consecutiveData)
-            print('這裡是 dataMunging，準備送給  detailPageInARow  處理: ' + consecutiveData)
-            print()            
+            # print('這裡是 dataMunging，準備送給  detailPageInARow  處理: ' + consecutiveData)
+            # print()            
             productIndex += 1
         # ＝＝＝＝＝＝＝＝＝ ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
@@ -152,10 +216,10 @@ def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
         print(thisPID,"===========================================")
         
         consecutiveUrl = input.get()
-
-        searchword = consecutiveUrl.split("+")[0]
-        url = consecutiveUrl.split("+")[1]
-        txtFileRoute = consecutiveUrl.split("+")[2]
+        searchword, url, txtFileRoute = consecutiveUrl.split("+")
+        # searchword = consecutiveUrl.split("+")[0]
+        # url = consecutiveUrl.split("+")[1]
+        # txtFileRoute = consecutiveUrl.split("+")[2]
         
         print('detailPageInARow is in new process %s, %s ' % (detailPageInARow_proc, thisPID))
         print()
@@ -176,6 +240,7 @@ def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
         print(f"成功寫出  {searchword}  detail頁， 第 {productIndex} 項， 共 {productNums} 項。")
             
         timeSleepRandomly()
+        timeSleepOne()
 
         print('這裡是 detailPageInARow 完成: ' + fileName + " 的爬取。")
         end = timeCalculate()
@@ -186,10 +251,8 @@ def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
 
 if __name__ == '__main__':
     
+    headers = _headers
 
-    headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36",
-          "Accept-Language": "zh-TW,zh;q=0.8,en-US;q=0.6,en;q=0.4","Connection":"close"}
-      
     begin = timeCalculate()
 
     objectiveFolder = "rawData"
@@ -202,6 +265,8 @@ if __name__ == '__main__':
     
     domainUrl = 'https://ranking.energylabel.org.tw/product/Approval/'
 
+    bureauReplace = bureauEnergyReplace()
+    
     print('-------------------------------------------------------------------------')
 
     #共同佇列
@@ -209,7 +274,7 @@ if __name__ == '__main__':
     detailUri_queue = mp.JoinableQueue() #接收detailUri後爬取詳細規格html
 
     # 啟動進程
-    Process_1 = []  # 將overview資料夾的html打開清洗，並發送detailUri。
+    Process_1 = []  # 將overview資料夾的html打開清洗，並發送detailUri。  有12個分類
     for w in range(8):
         dataMunging_proc = mp.Process(target=dataMunging, args=(keyword_queue, detailUri_queue, dirRoute,objectiveFolder, objective, domainUrl,))
         dataMunging_proc.daemon = True
@@ -219,7 +284,7 @@ if __name__ == '__main__':
 
 
     Process_2 = [] # 接收detailUri，繼續爬蟲html。
-    for k in range(50):
+    for k in range(40):
         detailPageInARow_proc = mp.Process(target=detailPageInARow, args=(detailUri_queue, headers, objectiveFolder, objective,))
         detailPageInARow_proc.daemon = True
         detailPageInARow_proc.start()
