@@ -21,6 +21,7 @@ requirements_iSelect3C.txt
 
 /doc/UML.asta
 /doc/NOTE.md
+/doc/NOTE.txt
 /doc/config_website.ini
 
 dataMunging/rawData/*
