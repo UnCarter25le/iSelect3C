@@ -14,19 +14,25 @@ _headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (K
             "Accept-Language": "en-US,en;q=0.9", "Connection": "close"}
 
 
-def proxiesIpGenerator():
-    """
-    check the ip address we carry : http://ip.filefab.com/index.php
-    proxy ips for reference : https://cn-proxy.com/
-    """
-    proxy_ips = ['124.156.108.71:82', '60.217.143.23:8060', '116.114.19.204:443']
-    proxy_ip = random.Choice(proxy_ips)
-    res = requests.get(url, headers=headers, proxies = {"http": "http://"+proxy_ip })
+# def proxiesIpGenerator():
+#     """
+#     check the ip address we carry : http://ip.filefab.com/index.php
+#     proxy ips for reference : https://cn-proxy.com/
+#     """
+#     proxy_ips = ['124.156.108.71:82', '60.217.143.23:8060', '116.114.19.204:443']
+#     proxy_ip = random.Choice(proxy_ips)
+#     res = requests.get(url, headers=headers, proxies = {"http": "http://"+proxy_ip })
 
-    print('Use', ip)
-    resp = requests.get('http://ip.filefab.com/index.php',
-                        proxies={'http': 'http://' + ip})
-    soup = BeautifulSoup(resp.text, 'html.parser')
-    print(soup.find('h1', id='ipd').text.strip())
+#     print('Use', ip)
+#     resp = requests.get('http://ip.filefab.com/index.php',
+#                         proxies={'http': 'http://' + ip})
+#     soup = BeautifulSoup(resp.text, 'html.parser')
+#     print(soup.find('h1', id='ipd').text.strip())
     
-        
+
+
+"""
+
+預計以類別的方式撰寫  各新聞網站的爬蟲
+
+"""
