@@ -20,6 +20,7 @@ from libs.regex import bureauEnergyReplace
 from libs.regex import numsHandler
 
 
+
 bureauReplace = bureauEnergyReplace()
 numsHandler = numsHandler()
 
@@ -70,8 +71,47 @@ class bureauEnergyMunging(object):
                 return "https://ranking.energylabel.org.tw/_Upload/applyMain/applyp/"
 
 
+
+        def detailMungingEntry(self, searchword, directory):
+                bureauEnergyDetail = {}
+                productDetailArray = []
+                labelUrl = bureauEnergyMunging.energyLabelUrl()
+
+                if searchword == "除濕機":
+                        productDetailArray = self.detailDehumidification_2(productDetailArray, directory,labelUrl)
+                elif searchword == "無風管空氣調節機":
+                        productDetailArray = self.detailAirConditioner_2(productDetailArray, directory,labelUrl)
+                elif searchword == "電冰箱":
+                        productDetailArray = self.detailRefrigerator_2(productDetailArray, directory,labelUrl)
+                elif searchword == "電熱水瓶":
+                        productDetailArray = self.detailElectricWarmer_2(productDetailArray, directory,labelUrl)
+                elif searchword == "溫熱型開飲機":
+                        productDetailArray = self.detailWarmDrinkMachine_2(productDetailArray, directory,labelUrl)
+                elif searchword == "溫熱型飲水機":
+                        productDetailArray = self.detailWarmDispenser_2(productDetailArray, directory,labelUrl)
+                elif searchword == "冰溫熱型開飲機":
+                        productDetailArray = self.detailColdWarmDrinkMachine_2(productDetailArray, directory,labelUrl)
+                elif searchword == "冰溫熱型飲水機":
+                        productDetailArray = self.detailColdWarmDispenser_2(productDetailArray, directory,labelUrl)
+                elif searchword == "貯備型電熱水器":
+                        productDetailArray = self.detailStorageWaterHeaters_2(productDetailArray, directory,labelUrl)
+                elif searchword == "瓦斯熱水器":
+                        productDetailArray = self.detailGasWaterHeaters_2(productDetailArray, directory,labelUrl)
+                elif searchword == "瓦斯爐":
+                        productDetailArray = self.detailGasStove_2(productDetailArray, directory,labelUrl)
+                elif searchword == "安定器內藏式螢光燈泡":
+                        productDetailArray = self.detailCompactFluorescentLamp_2(productDetailArray, directory,labelUrl)
+                
+                bureauEnergyDetail['productDetail'] = productDetailArray
+                bureauEnergyDetail['keyword'] = searchword
+                bureauEnergyDetail["dateTime"] = timeStampGenerator()
+
+                totalNums = len(bureauEnergyDetail['productDetail'])
+
+                return bureauEnergyDetail, totalNums
+        
         #  detail 檔案裡面有髒值  冰箱"product_model": "B23KV-81RE\n",   "IB 7030 F TW" 空調"product_model": "PAX-K500CLD ",
-        def detailDehumidification(self, searchword, directory): #除濕機
+        def detailDehumidification_2(self, productDetailArray, directory, labelUrl, *args): #除濕機
                 """
                 『overviewHTML』
                 型號	廠牌名稱	登錄編號	標示義務公司	效率等級	登錄通過日期	核准原因
@@ -92,14 +132,15 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/HDN_photo1/product_model_original.jpg`
                 
                 """
-                bureauEnergyDetail = {}
-                productDetailArray = []
-                labelUrl = bureauEnergyMunging.energyLabelUrl()
-                
                 for file in initialFile(directory):
                         #print("start: " + file)
                         with open(directory + file)as f:
                                 inn = f.read()
+                        
+                        # 處理soup=""的情況
+                        if not inn:
+                                continue
+
                         productDetail = {}
                         textSoup = BeautifulSoup(inn,'html.parser')
 
@@ -119,18 +160,53 @@ class bureauEnergyMunging(object):
                         productDetailArray.append(productDetail)
 
                         #print('done: ' + file)
+                return productDetailArray
+        
+        # def detailDehumidification(self, searchword, directory): #除濕機
                 
-                bureauEnergyDetail['productDetail'] = productDetailArray
-                bureauEnergyDetail['keyword'] = searchword
-                bureauEnergyDetail["dateTime"] = timeStampGenerator()
+        #         bureauEnergyDetail = {}
+        #         productDetailArray = []
+        #         labelUrl = bureauEnergyMunging.energyLabelUrl()
+                
+        #         for file in initialFile(directory):
+        #                 #print("start: " + file)
+        #                 with open(directory + file)as f:
+        #                         inn = f.read()
+                        
+        #                 # 處理soup=""的情況
+        #                 if not inn:
+        #                         continue
 
-                totalNums = len(bureauEnergyDetail['productDetail'])
+        #                 productDetail = {}
+        #                 textSoup = BeautifulSoup(inn,'html.parser')
 
-                return bureauEnergyDetail, totalNums
+        #                 detailTxtLink = textSoup.find('form',{"method":"post"}).attrs.get("action")
+        #                 parseLink = urlparse(detailTxtLink)
+        #                 #p0 = parse_qs(parseLink.query)['p0'].pop() 
+        #                 p1 = parse_qs(parseLink.query)['id'].pop() #id是p1
+        #                 productModelOriginal = bureauEnergyMunging.selectColumn(textSoup, 2)
+        #                 labelUri = labelUrl + f"{p1}/HDN_photo1/{productModelOriginal}.jpg"
+
+        #                 productDetail['product_model'] = bureauReplace.productModel(productModelOriginal)#v
+        #                 productDetail["test_report_of_energy_efficiency"]  = {"rated_dehumidification_capacity": bureauReplace.capacityDay(bureauEnergyMunging.selectColumn(textSoup, 3)), 
+        #                                                                 "energy_factor_value": bureauReplace.capacityHour(bureauEnergyMunging.selectColumn(textSoup, 4))}
+        #                 productDetail["efficiency_benchmark"] = bureauReplace.capacityHourSpecial(bureauEnergyMunging.selectColumn(textSoup, 6))#v
+        #                 productDetail["annual_power_consumption_degrees_dive_year"] = numsHandler.searchFloatNums(bureauEnergyMunging.selectColumn(textSoup, 9))#V
+        #                 productDetail["energy_efficiency_label_innerUri"] = labelUri
+        #                 productDetailArray.append(productDetail)
+
+        #                 #print('done: ' + file)
+                
+        #         bureauEnergyDetail['productDetail'] = productDetailArray
+        #         bureauEnergyDetail['keyword'] = searchword
+        #         bureauEnergyDetail["dateTime"] = timeStampGenerator()
+
+        #         totalNums = len(bureauEnergyDetail['productDetail'])
+
+        #         return bureauEnergyDetail, totalNums
 
 
-
-        def detailAirConditioner(self, searchword, directory): #無風管空氣調節機
+        def detailAirConditioner_2(self, productDetailArray, directory, labelUrl, *args): #無風管空氣調節機
 
                 """
                 『overviewHTML』
@@ -156,14 +232,15 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/ACN_photo1/product_model_original.jpg`
                 
                 """
-                bureauEnergyDetail = {}
-                productDetailArray = []
-                labelUrl = bureauEnergyMunging.energyLabelUrl()
-
                 for file in initialFile(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
+
+                        # 處理soup=""的情況
+                        if not inn:
+                                continue
+
                         productDetail = {}
                         textSoup = BeautifulSoup(inn,'html.parser')
 
@@ -184,16 +261,53 @@ class bureauEnergyMunging(object):
                         productDetailArray.append(productDetail)
 
                         print('done: '+file) #無風管通常洗最久，保留才不會認為是程式當機了
+                return productDetailArray
+
+        # def detailAirConditioner(self, searchword, directory): #無風管空氣調節機
+        #         bureauEnergyDetail = {}
+        #         productDetailArray = []
+        #         labelUrl = bureauEnergyMunging.energyLabelUrl()
+
+        #         for file in initialFile(directory):
+        #                 # print('start: '+file)
+        #                 with open(directory + file)as f:
+        #                         inn = f.read()
+
+        #                 # 處理soup=""的情況
+        #                 if not inn:
+        #                         continue
+
+        #                 productDetail = {}
+        #                 textSoup = BeautifulSoup(inn,'html.parser')
+
+        #                 detailTxtLink = textSoup.find('form',{"method":"post"}).attrs.get("action")
+        #                 parseLink = urlparse(detailTxtLink)
+        #                 #p0 = parse_qs(parseLink.query)['p0'].pop() 
+        #                 p1 = parse_qs(parseLink.query)['id'].pop() #id是p1
+        #                 productModelOriginal = bureauEnergyMunging.selectColumn(textSoup, 2)
+        #                 labelUri = labelUrl + f"{p1}/ACN_photo1/{productModelOriginal}.jpg"
+
+        #                 productDetail['product_model'] = bureauReplace.productModel(productModelOriginal)
+        #                 productDetail["test_report_of_energy_efficiency"] = {"rated_cooling_capacity": bureauEnergyMunging.selectColumn(textSoup, 4),
+        #                                                                 "EER": str(numsHandler.floatDiv(bureauEnergyMunging.selectColumn(textSoup, 4), bureauEnergyMunging.selectColumn(textSoup, 6)))+' kW/kW', 
+        #                                                                 "CSPF": bureauEnergyMunging.selectColumn(textSoup, 8)}
+        #                 productDetail["efficiency_benchmark"] = bureauEnergyMunging.selectColumn(textSoup, 10)
+        #                 productDetail["annual_power_consumption_degrees_dive_year"] = numsHandler.searchFloatNums(bureauEnergyMunging.selectColumn(textSoup, 13))
+        #                 productDetail["energy_efficiency_label_innerUri"] = labelUri
+        #                 productDetailArray.append(productDetail)
+
+        #                 print('done: '+file) #無風管通常洗最久，保留才不會認為是程式當機了
         
-                bureauEnergyDetail['productDetail'] = productDetailArray
-                bureauEnergyDetail['keyword'] = searchword
-                bureauEnergyDetail["dateTime"] = timeStampGenerator()
+        #         bureauEnergyDetail['productDetail'] = productDetailArray
+        #         bureauEnergyDetail['keyword'] = searchword
+        #         bureauEnergyDetail["dateTime"] = timeStampGenerator()
 
-                totalNums = len(bureauEnergyDetail['productDetail'])
+        #         totalNums = len(bureauEnergyDetail['productDetail'])
 
-                return bureauEnergyDetail, totalNums
+        #         return bureauEnergyDetail, totalNums
 
-        def detailRefrigerator(self, searchword, directory): # 電冰箱
+
+        def detailRefrigerator_2(self, productDetailArray, directory, labelUrl, *args): #電冰箱
                 """
                 『overviewHTML』
                 型號	廠牌名稱	登錄編號	標示義務公司	效率等級	登錄通過日期	核准原因
@@ -214,14 +328,15 @@ class bureauEnergyMunging(object):
  
                 `summary: {p1}/RFn_photo1/product_model_original.jpg`
                 """
-                bureauEnergyDetail = {}
-                productDetailArray = []
-                labelUrl = bureauEnergyMunging.energyLabelUrl()
-                
                 for file in initialFile(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
+
+                        # 處理soup=""的情況
+                        if not inn:
+                                continue
+
                         productDetail = {}
                         textSoup = BeautifulSoup(inn,'html.parser')
 
@@ -240,17 +355,52 @@ class bureauEnergyMunging(object):
                         productDetail["energy_efficiency_label_innerUri"] = labelUri
                         productDetailArray.append(productDetail)
                         # print('done: '+file)
+                return productDetailArray
+
+        # def detailRefrigerator(self, searchword, directory): # 電冰箱
                 
-                bureauEnergyDetail['productDetail'] = productDetailArray
-                bureauEnergyDetail['keyword'] = searchword
-                bureauEnergyDetail["dateTime"] = timeStampGenerator()
+        #         bureauEnergyDetail = {}
+        #         productDetailArray = []
+        #         labelUrl = bureauEnergyMunging.energyLabelUrl()
+                
+        #         for file in initialFile(directory):
+        #                 # print('start: '+file)
+        #                 with open(directory + file)as f:
+        #                         inn = f.read()
 
-                totalNums = len(bureauEnergyDetail['productDetail'])
+        #                 # 處理soup=""的情況
+        #                 if not inn:
+        #                         continue
 
-                return bureauEnergyDetail, totalNums
+        #                 productDetail = {}
+        #                 textSoup = BeautifulSoup(inn,'html.parser')
+
+        #                 detailTxtLink = textSoup.find('form',{"method":"post"}).attrs.get("action")
+        #                 parseLink = urlparse(detailTxtLink)
+        #                 #p0 = parse_qs(parseLink.query)['p0'].pop() 
+        #                 p1 = parse_qs(parseLink.query)['id'].pop() #id是p1
+        #                 productModelOriginal = bureauEnergyMunging.selectColumn(textSoup, 2)
+        #                 labelUri = labelUrl + f"{p1}/RFn_photo1/{productModelOriginal}.jpg"
+
+        #                 productDetail['product_model'] = bureauReplace.productModel(productModelOriginal)  #v
+        #                 productDetail["test_report_of_energy_efficiency"]  = {"effective_internal_volume": bureauReplace.capacity(bureauEnergyMunging.selectColumn(textSoup, 3)), 
+        #                                                                         "energy_factor_value": bureauReplace.capacityMonth(bureauEnergyMunging.selectColumn(textSoup, 4))}
+        #                 productDetail["efficiency_benchmark"] = bureauReplace.capacityMonthSpecial(bureauEnergyMunging.selectColumn(textSoup, 6)) 
+        #                 productDetail["annual_power_consumption_degrees_dive_year"] = numsHandler.searchFloatNums(bureauEnergyMunging.selectColumn(textSoup, 9))#V
+        #                 productDetail["energy_efficiency_label_innerUri"] = labelUri
+        #                 productDetailArray.append(productDetail)
+        #                 # print('done: '+file)
+                
+        #         bureauEnergyDetail['productDetail'] = productDetailArray
+        #         bureauEnergyDetail['keyword'] = searchword
+        #         bureauEnergyDetail["dateTime"] = timeStampGenerator()
+
+        #         totalNums = len(bureauEnergyDetail['productDetail'])
+
+        #         return bureauEnergyDetail, totalNums
 
 
-        def detailElectricWarmer(self, searchword, directory): #電熱水瓶
+        def detailElectricWarmer_2(self, productDetailArray, directory, labelUrl, *args): #電熱水瓶
                 """
                 『overviewHTML』
                 型號	廠牌名稱	登錄編號	標示義務公司	效率等級	登錄通過日期	核准原因
@@ -271,14 +421,15 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/TB_photo1/product_model_original.jpg`
    
                 """
-                bureauEnergyDetail = {}
-                productDetailArray = []
-                labelUrl = bureauEnergyMunging.energyLabelUrl()
-                
                 for file in initialFile(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
+
+                        # 處理soup=""的情況
+                        if not inn:
+                                continue
+
                         productDetail = {}
                         textSoup = BeautifulSoup(inn,'html.parser')
 
@@ -297,18 +448,52 @@ class bureauEnergyMunging(object):
                         productDetail["energy_efficiency_label_innerUri"] = labelUri
                         productDetailArray.append(productDetail)
                         # print('done: '+file)
+                return productDetailArray
+
+        # def detailElectricWarmer(self, searchword, directory): #電熱水瓶
                 
-                bureauEnergyDetail['productDetail'] = productDetailArray
-                bureauEnergyDetail['keyword'] = searchword
-                bureauEnergyDetail["dateTime"] = timeStampGenerator()
+        #         bureauEnergyDetail = {}
+        #         productDetailArray = []
+        #         labelUrl = bureauEnergyMunging.energyLabelUrl()
+                
+        #         for file in initialFile(directory):
+        #                 # print('start: '+file)
+        #                 with open(directory + file)as f:
+        #                         inn = f.read()
 
-                totalNums = len(bureauEnergyDetail['productDetail'])
+        #                 # 處理soup=""的情況
+        #                 if not inn:
+        #                         continue
 
-                return bureauEnergyDetail, totalNums
+        #                 productDetail = {}
+        #                 textSoup = BeautifulSoup(inn,'html.parser')
+
+        #                 detailTxtLink = textSoup.find('form',{"method":"post"}).attrs.get("action")
+        #                 parseLink = urlparse(detailTxtLink)
+        #                 #p0 = parse_qs(parseLink.query)['p0'].pop() 
+        #                 p1 = parse_qs(parseLink.query)['id'].pop() #id是p1
+        #                 productModelOriginal = bureauEnergyMunging.selectColumn(textSoup, 2)
+        #                 labelUri = labelUrl + f"{p1}/TB_photo1/{productModelOriginal}.jpg"
+
+        #                 productDetail['product_model'] = bureauReplace.productModel(productModelOriginal)  #v
+        #                 productDetail["test_report_of_energy_efficiency"]  = {"effective_internal_volume": bureauReplace.capacity(bureauEnergyMunging.selectColumn(textSoup, 3)), 
+        #                                                                         "est,24": bureauReplace.est24(bureauEnergyMunging.selectColumn(textSoup, 4))}
+        #                 productDetail["efficiency_benchmark"] = bureauEnergyMunging.selectColumn(textSoup, 6) + " kWh/24hr"#v
+        #                 productDetail["annual_power_consumption_degrees_dive_year"] = numsHandler.searchFloatNums(bureauEnergyMunging.selectColumn(textSoup, 9))#V
+        #                 productDetail["energy_efficiency_label_innerUri"] = labelUri
+        #                 productDetailArray.append(productDetail)
+        #                 # print('done: '+file)
+                
+        #         bureauEnergyDetail['productDetail'] = productDetailArray
+        #         bureauEnergyDetail['keyword'] = searchword
+        #         bureauEnergyDetail["dateTime"] = timeStampGenerator()
+
+        #         totalNums = len(bureauEnergyDetail['productDetail'])
+
+        #         return bureauEnergyDetail, totalNums
 
 
-
-        def detailWarmDrinkMachine(self, searchword, directory): #溫熱型開飲機
+        def detailWarmDrinkMachine_2(self, productDetailArray, directory, labelUrl, *args): #溫熱型開飲機
                 """
                 『overviewHTML』
                 型號	廠牌名稱	登錄編號	標示義務公司	效率等級	登錄通過日期	核准原因
@@ -330,14 +515,15 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/WD_photo1/product_model_original_{p0}.jpg`
 
                 """
-                bureauEnergyDetail = {}
-                productDetailArray = []
-                labelUrl = bureauEnergyMunging.energyLabelUrl()
-                
                 for file in initialFile(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
+
+                        # 處理soup=""的情況
+                        if not inn:
+                                continue
+
                         productDetail = {}
                         textSoup = BeautifulSoup(inn,'html.parser')
 
@@ -356,16 +542,51 @@ class bureauEnergyMunging(object):
                         productDetail["energy_efficiency_label_innerUri"] = labelUri
                         productDetailArray.append(productDetail)
                         # print('done: '+file)
+                return productDetailArray
+
+        # def detailWarmDrinkMachine(self, searchword, directory): #溫熱型開飲機
                 
-                bureauEnergyDetail['productDetail'] = productDetailArray
-                bureauEnergyDetail['keyword'] = searchword
-                bureauEnergyDetail["dateTime"] = timeStampGenerator()
+        #         bureauEnergyDetail = {}
+        #         productDetailArray = []
+        #         labelUrl = bureauEnergyMunging.energyLabelUrl()
+                
+        #         for file in initialFile(directory):
+        #                 # print('start: '+file)
+        #                 with open(directory + file)as f:
+        #                         inn = f.read()
 
-                totalNums = len(bureauEnergyDetail['productDetail'])
+        #                 # 處理soup=""的情況
+        #                 if not inn:
+        #                         continue
 
-                return bureauEnergyDetail, totalNums
+        #                 productDetail = {}
+        #                 textSoup = BeautifulSoup(inn,'html.parser')
 
-        def detailWarmDispenser(self, searchword, directory):#溫熱型飲水機
+        #                 detailTxtLink = textSoup.find('form',{"method":"post"}).attrs.get("action")
+        #                 parseLink = urlparse(detailTxtLink)
+        #                 p0 = parse_qs(parseLink.query)['p0'].pop() 
+        #                 p1 = parse_qs(parseLink.query)['id'].pop() #id是p1
+        #                 productModelOriginal = bureauEnergyMunging.selectColumn(textSoup, 2)
+        #                 labelUri = labelUrl + f"{p1}/WD_photo1/{productModelOriginal}_{p0}.jpg"
+
+        #                 productDetail['product_model'] = bureauReplace.productModel(productModelOriginal)#v
+        #                 productDetail["test_report_of_energy_efficiency"]  = {"hot_water_system_storage_tank_capacity_indication_value": bureauReplace.capacity(bureauEnergyMunging.selectColumn(textSoup, 3)), 
+        #                                                                         "est,24": bureauReplace.est24(bureauEnergyMunging.selectColumn(textSoup, 4))}
+        #                 productDetail["efficiency_benchmark"] = bureauEnergyMunging.selectColumn(textSoup, 6) + " kWh/24hr" #v
+        #                 productDetail["annual_power_consumption_degrees_dive_year"] = numsHandler.searchFloatNums(bureauEnergyMunging.selectColumn(textSoup, 9))#V
+        #                 productDetail["energy_efficiency_label_innerUri"] = labelUri
+        #                 productDetailArray.append(productDetail)
+        #                 # print('done: '+file)
+                
+        #         bureauEnergyDetail['productDetail'] = productDetailArray
+        #         bureauEnergyDetail['keyword'] = searchword
+        #         bureauEnergyDetail["dateTime"] = timeStampGenerator()
+
+        #         totalNums = len(bureauEnergyDetail['productDetail'])
+
+        #         return bureauEnergyDetail, totalNums
+
+        def detailWarmDispenser_2(self, productDetailArray, directory, labelUrl, *args): #溫熱型飲水機
                 """
                 『overviewHTML』
                 型號	廠牌名稱	登錄編號	標示義務公司	效率等級	登錄通過日期	核准原因
@@ -387,14 +608,15 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/WF_photo1/product_model_original_{p0}.jpg`
 
                 """
-                bureauEnergyDetail = {}
-                productDetailArray = []
-                labelUrl = bureauEnergyMunging.energyLabelUrl()
-                
                 for file in initialFile(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
+
+                        # 處理soup=""的情況
+                        if not inn:
+                                continue
+
                         productDetail = {}
                         textSoup = BeautifulSoup(inn,'html.parser')
 
@@ -413,16 +635,50 @@ class bureauEnergyMunging(object):
                         productDetail["energy_efficiency_label_innerUri"] = labelUri
                         productDetailArray.append(productDetail)
                         # print('done: '+file)
+                return productDetailArray
+
+        # def detailWarmDispenser(self, searchword, directory):#溫熱型飲水機
+        #         bureauEnergyDetail = {}
+        #         productDetailArray = []
+        #         labelUrl = bureauEnergyMunging.energyLabelUrl()
                 
-                bureauEnergyDetail['productDetail'] = productDetailArray
-                bureauEnergyDetail['keyword'] = searchword
-                bureauEnergyDetail["dateTime"] = timeStampGenerator()
+        #         for file in initialFile(directory):
+        #                 # print('start: '+file)
+        #                 with open(directory + file)as f:
+        #                         inn = f.read()
 
-                totalNums = len(bureauEnergyDetail['productDetail'])
+        #                 # 處理soup=""的情況
+        #                 if not inn:
+        #                         continue
 
-                return bureauEnergyDetail, totalNums
+        #                 productDetail = {}
+        #                 textSoup = BeautifulSoup(inn,'html.parser')
 
-        def detailColdWarmDrinkMachine(self, searchword, directory): #冰溫熱型開飲機
+        #                 detailTxtLink = textSoup.find('form',{"method":"post"}).attrs.get("action")
+        #                 parseLink = urlparse(detailTxtLink)
+        #                 p0 = parse_qs(parseLink.query)['p0'].pop() 
+        #                 p1 = parse_qs(parseLink.query)['id'].pop() #id是p1
+        #                 productModelOriginal = bureauEnergyMunging.selectColumn(textSoup, 2)
+        #                 labelUri = labelUrl + f"{p1}/WF_photo1/{productModelOriginal}_{p0}.jpg"
+
+        #                 productDetail['product_model'] = bureauReplace.productModel(productModelOriginal)  #v
+        #                 productDetail["test_report_of_energy_efficiency"]  = {"hot_water_system_storage_tank_capacity_indication_value": bureauReplace.capacity(bureauEnergyMunging.selectColumn(textSoup, 3)), 
+        #                                                                         "est,24": bureauReplace.est24(bureauEnergyMunging.selectColumn(textSoup, 4))}
+        #                 productDetail["efficiency_benchmark"] = bureauEnergyMunging.selectColumn(textSoup, 6) + " kWh/24hr"#v
+        #                 productDetail["annual_power_consumption_degrees_dive_year"] = numsHandler.searchFloatNums(bureauEnergyMunging.selectColumn(textSoup, 9))#V
+        #                 productDetail["energy_efficiency_label_innerUri"] = labelUri
+        #                 productDetailArray.append(productDetail)
+        #                 # print('done: '+file)
+                
+        #         bureauEnergyDetail['productDetail'] = productDetailArray
+        #         bureauEnergyDetail['keyword'] = searchword
+        #         bureauEnergyDetail["dateTime"] = timeStampGenerator()
+
+        #         totalNums = len(bureauEnergyDetail['productDetail'])
+
+        #         return bureauEnergyDetail, totalNums
+
+        def detailColdWarmDrinkMachine_2(self, productDetailArray, directory, labelUrl, *args): #冰溫熱型開飲機
                 """
                 『overviewHTML』
                 型號	廠牌名稱	登錄編號	標示義務公司	效率等級	登錄通過日期	核准原因
@@ -444,14 +700,15 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/WW_photo1/product_model_original_{p0}.jpg`
                 
                 """
-                bureauEnergyDetail = {}
-                productDetailArray = []
-                labelUrl = bureauEnergyMunging.energyLabelUrl()
-                
                 for file in initialFile(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
+                        
+                        # 處理soup=""的情況
+                        if not inn:
+                                continue
+
                         productDetail = {}
                         textSoup = BeautifulSoup(inn,'html.parser')
 
@@ -471,16 +728,52 @@ class bureauEnergyMunging(object):
                         productDetail["energy_efficiency_label_innerUri"] = labelUri
                         productDetailArray.append(productDetail)
                         # print('done: '+file)
+                return productDetailArray
+
+        # def detailColdWarmDrinkMachine(self, searchword, directory): #冰溫熱型開飲機
                 
-                bureauEnergyDetail['productDetail'] = productDetailArray
-                bureauEnergyDetail['keyword'] = searchword
-                bureauEnergyDetail["dateTime"] = timeStampGenerator()
+        #         bureauEnergyDetail = {}
+        #         productDetailArray = []
+        #         labelUrl = bureauEnergyMunging.energyLabelUrl()
+                
+        #         for file in initialFile(directory):
+        #                 # print('start: '+file)
+        #                 with open(directory + file)as f:
+        #                         inn = f.read()
+                        
+        #                 # 處理soup=""的情況
+        #                 if not inn:
+        #                         continue
 
-                totalNums = len(bureauEnergyDetail['productDetail'])
+        #                 productDetail = {}
+        #                 textSoup = BeautifulSoup(inn,'html.parser')
 
-                return bureauEnergyDetail, totalNums
+        #                 detailTxtLink = textSoup.find('form',{"method":"post"}).attrs.get("action")
+        #                 parseLink = urlparse(detailTxtLink)
+        #                 p0 = parse_qs(parseLink.query)['p0'].pop() 
+        #                 p1 = parse_qs(parseLink.query)['id'].pop() #id是p1
+        #                 productModelOriginal = bureauEnergyMunging.selectColumn(textSoup, 2)
+        #                 labelUri = labelUrl + f"{p1}/WW_photo1/{productModelOriginal}_{p0}.jpg"
 
-        def detailColdWarmDispenser(self, searchword, directory): #冰溫熱型飲水機
+        #                 productDetail['product_model'] = bureauReplace.productModel(productModelOriginal)#v
+        #                 productDetail["test_report_of_energy_efficiency"]  = {"hot_water_system_storage_tank_capacity_indication_value": bureauReplace.capacity(bureauEnergyMunging.selectColumn(textSoup, 3)), 
+        #                                                                         "warm_water_system_storage_tank_capacity_indication_value": bureauReplace.capacity(bureauEnergyMunging.selectColumn(textSoup, 4)),
+        #                                                                         "est,24": bureauReplace.est24(bureauEnergyMunging.selectColumn(textSoup, 5))}
+        #                 productDetail["efficiency_benchmark"] = bureauEnergyMunging.selectColumn(textSoup, 7) + " kWh/24hr"#v
+        #                 productDetail["annual_power_consumption_degrees_dive_year"] = numsHandler.searchFloatNums(bureauEnergyMunging.selectColumn(textSoup, 10))#V
+        #                 productDetail["energy_efficiency_label_innerUri"] = labelUri
+        #                 productDetailArray.append(productDetail)
+        #                 # print('done: '+file)
+                
+        #         bureauEnergyDetail['productDetail'] = productDetailArray
+        #         bureauEnergyDetail['keyword'] = searchword
+        #         bureauEnergyDetail["dateTime"] = timeStampGenerator()
+
+        #         totalNums = len(bureauEnergyDetail['productDetail'])
+
+        #         return bureauEnergyDetail, totalNums
+
+        def detailColdWarmDispenser_2(self, productDetailArray, directory, labelUrl, *args): #冰溫熱型飲水機
                 """
                 『overviewHTML』
                 型號	廠牌名稱	登錄編號	標示義務公司	效率等級	登錄通過日期	核准原因
@@ -505,14 +798,15 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/DF_photo1/product_model_original_{p0}.jpg`
 
                 """
-                bureauEnergyDetail = {}
-                productDetailArray = []
-                labelUrl = bureauEnergyMunging.energyLabelUrl()
-                
                 for file in initialFile(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
+
+                        # 處理soup=""的情況
+                        if not inn:
+                                continue
+
                         productDetail = {}
                         textSoup = BeautifulSoup(inn,'html.parser')
 
@@ -532,18 +826,53 @@ class bureauEnergyMunging(object):
                         productDetail["energy_efficiency_label_innerUri"] = labelUri
                         productDetailArray.append(productDetail)
                         # print('done: '+file)
+                return productDetailArray
+
+        # def detailColdWarmDispenser(self, searchword, directory): #冰溫熱型飲水機
                 
-                bureauEnergyDetail['productDetail'] = productDetailArray
-                bureauEnergyDetail['keyword'] = searchword
-                bureauEnergyDetail["dateTime"] = timeStampGenerator()
+        #         bureauEnergyDetail = {}
+        #         productDetailArray = []
+        #         labelUrl = bureauEnergyMunging.energyLabelUrl()
+                
+        #         for file in initialFile(directory):
+        #                 # print('start: '+file)
+        #                 with open(directory + file)as f:
+        #                         inn = f.read()
 
-                totalNums = len(bureauEnergyDetail['productDetail'])
+        #                 # 處理soup=""的情況
+        #                 if not inn:
+        #                         continue
 
-                return bureauEnergyDetail, totalNums
+        #                 productDetail = {}
+        #                 textSoup = BeautifulSoup(inn,'html.parser')
+
+        #                 detailTxtLink = textSoup.find('form',{"method":"post"}).attrs.get("action")
+        #                 parseLink = urlparse(detailTxtLink)
+        #                 p0 = parse_qs(parseLink.query)['p0'].pop() 
+        #                 p1 = parse_qs(parseLink.query)['id'].pop() #id是p1
+        #                 productModelOriginal = bureauEnergyMunging.selectColumn(textSoup, 2)
+        #                 labelUri = labelUrl + f"{p1}/DF_photo1/{productModelOriginal}_{p0}.jpg"
+
+        #                 productDetail['product_model'] = bureauReplace.productModel(productModelOriginal)  #v
+        #                 productDetail["test_report_of_energy_efficiency"]  = {"hot_water_system_storage_tank_capacity_indication_value":  bureauReplace.capacity(bureauEnergyMunging.selectColumn(textSoup, 3)), 
+        #                                                                         "warm_water_system_storage_tank_capacity_indication_value":  bureauReplace.capacity(bureauEnergyMunging.selectColumn(textSoup, 4)),
+        #                                                                         "est,24":  bureauReplace.est24(bureauEnergyMunging.selectColumn(textSoup, 5))}
+        #                 productDetail["efficiency_benchmark"] = bureauEnergyMunging.selectColumn(textSoup, 7) + " kWh/24hr"#v
+        #                 productDetail["annual_power_consumption_degrees_dive_year"] = numsHandler.searchFloatNums(bureauEnergyMunging.selectColumn(textSoup, 10))#V
+        #                 productDetail["energy_efficiency_label_innerUri"] = labelUri
+        #                 productDetailArray.append(productDetail)
+        #                 # print('done: '+file)
+                
+        #         bureauEnergyDetail['productDetail'] = productDetailArray
+        #         bureauEnergyDetail['keyword'] = searchword
+        #         bureauEnergyDetail["dateTime"] = timeStampGenerator()
+
+        #         totalNums = len(bureauEnergyDetail['productDetail'])
+
+        #         return bureauEnergyDetail, totalNums
 
 
-
-        def detailStorageWaterHeaters(self, searchword, directory): #貯備型電熱水器
+        def detailStorageWaterHeaters_2(self, productDetailArray, directory, labelUrl, *args): #貯備型電熱水器
                 """
 
                 『overviewHTML』
@@ -567,14 +896,15 @@ class bureauEnergyMunging(object):
 
                 `summary: {p1}/SWH_photo1/product_model_original.jpg`
                 """
-                bureauEnergyDetail = {}
-                productDetailArray = []
-                labelUrl = bureauEnergyMunging.energyLabelUrl()
-                
                 for file in initialFile(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
+                        
+                        # 處理soup=""的情況
+                        if not inn:
+                                continue
+
                         productDetail = {}
                         textSoup = BeautifulSoup(inn,'html.parser')
 
@@ -593,16 +923,51 @@ class bureauEnergyMunging(object):
                         productDetail["energy_efficiency_label_innerUri"] = labelUri
                         productDetailArray.append(productDetail)
                         # print('done: '+file)
+                return productDetailArray
+
+        # def detailStorageWaterHeaters(self, searchword, directory): #貯備型電熱水器
                 
-                bureauEnergyDetail['productDetail'] = productDetailArray
-                bureauEnergyDetail['keyword'] = searchword
-                bureauEnergyDetail["dateTime"] = timeStampGenerator()
+        #         bureauEnergyDetail = {}
+        #         productDetailArray = []
+        #         labelUrl = bureauEnergyMunging.energyLabelUrl()
+                
+        #         for file in initialFile(directory):
+        #                 # print('start: '+file)
+        #                 with open(directory + file)as f:
+        #                         inn = f.read()
+                        
+        #                 # 處理soup=""的情況
+        #                 if not inn:
+        #                         continue
 
-                totalNums = len(bureauEnergyDetail['productDetail'])
+        #                 productDetail = {}
+        #                 textSoup = BeautifulSoup(inn,'html.parser')
 
-                return bureauEnergyDetail, totalNums
+        #                 detailTxtLink = textSoup.find('form',{"method":"post"}).attrs.get("action")
+        #                 parseLink = urlparse(detailTxtLink)
+        #                 #p0 = parse_qs(parseLink.query)['p0'].pop() 
+        #                 p1 = parse_qs(parseLink.query)['id'].pop() #id是p1
+        #                 productModelOriginal = bureauEnergyMunging.selectColumn(textSoup, 2)
+        #                 labelUri = labelUrl + f"{p1}/SWH_photo1/{productModelOriginal}.jpg"
 
-        def detailGasWaterHeaters(self, searchword, directory): #瓦斯熱水器(即熱式燃氣熱水器)
+        #                 productDetail['product_model'] = bureauReplace.productModel(productModelOriginal)
+        #                 productDetail["test_report_of_energy_efficiency"]  = {"bucket_capacity": bureauReplace.capacity(bureauEnergyMunging.selectColumn(textSoup, 3)),
+        #                                                                         "est,24": bureauReplace.est24(bureauEnergyMunging.selectColumn(textSoup, 4))}
+        #                 productDetail["efficiency_benchmark"] = bureauReplace.est24Special(bureauEnergyMunging.selectColumn(textSoup, 6))
+        #                 productDetail["annual_power_consumption_degrees_dive_year"] = numsHandler.searchFloatNums(bureauEnergyMunging.selectColumn(textSoup, 9))
+        #                 productDetail["energy_efficiency_label_innerUri"] = labelUri
+        #                 productDetailArray.append(productDetail)
+        #                 # print('done: '+file)
+                
+        #         bureauEnergyDetail['productDetail'] = productDetailArray
+        #         bureauEnergyDetail['keyword'] = searchword
+        #         bureauEnergyDetail["dateTime"] = timeStampGenerator()
+
+        #         totalNums = len(bureauEnergyDetail['productDetail'])
+
+        #         return bureauEnergyDetail, totalNums
+
+        def detailGasWaterHeaters_2(self, productDetailArray, directory, labelUrl, *args): #瓦斯熱水器(即熱式燃氣熱水器)
                 """
                 『overviewHTML』
                 型號	廠牌名稱	登錄編號	標示義務公司	效率等級	登錄通過日期	核准原因
@@ -622,14 +987,15 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/WH_photo1/product_model_original(斜線變底線)_{p0}.jpg`
                 
                 """
-                bureauEnergyDetail = {}
-                productDetailArray = []
-                labelUrl = bureauEnergyMunging.energyLabelUrl()
-
                 for file in initialFile(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
+                        
+                        # 處理soup=""的情況
+                        if not inn:
+                                continue
+                        
                         productDetail = {}
                         textSoup = BeautifulSoup(inn,'html.parser')
 
@@ -649,16 +1015,52 @@ class bureauEnergyMunging(object):
                         productDetail["energy_efficiency_label_innerUri"] = labelUri
                         productDetailArray.append(productDetail)
                         # print('done: '+file)
-                
-                bureauEnergyDetail['productDetail'] = productDetailArray
-                bureauEnergyDetail['keyword'] = searchword
-                bureauEnergyDetail["dateTime"] = timeStampGenerator()
+                return productDetailArray
 
-                totalNums = len(bureauEnergyDetail['productDetail'])
-
-                return bureauEnergyDetail, totalNums
+        # def detailGasWaterHeaters(self, searchword, directory): #瓦斯熱水器(即熱式燃氣熱水器)
                 
-        def detailGasStove(self, searchword, directory): #瓦斯爐(燃氣台爐)
+        #         bureauEnergyDetail = {}
+        #         productDetailArray = []
+        #         labelUrl = bureauEnergyMunging.energyLabelUrl()
+
+        #         for file in initialFile(directory):
+        #                 # print('start: '+file)
+        #                 with open(directory + file)as f:
+        #                         inn = f.read()
+                        
+        #                 # 處理soup=""的情況
+        #                 if not inn:
+        #                         continue
+                        
+        #                 productDetail = {}
+        #                 textSoup = BeautifulSoup(inn,'html.parser')
+
+        #                 detailTxtLink = textSoup.find('form',{"method":"post"}).attrs.get("action")
+        #                 parseLink = urlparse(detailTxtLink)
+        #                 p0 = parse_qs(parseLink.query)['p0'].pop() 
+        #                 p1 = parse_qs(parseLink.query)['id'].pop() #id是p1
+        #                 productModelOriginal = bureauEnergyMunging.selectColumn(textSoup, 2)
+        #                 productModelReplace = productModelOriginal.replace("/","_")
+        #                 labelUri = labelUrl + f"{p1}/WH_photo1/{productModelReplace}_{p0}.jpg"
+
+        #                 productDetail['product_model'] = bureauReplace.productModel(productModelOriginal)
+        #                 productDetail["test_report_of_energy_efficiency"]  = {"category_of_gas": bureauEnergyMunging.selectColumn(textSoup, 3),
+        #                                                                         "marked_thermal_efficiency": bureauEnergyMunging.selectColumn(textSoup, 4)}
+        #                 productDetail["efficiency_benchmark"] = bureauEnergyMunging.selectColumn(textSoup, 6)
+        #                 productDetail["annual_power_consumption_degrees_dive_year"] = "None"
+        #                 productDetail["energy_efficiency_label_innerUri"] = labelUri
+        #                 productDetailArray.append(productDetail)
+        #                 # print('done: '+file)
+                
+        #         bureauEnergyDetail['productDetail'] = productDetailArray
+        #         bureauEnergyDetail['keyword'] = searchword
+        #         bureauEnergyDetail["dateTime"] = timeStampGenerator()
+
+        #         totalNums = len(bureauEnergyDetail['productDetail'])
+
+        #         return bureauEnergyDetail, totalNums
+                
+        def detailGasStove_2(self, productDetailArray, directory, labelUrl, *args): #瓦斯爐(燃氣台爐)
                 """
                 `overview and detail的型號標示不一樣！overview的才是完整的。`
 
@@ -679,14 +1081,15 @@ class bureauEnergyMunging(object):
                 
                 `summary: {p1}/GB_photo1/product_model_original(類別)_{p0}.jpg`
                 """
-                bureauEnergyDetail = {}
-                productDetailArray = []
-                labelUrl = bureauEnergyMunging.energyLabelUrl()
-                
                 for file in initialFile(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
+                        
+                        # 處理soup=""的情況
+                        if not inn:
+                                continue
+                        
                         productDetail = {}
                         textSoup = BeautifulSoup(inn,'html.parser')
 
@@ -708,16 +1111,54 @@ class bureauEnergyMunging(object):
                         productDetail["energy_efficiency_label_innerUri"] = labelUri
                         productDetailArray.append(productDetail)
                         # print('done: '+file)
+                return productDetailArray
+
+        # def detailGasStove(self, searchword, directory): #瓦斯爐(燃氣台爐)
                 
-                bureauEnergyDetail['productDetail'] = productDetailArray
-                bureauEnergyDetail['keyword'] = searchword
-                bureauEnergyDetail["dateTime"] = timeStampGenerator()
+        #         bureauEnergyDetail = {}
+        #         productDetailArray = []
+        #         labelUrl = bureauEnergyMunging.energyLabelUrl()
+                
+        #         for file in initialFile(directory):
+        #                 # print('start: '+file)
+        #                 with open(directory + file)as f:
+        #                         inn = f.read()
+                        
+        #                 # 處理soup=""的情況
+        #                 if not inn:
+        #                         continue
+                        
+        #                 productDetail = {}
+        #                 textSoup = BeautifulSoup(inn,'html.parser')
 
-                totalNums = len(bureauEnergyDetail['productDetail'])
+        #                 categoryOfGas = bureauEnergyMunging.selectColumn(textSoup, 3)
+        #                 categoryOfGasExtract = bureauReplace.categoryExtract(categoryOfGas)
 
-                return bureauEnergyDetail, totalNums
+        #                 detailTxtLink = textSoup.find('form',{"method":"post"}).attrs.get("action")
+        #                 parseLink = urlparse(detailTxtLink)
+        #                 p0 = parse_qs(parseLink.query)['p0'].pop() 
+        #                 p1 = parse_qs(parseLink.query)['id'].pop() #id是p1
+        #                 productModelOriginal = bureauEnergyMunging.selectColumn(textSoup, 2)
+        #                 labelUri = labelUrl + f"{p1}/GB_photo1/{productModelOriginal + categoryOfGasExtract}_{p0}.jpg"
 
-        def detailCompactFluorescentLamp(self, searchword, directory): #安定器內藏式螢光燈泡
+        #                 productDetail['product_model'] = bureauReplace.productModel(productModelOriginal) + categoryOfGasExtract
+        #                 productDetail["test_report_of_energy_efficiency"]  = {"category_of_gas": categoryOfGas,
+        #                                                                         "marked_thermal_efficiency": bureauEnergyMunging.selectColumn(textSoup, 4)}
+        #                 productDetail["efficiency_benchmark"] = bureauEnergyMunging.selectColumn(textSoup, 6)
+        #                 productDetail["annual_power_consumption_degrees_dive_year"] = "None"
+        #                 productDetail["energy_efficiency_label_innerUri"] = labelUri
+        #                 productDetailArray.append(productDetail)
+        #                 # print('done: '+file)
+                
+        #         bureauEnergyDetail['productDetail'] = productDetailArray
+        #         bureauEnergyDetail['keyword'] = searchword
+        #         bureauEnergyDetail["dateTime"] = timeStampGenerator()
+
+        #         totalNums = len(bureauEnergyDetail['productDetail'])
+
+        #         return bureauEnergyDetail, totalNums
+
+        def detailCompactFluorescentLamp_2(self, productDetailArray, directory, labelUrl, *args): #安定器內藏式螢光燈泡
                 """
                 『overviewHTML』
                 型號	廠牌名稱	登錄編號	標示義務公司	效率等級	登錄通過日期	核准原因
@@ -737,15 +1178,15 @@ class bureauEnergyMunging(object):
 
                 `summary: {p1}/SB_photo1/product_model_original.jpg`
                 """
-
-                bureauEnergyDetail = {}
-                productDetailArray = []
-                labelUrl = bureauEnergyMunging.energyLabelUrl()
-
                 for file in initialFile(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
+                        
+                        # 處理soup=""的情況
+                        if not inn:
+                                continue
+                        
                         productDetail = {}
                         textSoup = BeautifulSoup(inn,'html.parser')
 
@@ -764,13 +1205,49 @@ class bureauEnergyMunging(object):
                         productDetail["energy_efficiency_label_innerUri"] = labelUri
                         productDetailArray.append(productDetail)
                         # print('done: '+file)
+                return productDetailArray
                 
-                bureauEnergyDetail['productDetail'] = productDetailArray
-                bureauEnergyDetail['keyword'] = searchword
-                bureauEnergyDetail["dateTime"] = timeStampGenerator()
+        # def detailCompactFluorescentLamp(self, searchword, directory): #安定器內藏式螢光燈泡
+                
 
-                totalNums = len(bureauEnergyDetail['productDetail'])
+        #         bureauEnergyDetail = {}
+        #         productDetailArray = []
+        #         labelUrl = bureauEnergyMunging.energyLabelUrl()
 
-                return bureauEnergyDetail, totalNums
+        #         for file in initialFile(directory):
+        #                 # print('start: '+file)
+        #                 with open(directory + file)as f:
+        #                         inn = f.read()
+                        
+        #                 # 處理soup=""的情況
+        #                 if not inn:
+        #                         continue
+                        
+        #                 productDetail = {}
+        #                 textSoup = BeautifulSoup(inn,'html.parser')
+
+        #                 detailTxtLink = textSoup.find('form',{"method":"post"}).attrs.get("action")
+        #                 parseLink = urlparse(detailTxtLink)
+        #                 #p0 = parse_qs(parseLink.query)['p0'].pop() 
+        #                 p1 = parse_qs(parseLink.query)['id'].pop() #id是p1
+        #                 productModelOriginal = bureauEnergyMunging.selectColumn(textSoup, 2)
+        #                 labelUri = labelUrl + f"{p1}/SB_photo1/{productModelOriginal}.jpg"
+                        
+        #                 productDetail['product_model'] = bureauReplace.productModel(productModelOriginal)
+        #                 productDetail["test_report_of_energy_efficiency"]  = {"rated_power": bureauEnergyMunging.selectColumn(textSoup, 3),
+        #                                                                         "marked_luminous_efficiency": bureauEnergyMunging.selectColumn(textSoup, 4)}
+        #                 productDetail["efficiency_benchmark"] = bureauEnergyMunging.selectColumn(textSoup, 6)
+        #                 productDetail["annual_power_consumption_degrees_dive_year"] = "None"
+        #                 productDetail["energy_efficiency_label_innerUri"] = labelUri
+        #                 productDetailArray.append(productDetail)
+        #                 # print('done: '+file)
+                
+        #         bureauEnergyDetail['productDetail'] = productDetailArray
+        #         bureauEnergyDetail['keyword'] = searchword
+        #         bureauEnergyDetail["dateTime"] = timeStampGenerator()
+
+        #         totalNums = len(bureauEnergyDetail['productDetail'])
+
+        #         return bureauEnergyDetail, totalNums
 
 
