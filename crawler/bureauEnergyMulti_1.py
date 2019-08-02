@@ -113,9 +113,6 @@ def getPageInARow(input, headers, objectiveFolder, objective, *args):
         print(thisPID,"===========================================")
         consecutiveUrl = input.get()
         searchword, correctUrl, txtFileRoute = consecutiveUrl.split("+")
-        # searchword = consecutiveUrl.split("+")[0]
-        # correctUrl = consecutiveUrl.split("+")[1]
-        # txtFileRoute = consecutiveUrl.split("+")[2]
 
         fileName = txtFileRoute.split("/")[-1]
         page = fileName.split("_")[0]
@@ -165,7 +162,7 @@ if __name__ == '__main__':
     
     # 啟動進程
     Process_1 = []  #發送overviewUri，總計有12個分類
-    for x in range(12):
+    for x in range(8):
         overviewUriDistributor_proc = mp.Process(target=overviewUriDistributor, args=(keyword_queue, overviewUri_queue, _bureauEnergyKeywordUrlPair, headers,dirRoute,objectiveFolder, objective,))
         overviewUriDistributor_proc.daemon = True
         overviewUriDistributor_proc.start()
