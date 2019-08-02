@@ -197,7 +197,7 @@ if __name__ == '__main__':
     objectiveFolder = "rawData"
     objective = "news"
 
-    topTabList = [row for row in range(2,6)] #新聞、圖片、地圖、影片、[更多]__xpath不同，無法準確mouse_over()
+    topTabList = [row for row in range(2,6)] #新聞、圖片、地圖、影片；[更多]__>xpath不同，無法準確mouse_over()
     elementUrl = [row for row in range(1,11)] #一頁有10個標的
 
     url = "https://www.google.com/"
