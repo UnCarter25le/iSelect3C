@@ -43,18 +43,101 @@
 
 
 備　　註：
-5076 ===========================================
-這裡是 detailPageInARow 完成: 8054_8055_無風管空氣調節機.txt 的爬取。
-detailPageInARow 累計耗時：6977.335040330887 秒
-5048 ===========================================
-這裡是 detailPageInARow 完成: 8052_8055_無風管空氣調節機.txt 的爬取。
-detailPageInARow 累計耗時：6978.0827560424805 秒
-5073 ===========================================
-這裡是 detailPageInARow 完成: 8051_8055_無風管空氣調節機.txt 的爬取。
-detailPageInARow 累計耗時：6978.326544046402 秒
-5071 ===========================================
+
+成功寫出  無風管空氣調節機  detail頁， 第 2541 項， 共 8055 項。
+7836 ===========================================
+成功寫出  瓦斯熱水器  detail頁， 第 2609 項， 共 5395 項。
+成功寫出  瓦斯熱水器  detail頁， 第 2610 項， 共 5395 項。
+成功寫出  瓦斯爐  detail頁， 第 2582 項， 共 7740 項。
+成功寫出  瓦斯爐  detail頁， 第 2583 項， 共 7740 項。
+成功寫出  無風管空氣調節機  detail頁， 第 2543 項， 共 8055 項。
+成功寫出  瓦斯爐  detail頁， 第 2584 項， 共 7740 項。
+7837 ===========================================
+7855 ===========================================
+7854 ===========================================
+成功寫出  瓦斯熱水器  detail頁， 第 2611 項， 共 5395 項。
+成功寫出  無風管空氣調節機  detail頁， 第 2544 項， 共 8055 項。
+7843 ===========================================
+7857 ===========================================
+7839 ===========================================
+成功寫出  瓦斯爐  detail頁， 第 2586 項， 共 7740 項。
+成功寫出  瓦斯熱水器  detail頁， 第 2612 項， 共 5395 項。
+7833 ===========================================
+7852 ===========================================
+成功寫出  瓦斯熱水器  detail頁， 第 2613 項， 共 5395 項。
+成功寫出  瓦斯爐  detail頁， 第 2585 項， 共 7740 項。
+成功寫出  無風管空氣調節機  detail頁， 第 2545 項， 共 8055 項。
+7851 ===========================================
+7842 ===========================================
+成功寫出  瓦斯爐  detail頁， 第 2587 項， 共 7740 項。
+7841 ===========================================
+
+https://docs.python.org/3/library/socket.html
+https://www.programcreek.com/python/example/528/socket.gaierror
+https://kite.com/python/docs/socket.gaierror
+根據文件，這個似乎是dns暫時異常導致的問題！
 
 
+Process Process-40:
+Traceback (most recent call last):
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/urllib3/connection.py", line 160, in _new_conn
+    (self._dns_host, self.port), self.timeout, **extra_kw)
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/urllib3/util/connection.py", line 57, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+  File "/home/bluevc/.pyenv/versions/3.6.8/lib/python3.6/socket.py", line 745, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -3] Temporary failure in name resolution
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/urllib3/connectionpool.py", line 603, in urlopen
+    chunked=chunked)
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/urllib3/connectionpool.py", line 344, in _make_request
+    self._validate_conn(conn)
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/urllib3/connectionpool.py", line 843, in _validate_conn
+    conn.connect()
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/urllib3/connection.py", line 316, in connect
+    conn = self._new_conn()
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/urllib3/connection.py", line 169, in _new_conn
+    self, "Failed to establish a new connection: %s" % e)
+urllib3.exceptions.NewConnectionError: <urllib3.connection.VerifiedHTTPSConnection object at 0x7ffbd2c33a90>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/requests/adapters.py", line 449, in send
+    timeout=timeout
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/urllib3/connectionpool.py", line 641, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/urllib3/util/retry.py", line 399, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='ranking.energylabel.org.tw', port=443): Max retries exceeded with url: /product/Approval/upt.aspx?pageno=254&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=49&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&p0=73944&id=18579 (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7ffbd2c33a90>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bluevc/.pyenv/versions/3.6.8/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/home/bluevc/.pyenv/versions/3.6.8/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/bluevc/2019/iSelect3C/crawler/bureauEnergyMulti_2.py", line 230, in detailPageInARow
+    res = requests.get(url, headers=headers)
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/requests/api.py", line 75, in get
+    return request('get', url, params=params, **kwargs)
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/requests/api.py", line 60, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/requests/sessions.py", line 533, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/requests/sessions.py", line 646, in send
+    r = adapter.send(request, **kwargs)
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/requests/adapters.py", line 516, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='ranking.energylabel.org.tw', port=443): Max retries exceeded with url: /product/Approval/upt.aspx?pageno=254&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=49&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&p0=73944&id=18579 (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7ffbd2c33a90>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution',))
+
+
+
+40 個進程：完成！一共耗時：5538.415146112442 秒
 
 """
 
@@ -68,6 +151,8 @@ import sys
 import json
 import multiprocessing as mp
 from urllib.parse import urlparse, parse_qs
+# from socket import gaierror
+import socket
 
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2])
 sys.path.append(_BASE_PATH)
@@ -90,7 +175,7 @@ from libs.requests import _headers
 
 
 def dataMunging(input, output, dirRoute,objectiveFolder, objective, domainUrl, *args):
-    begin = timeCalculate()
+    # begin = timeCalculate()
     thisPID = os.getpid()
     energyLabelUrl = "https://ranking.energylabel.org.tw/_Upload/applyMain/applyp/"
     while True:
@@ -210,26 +295,43 @@ def dataMunging(input, output, dirRoute,objectiveFolder, objective, domainUrl, *
 
 
 def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
-    begin = timeCalculate()
+    """
+    As many as 28,000 detail urls we are supposed to crawl would inevitalby leave some processes to fail to get the correct responses.
+    As such, we should extend more time while crawling , or establish exception handler in porgrams.
+    
+    """
+    
+    # begin = timeCalculate()
     thisPID = os.getpid()
     while True:
-        print(thisPID,"===========================================")
+        # print(thisPID,"===========================================")
         
         consecutiveUrl = input.get()
         searchword, url, txtFileRoute = consecutiveUrl.split("+")
-        # searchword = consecutiveUrl.split("+")[0]
-        # url = consecutiveUrl.split("+")[1]
-        # txtFileRoute = consecutiveUrl.split("+")[2]
         
-        print('detailPageInARow is in new process %s, %s ' % (detailPageInARow_proc, thisPID))
-        print()
+        # print('detailPageInARow is in new process %s, %s ' % (detailPageInARow_proc, thisPID))
+        # print()
+
+        for i in range(3):
+            try:
+                res = requests.get(url, headers=headers)
+                res.encoding = 'utf-8'
+                timeSleepRandomly()
+                soup  = BeautifulSoup(res.text,'html.parser')
+                break
+            except requests.exceptions.ConnectionError as e:
+                print(url, "發生問題。", e)
+                print()
+                timeSleepRandomly()
+                timeSleepTwo()
+                soup = ""
+            
         
-        res = requests.get(url, headers=headers)
-        res.encoding = 'utf-8'
-
-        timeSleepRandomly()
-
-        soup  = BeautifulSoup(res.text,'html.parser')
+        if not soup:
+          badRequestRoute = "/".join(txtFileRoute.split("/")[:-3]) + "/badRequest"
+          with open(f"{badRequestRoute}/badRequest_{searchword}.txt", "a",  newline='', encoding='utf-8')as f: # newline沒作用...
+              errorMessage = url + "\n"
+              f.write(errorMessage)   #writelines作用在errorMessage是list時
 
         with open(txtFileRoute, 'w', encoding='utf-8')as f:
             f.write(str(soup))
@@ -237,14 +339,13 @@ def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
         fileName = txtFileRoute.split("/")[-1]
         productIndex = fileName.split("_")[0]
         productNums = fileName.split("_")[1]
-        print(f"成功寫出  {searchword}  detail頁， 第 {productIndex} 項， 共 {productNums} 項。")
+        # print(f"{thisPID}__成功寫出  {searchword}  detail頁， 第 {productIndex} 項， 共 {productNums} 項。")
             
         timeSleepRandomly()
-        timeSleepOne()
 
-        print('這裡是 detailPageInARow 完成: ' + fileName + " 的爬取。")
+        # print('這裡是 detailPageInARow 完成: ' + fileName + " 的爬取。")
         end = timeCalculate()
-        print('detailPageInARow 累計耗時：{0} 秒'.format(end-begin))
+        # print('detailPageInARow 累計耗時：{0} 秒'.format(end-begin))
         input.task_done()
         
 
@@ -266,6 +367,9 @@ if __name__ == '__main__':
     domainUrl = 'https://ranking.energylabel.org.tw/product/Approval/'
 
     bureauReplace = bureauEnergyReplace()
+
+    eraseRawData(objectiveFolder, objective, "badRequest")
+    mkdirForRawData(objectiveFolder, objective, "badRequest")
     
     print('-------------------------------------------------------------------------')
 
