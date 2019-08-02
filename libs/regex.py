@@ -115,11 +115,12 @@ class numsHandler(object):
 
     
 
+searchwrod = re.compile("\s+")
+searchResult = searchwrod.search("1 23")
+print(searchResult.start())
 
 aa = numsHandler()
-
 print(aa.floatDiv("102.1" , "209"))
-
 aa = "LP-T228(NG1)"
 aa = "天然氣(NG1)"
 print(re.search("\([A-Z0-9]+\)", aa).group())
