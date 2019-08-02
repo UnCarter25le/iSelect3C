@@ -13,7 +13,7 @@ https://www.energylabel.org.tw/
 
 * detail的產品型號要同overview一樣清洗。
 
-12個完成！一共耗時：314.3869659900665 秒 總數量 : 0
+12個完成！完成！一共耗時：291.0394244194031 秒 總數量 : 0
 """
 
 
@@ -81,32 +81,35 @@ def dataMunging(input, dirRoute, objectiveFolderClean, objective):
             print("========================break========================")
             break
 
-        # '無風管空氣調節機', '除濕機', '電冰箱', '電熱水瓶', '溫熱型開飲機', '溫熱型飲水機', '冰溫熱型開飲機', '冰溫熱型飲水機'
-        if searchword == "除濕機":
-            bureauEnergyDetail, totalNums = bureauMunging.detailDehumidification(searchword, directory)
-        elif searchword == "無風管空氣調節機":
-            bureauEnergyDetail, totalNums = bureauMunging.detailAirConditioner(searchword, directory)
-        elif searchword == "電冰箱":
-            bureauEnergyDetail, totalNums = bureauMunging.detailRefrigerator(searchword, directory)
-        elif searchword == "電熱水瓶":
-            bureauEnergyDetail, totalNums = bureauMunging.detailElectricWarmer(searchword, directory)
-        elif searchword == "溫熱型開飲機":
-            bureauEnergyDetail, totalNums = bureauMunging.detailWarmDrinkMachine(searchword, directory)
-        elif searchword == "溫熱型飲水機":
-            bureauEnergyDetail, totalNums = bureauMunging.detailWarmDispenser(searchword, directory)
-        elif searchword == "冰溫熱型開飲機":
-            bureauEnergyDetail, totalNums = bureauMunging.detailColdWarmDrinkMachine(searchword, directory)
-        elif searchword == "冰溫熱型飲水機":
-            bureauEnergyDetail, totalNums = bureauMunging.detailColdWarmDispenser(searchword, directory)
-        elif searchword == "貯備型電熱水器":
-            bureauEnergyDetail, totalNums = bureauMunging.detailStorageWaterHeaters(searchword, directory)
-        elif searchword == "瓦斯熱水器":
-            bureauEnergyDetail, totalNums = bureauMunging.detailGasWaterHeaters(searchword, directory)
-        elif searchword == "瓦斯爐":
-            bureauEnergyDetail, totalNums = bureauMunging.detailGasStove(searchword, directory)
-        elif searchword == "安定器內藏式螢光燈泡":
-            bureauEnergyDetail, totalNums = bureauMunging.detailCompactFluorescentLamp(searchword, directory)
+        # 此區已經採用簡化的寫法，因此若洗資料都無問題，那麼就可以刪除了。
+        # if searchword == "除濕機":
+        #     bureauEnergyDetail, totalNums = bureauMunging.detailDehumidification(searchword, directory)
+        # elif searchword == "無風管空氣調節機":
+        #     bureauEnergyDetail, totalNums = bureauMunging.detailAirConditioner(searchword, directory)
+        # elif searchword == "電冰箱":
+        #     bureauEnergyDetail, totalNums = bureauMunging.detailRefrigerator(searchword, directory)
+        # elif searchword == "電熱水瓶":
+        #     bureauEnergyDetail, totalNums = bureauMunging.detailElectricWarmer(searchword, directory)
+        # elif searchword == "溫熱型開飲機":
+        #     bureauEnergyDetail, totalNums = bureauMunging.detailWarmDrinkMachine(searchword, directory)
+        # elif searchword == "溫熱型飲水機":
+        #     bureauEnergyDetail, totalNums = bureauMunging.detailWarmDispenser(searchword, directory)
+        # elif searchword == "冰溫熱型開飲機":
+        #     bureauEnergyDetail, totalNums = bureauMunging.detailColdWarmDrinkMachine(searchword, directory)
+        # elif searchword == "冰溫熱型飲水機":
+        #     bureauEnergyDetail, totalNums = bureauMunging.detailColdWarmDispenser(searchword, directory)
+        # elif searchword == "貯備型電熱水器":
+        #     bureauEnergyDetail, totalNums = bureauMunging.detailStorageWaterHeaters(searchword, directory)
+        # elif searchword == "瓦斯熱水器":
+        #     bureauEnergyDetail, totalNums = bureauMunging.detailGasWaterHeaters(searchword, directory)
+        # elif searchword == "瓦斯爐":
+        #     bureauEnergyDetail, totalNums = bureauMunging.detailGasStove(searchword, directory)
+        # elif searchword == "安定器內藏式螢光燈泡":
+        #     bureauEnergyDetail, totalNums = bureauMunging.detailCompactFluorescentLamp(searchword, directory)
 
+        # '無風管空氣調節機', '除濕機', '電冰箱', '電熱水瓶', '溫熱型開飲機',
+        # '溫熱型飲水機', '冰溫熱型開飲機', '冰溫熱型飲水機', '貯備型電熱水器' , '瓦斯熱水器', '瓦斯爐', '安定器內藏式螢光燈泡'
+        bureauEnergyDetail, totalNums = bureauMunging.detailMungingEntry(searchword, directory)
 
         with open(dirNameWriteOut + f"{objective}_detail_{timeStampGenerator()}_{totalNums}_{searchword}.json",'w',encoding='utf-8')as f:
             json.dump(bureauEnergyDetail, f, indent=2, ensure_ascii=False)
