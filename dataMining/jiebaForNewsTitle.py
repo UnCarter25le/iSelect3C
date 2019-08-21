@@ -9,6 +9,20 @@
 
     此檔案一開始命名為jieba.py，致使python import module時，一直引用到「dataMining/jieba.py」
 
+
+
+    春節、年中慶、週年慶、父親節、母親節、618、雙11  優惠的商品種類太多，不限家電，因此排除
+    雙11
+1111
+11.11
+618
+6.18
+
+    呼籲  聰明用電   是節電的新聞
+
+
+    ＊要抓的是家電促銷、家電補助申請等新聞
+
 """
 import os
 import sys
@@ -23,6 +37,33 @@ from libs.mining import stopwordsLoad
 from libs.mining import wantedwordsLoad
 from libs.regex import searchWordTrueOrFalse
 
+
+def loadOneFileIn():
+    fileName = os.listdir(dirRoute)
+    fileName.sort(key= lambda x: x.split('_')[1])
+    fileName = fileName.pop()
+    print(fileName)
+    with open(dirRoute + "/" + fileName)as f:
+        inn = json.load(f)
+    newsObject = inn["newsUrl"]
+    print("新聞標題總數量：", len(newsObject))
+
+    return newsObject
+
+def loadManyFilesIn():
+    fileName = os.listdir(dirRoute)
+    print(fileName)
+    newsObject = {}
+    for file in fileName:
+        with open(dirRoute + "/" + file)as f:
+            inn = json.load(f)
+        newsObject.update(inn["newsUrl"])
+        print(len(newsObject))
+
+    return newsObject
+
+
+
 if __name__ == '__main__':
 
     objectiveFolder = "rawData"
@@ -35,17 +76,9 @@ if __name__ == '__main__':
 
     dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/newsIntegration"
 
-    fileName = os.listdir(dirRoute).pop()
-    print(fileName)
-
     counterNum = Counter()
     TFIDF = Counter()
 
-    with open(dirRoute + "/" + fileName)as f:
-        inn = json.load(f)
-
-    newsObject = inn["newsUrl"]
-    newsString = ""
 
 
     # 載入字典：
@@ -58,6 +91,9 @@ if __name__ == '__main__':
     # 要對jieba.cut()有作用的停用詞，則需要自己製作得出！   #(' ', 72) 把空白放在stop_words.txt裡面，沒法發揮效果，因此要在程式裡解決。
     stopwords = stopwordsLoad(f"{_BASE_PATH}/{objectiveFolderDataMining}/{objectiveFolderDictionary}/newsTitle_stop_words.txt")
 
+
+    newsObject = loadOneFileIn()
+    newsString = ""
     for key in newsObject:
         newsString += newsObject[key][0] + "＋"
     
@@ -89,6 +125,9 @@ if __name__ == '__main__':
         TFIDF[k] = specificwordTF * specificwordIDF
     
     print("個別字TFIDF結果：")
+    
+    # print(TFIDF.most_common(3505)[3300:][::-1])
+    print()
     print(TFIDF.most_common(50))
 
 
