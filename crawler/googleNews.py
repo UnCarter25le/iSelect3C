@@ -50,13 +50,13 @@ _BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # å°ˆæ
 sys.path.append(_BASE_PATH)
 
 
-from libs.requests import _headers
+from libs.httpRequests import _headers
 from libs.regex import discardSpace
-from libs.time import timeSleepRandomly
-from libs.time import timeCalculate
-from libs.time import timeSleepOne
-from libs.time import timeStampGenerator
-from libs.time import timeStampCalculate
+from libs.timeWidget import timeSleepRandomly
+from libs.timeWidget import timeCalculate
+from libs.timeWidget import timeSleepOne
+from libs.timeWidget import timeStampGenerator
+from libs.timeWidget import timeStampCalculate
 from libs.manipulateDir import mkdirForRawData
 from libs.manipulateDir import eraseRawData
 from libs.multiProcessing import _weatherRecordAvailable
