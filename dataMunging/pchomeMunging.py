@@ -26,7 +26,7 @@ from libs.manipulateDir import initialFile
 from libs.manipulateDir import mkdirForCleanData
 from libs.munging import EcommerceDataProcessToSet
 from libs.multiProcessing import _pchomeKeywordUrlPair
-from libs.time import timeStampGenerator
+from libs.timeWidget import timeStampGenerator
 
 
 def mungingPchome(_BASE_PATH, searchword, objectiveFolder, objectiveFolderClean, objective):
@@ -49,6 +49,10 @@ def mungingPchome(_BASE_PATH, searchword, objectiveFolder, objectiveFolderClean,
                 with open(directory + file)as f:
                     inn = json.load(f)
 
+                # 處理soup=""的情況
+                if not inn:
+                    continue
+
                 for fileinner in inn['prods']:
                     productDict = {}
                     productDict['Id'] = fileinner['Id']
@@ -58,6 +62,7 @@ def mungingPchome(_BASE_PATH, searchword, objectiveFolder, objectiveFolderClean,
                     productDict['picb'] = 'https://d.ecimg.tw'+fileinner['picB']
                     productDict["produrl"] = "https://24h.pchome.com.tw/prod/" + fileinner["Id"]
                     productArray.append(productDict)
+    # 每一個搜索字下的3個資料夾中，每個json檔案的 'prods' 陣列資料都append後，再統一指定。
     pchomeDict['product'] = productArray
 
     source = '_'.join([dirname.split('/')[-2] for dirname in [dir1, dir2, dir3]])
