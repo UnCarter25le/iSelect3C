@@ -27,8 +27,9 @@ from libs.manipulateDir import mkdirForCleanData
 from libs.regex import searchNums
 from libs.regex import interDiv
 from libs.multiProcessing import distributeKeyword
+from libs.multiProcessing import _momoKeywordUrlPair
 from libs.munging import EcommerceDataProcessToSet
-from libs.time import timeSleepOne
+from libs.timeWidget import timeSleepOne
 # from math import ceil
 # import time,json,os,re,random
 
@@ -40,17 +41,19 @@ from libs.time import timeSleepOne
 
 
 def dataMunging(input, dirRoute, objectiveFolderClean, objective, domainUrl):
-    begin = time.time()
     thisPID = os.getpid()
     while True:
         print(thisPID,"===========================================")
         searchword = input.get()
-
+        
         mkdirForCleanData(objectiveFolderClean, objective)
 
-        dirRoute = dirRoute + searchword
+        # '/home/bluevc/2019/iSelect3C/dataMunging/rawData/momo/冷暖空調電熱水瓶'  <---關鍵字累加的問題
+        # dirRoute = dirRoute + searchword
+
+        fileRoute = dirRoute + searchword
         
-        if not os.listdir(dirRoute):
+        if not os.listdir(fileRoute):
             print(f"============={objective} {searchword} 資料夾沒有東西，此進程準備結束。=============")
             input.task_done()
             timeSleepOne()
@@ -60,11 +63,15 @@ def dataMunging(input, dirRoute, objectiveFolderClean, objective, domainUrl):
         momoDict = {}
         productArray= [] 
 
-        for file in initialFile(dirRoute):
-            print("start " + file + " ! ")
+        for file in initialFile(fileRoute):
+            # print("start " + file + " ! ")
 
-            with open(dirRoute + "/" + file)as f:
-                inn = f.read() 
+            with open(fileRoute + "/" + file)as f:
+                inn = f.read()
+
+            # 處理soup=""的情況
+            if not inn:
+                continue
             textSoup = BeautifulSoup(inn,'html.parser')
             try:
                 #一頁至多有30項
@@ -117,8 +124,6 @@ if __name__ == '__main__':
 
     objective = "momo"
 
-    searchwordList = ["冷暖空調", "除濕機", "電冰箱", "電熱水瓶", "溫熱型開飲機", "溫熱型飲水機", "冰溫熱型開飲機", "冰溫熱型飲水機"]
-
     dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/"
 
     begin = time.time()
@@ -129,7 +134,7 @@ if __name__ == '__main__':
 
     # 啟動進程
     Process_1 = []
-    for p in range(8):
+    for p in range(3):
         dataMunging_proc = mp.Process(target=dataMunging, args=(searchword_queue, dirRoute, objectiveFolderClean, objective, domainUrl,))
         dataMunging_proc.daemon = True
         dataMunging_proc.start()
@@ -137,7 +142,7 @@ if __name__ == '__main__':
         Process_1.append(dataMunging_proc)
     
     # 主行程
-    distributeKeyword(searchwordList, searchword_queue)
+    distributeKeyword(_momoKeywordUrlPair, searchword_queue)
     print("=============main process distributeKeyword 已經完成任務了。=============")
 
     #通知main process 完成事情。
@@ -150,7 +155,7 @@ if __name__ == '__main__':
         print(f'{proc} has terminated!')
     
     end = time.time()
-    # print(f"關鍵字 {searchword} 從24h、購物中心、代購服務上取得資料，一共有 {countPages} 頁， {countRaws}筆。")
+    
     print("完成！一共耗時：{0} 秒".format(end-begin)) 
 
 
