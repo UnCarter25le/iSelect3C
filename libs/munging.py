@@ -9,8 +9,8 @@ from urllib.parse import urlparse, parse_qs
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2]) 
 sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的module
 
-from libs.time import timeSleepOne
-from libs.time import timeStampGenerator
+from libs.timeWidget import timeSleepOne
+from libs.timeWidget import timeStampGenerator
 from libs.manipulateDir import initialFile
 # from libs.regex import interDiv
 # from libs.regex import searchFloatNums
