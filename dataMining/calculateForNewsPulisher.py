@@ -28,7 +28,7 @@ if __name__ == '__main__':
     dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/newsIntegration"
 
     fileName = os.listdir(dirRoute).pop()
-
+    print(fileName)
     counterNum = Counter()
 
     with open(dirRoute + "/" + fileName)as f:
