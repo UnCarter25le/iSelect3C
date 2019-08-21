@@ -79,6 +79,7 @@ if __name__ == '__main__':
         #     conn.execute(syn)
         # 利用 ORM 建立所有class資料表！
         tableClassBase._Base.metadata.create_all(conn)
+        # conn.execute(tableClassBase.bureauEnergyProducts().series_Id)
         
     except (sqla.exc.InternalError, sqla.exc.ProgrammingError, sqla.exc.IntegrityError) as e:
         trans.rollback()

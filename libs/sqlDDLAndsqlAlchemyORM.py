@@ -44,7 +44,7 @@ class rawSQLString(object):
                     "bureau_energy_products":"""
                                                   CREATE TABLE bureau_energy_products(
                                                        product_model nvarchar(35) PRIMARY KEY,
-                                                       3C_Id tinyint UNSIGNED,
+                                                       3C_Id tinyint UNSIGNED  Not Null,
                                                        series_Id mediumint UNSIGNED  UNIQUE KEY AUTO_INCREMENT,
                                                        bureau_product_Id char(6) Not Null default "None",
                                                        brand_name nvarchar(50) Not Null default "None",
@@ -73,7 +73,7 @@ class rawSQLString(object):
                     "ecommerce_products":"""
                                                   CREATE TABLE ecommerce_products(
                                                        ecommerce_product_Id varchar(20) PRIMARY KEY,
-                                                       ecommerce_Id tinyint UNSIGNED, 
+                                                       ecommerce_Id tinyint UNSIGNED  Not Null, 
                                                        series_Id int UNSIGNED UNIQUE KEY AUTO_INCREMENT,
                                                        name nvarchar(80) Not Null default "None",
                                                        originprice varchar(7) Not Null default "None",
@@ -93,7 +93,7 @@ class rawSQLString(object):
                     "news_title_from_selenium":"""
                                                   CREATE TABLE news_title_from_selenium(
                                                        news_title_Id mediumint UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                                                       news_key_Id tinyint UNSIGNED,
+                                                       news_key_Id tinyint UNSIGNED Not Null,
                                                        news_url varchar(270) Not Null default "None",
                                                        news_title nvarchar(50) Not Null default "None",
                                                        publisher nvarchar(9) Not Null default "None",
@@ -113,7 +113,7 @@ class rawSQLString(object):
                                                   CREATE TABLE selected_news_with_tfidf(
                                                        news_title_Id mediumint UNSIGNED PRIMARY KEY,
                                                        series_Id mediumint UNSIGNED UNIQUE KEY AUTO_INCREMENT ,
-                                                       publisher_Id tinyint UNSIGNED,
+                                                       publisher_Id tinyint UNSIGNED Not Null,
                                                        news_content nvarchar(2000) Not Null default "None",
                                                        
                                                        Constraint publishers_mapping2selected_news_with_tfidf foreign key(publisher_Id)
@@ -134,7 +134,7 @@ class rawSQLString(object):
                     "observation_stations":"""
                                                   CREATE TABLE observation_stations(
                                                        station_Id char(6) PRIMARY KEY,
-                                                       division_Id tinyint UNSIGNED,
+                                                       division_Id tinyint UNSIGNED Not Null,
                                                        series_Id smallint UNSIGNED UNIQUE KEY AUTO_INCREMENT,
                                                        ch_name nvarchar(10) Not Null default "None",
                                                        en_name varchar(30) Not Null default "None",
@@ -148,7 +148,7 @@ class rawSQLString(object):
                     "weather_records_by_months":"""
                                                   CREATE TABLE weather_records_by_months(
                                                        record_Id char(13) PRIMARY KEY,
-                                                       station_Id char(6),
+                                                       station_Id char(6) Not Null,
                                                        temperature_average decimal(3,1) Not Null default 0.0,
                                                        temperature_high decimal(3,1) Not Null default 0.0,
                                                        temperature_high_date date Not Null default "1970-01-01",
@@ -273,7 +273,6 @@ cc = sqlDDLForTables("iSelect3C",
 
 
 
-
 class iSelect3CTableClasses(databaseInitial):
      """
      https://docs.sqlalchemy.org/en/13/faq/ormconfiguration.html?highlight=foreign%20key
@@ -287,53 +286,88 @@ class iSelect3CTableClasses(databaseInitial):
      onupdate - Typical values include CASCADE, DELETE and RESTRICT , SET NULL.
      ondelete - Typical values include CASCADE, DELETE and RESTRICT , SET NULL.
 
+     https://docs.sqlalchemy.org/en/13/orm/persistence_techniques.html?highlight=default%20value
+     default值的kwargs，建議以server_default
+
+
+     https://stackoverflow.com/questions/19243232/sqlalchemy-how-to-make-an-integer-column-auto-increment-and-unique-without-ma
+     how to set unique key autoincrement in sqlalchemy?
+     Can not! Just abide by the following command-line after base-up all classes:
+     "ALTER TABLE `bureau_energy_products` ADD `series_Id` mediumint UNSIGNED Not Null AUTO_INCREMENT, ADD UNIQUE (`series_Id`);"
+
+     https://stackoverflow.com/questions/32959336/how-to-insert-null-value-in-sqlalchemy
+     python的 None 就等於 mysql column's Null
+
+
      """
      
 
       # _Base 意思類似 django的models.Model
-     _Base = declarative_base()     
+     _Base = declarative_base()
 
-     class Zoo(_Base):
-          
-          __tablename__ = "zoo"
-          critter = Column("critter", NVARCHAR(length=20),primary_key=True)
-          count = Column("count", SMALLINT(unsigned=True), nullable=False, default=5566)
-          damages = Column("damages", FLOAT)
-          
-          def __init__(self, critter, count, damages):
-               self.critter = critter
-               self.count = count
-               self.damages = damages
 
-          def __str__(self):
-               return "<Zoo({}, {}, {})>".format(self.critter, self.count, self.damages)
-     class Zoo2(Zoo):
+
+     def getAlterUniqueSyntax(self):
+
+          bureau_energy_products_series_Id = "ALTER TABLE `bureau_energy_products` modify `series_Id` mediumint UNSIGNED Not Null AUTO_INCREMENT, ADD UNIQUE (`series_Id`);"
+          return bureau_energy_products_series_Id
+
+     # class Zoo(_Base):
+
+     #      __tablename__ = "zoo"
+     #      # critter = Column("critter", NVARCHAR(length=20),primary_key=True)
+     #      critter = Column("critter", NVARCHAR(length=20))
+     #      count = Column("count", SMALLINT(unsigned=True), nullable=False, server_default="56")
+     #      damages = Column("damages", FLOAT, nullable=False, server_default="56.0")
           
-          __tablename__ = "zoo2"
-          id = Column("id")
-          # f_id = Column(ForeignKey("zoo.critter", onupdate="CASCADE", ondelete="SET NULL"),  primary_key=True)
+     #      def __init__(self, critter, count, damages):
+     #           self.critter = critter
+     #           self.count = count
+     #           self.damages = damages
+
+     #      def __str__(self):
+     #           return "<Zoo({}, {}, {})>".format(self.critter, self.count, self.damages)
+
+     #      # table_args裡面單一元素的話，必須加「,」； autoincrement不能加在這裡
+     #      __table_args__ = (
+
+     #           PrimaryKeyConstraint("critter"),
+
+     #      )
+
+     # class Zoo2(Zoo):
           
-          __table_args__ = (
-               # constraint的用法當是「統一宣告多個鍵」，不用此法的話，就每個欄位宣告
-               PrimaryKeyConstraint('id'),
-               ForeignKeyConstraint(
-                    ['id'],
-                    ['zoo.critter'],
-                    name = "PKandFKsimaltaniously"
-               )
-          )
+     #      __tablename__ = "zoo2"
+     #      id = Column("id")
+     #      # f_id = Column(ForeignKey("zoo.critter", onupdate="CASCADE", ondelete="SET NULL"),  primary_key=True) # 這邊的primary_key設定無效
+          
+     #      __table_args__ = (
+     #           # constraint的用法當是「統一宣告多個鍵」，不用此法的話，就每個欄位宣告
+     #           PrimaryKeyConstraint('id'),
+     #           ForeignKeyConstraint(
+     #                ['id'],
+     #                ['zoo.critter'],
+     #                name = "PKandFKsimaltaniously",
+     #                onupdate="CASCADE", ondelete="CASCADE"
+     #           )
+     #      )
           
 
           
      
      class classesOfConsumerElectronics(_Base):
           __tablename__ = "classes_of_consumer_electronics"
-          Id_3C = Column("3C_Id", TINYINT(unsigned=True), primary_key=True, autoincrement=False)
-          product = Column("product", NVARCHAR(length=10), nullable=False, default="None")
-          uri_of_bureau_energy = Column("uri_of_bureau_energy", VARCHAR(length=230), nullable=False, default="None")
-          uri_of_momo = Column("uri_of_momo", VARCHAR(length=210), nullable=False, default="None")
-          uri_of_pchome = Column("uri_of_pchome", VARCHAR(length=90), nullable=False, default="None")
-          
+          Id_3C = Column("3C_Id", TINYINT(unsigned=True), autoincrement=False) #  primary_key=True
+          product = Column("product", NVARCHAR(length=10), nullable=False, server_default="None")
+          uri_of_bureau_energy = Column("uri_of_bureau_energy", VARCHAR(length=230), nullable=False, server_default="None")
+          uri_of_momo = Column("uri_of_momo", VARCHAR(length=210), nullable=False, server_default="None")
+          uri_of_pchome = Column("uri_of_pchome", VARCHAR(length=90), nullable=False, server_default="None")
+
+          __table_args__ = (
+
+               PrimaryKeyConstraint("3C_Id"),
+
+          )
 
           def __init__(self, Id_3C, product, uri_of_bureau_energy, uri_of_momo, uri_of_pchome):
                self.Id_3C = Id_3C
@@ -342,6 +376,227 @@ class iSelect3CTableClasses(databaseInitial):
                self.uri_of_momo = uri_of_momo
                self.uri_of_pchome = uri_of_pchome
 
+     class bureauEnergyProducts(_Base):
+
+          __tablename__ = "bureau_energy_products"
+          product_model = Column("product_model", NVARCHAR(length=35), autoincrement=False)
+          Id_3C = Column("3C_Id", nullable=False)
+          # unique key can not be set up with autoincrement!
+          series_Id = Column("series_Id", MEDIUMINT(unsigned=True), autoincrement=True, unique=True)
+          bureau_product_Id = Column("bureau_product_Id", CHAR(length=6), nullable=False, server_default="None")
+          brand_name = Column("brand_name", NVARCHAR(length=50), nullable=False, server_default="None")
+          login_number = Column("login_number", VARCHAR(length=15), nullable=False, server_default="None")
+          detail_uri = Column("detail_uri", VARCHAR(length=250), nullable=False, server_default="None")
+          labeling_company = Column("labeling_company", NVARCHAR(length=20), nullable=False, server_default="None")
+          efficiency_rating = Column("efficiency_rating", CHAR(length=1), nullable=False, server_default="N")
+          from_date_of_expiration = Column("from_date_of_expiration", DATE, nullable=False, server_default="1970-01-01")
+          energy_efficiency_label_outer_uri = Column("energy_efficiency_label_outer_uri", VARCHAR(length=100), nullable=False, server_default="None")
+          energy_efficiency_label_inner_uri = Column("energy_efficiency_label_inner_uri", NVARCHAR(length=120), nullable=False, server_default="None")
+          test_report_of_energy_efficiency = Column("test_report_of_energy_efficiency", JSON, nullable=False, server_default=None)
+          efficiency_benchmark = Column("efficiency_benchmark", VARCHAR(length=15), nullable=False, server_default="None")
+          annual_power_consumption_degrees_dive_year = Column("annual_power_consumption_degrees_dive_year", VARCHAR(length=4), nullable=False, server_default="None")
+          # = Column("", VARCHAR(length=),nullable=False, server_default="None")
+
+          __table_args__ = (
+               PrimaryKeyConstraint("product_model"),
+               ForeignKeyConstraint(
+                    ["3C_Id"], ["classes_of_consumer_electronics.3C_Id"],
+                    name="classes_of_consumer_electronics2bureau_energy_products",
+                    onupdate="CASCADE", ondelete="CASCADE"
+               )
+
+          )
+
+          def __init__(self, product_model, Id_3C, series_Id, bureau_product_Id, brand_name,
+                    login_number, detail_uri, labeling_company, efficiency_rating, from_date_of_expiration,
+                    energy_efficiency_label_outer_uri, energy_efficiency_label_inner_uri, test_report_of_energy_efficiency,
+                    efficiency_benchmark, annual_power_consumption_degrees_dive_year):
+               self.product_model = product_model
+               self.Id_3C = Id_3C
+               self.series_Id = series_Id
+               self.bureau_product_Id = bureau_product_Id
+               self.brand_name = brand_name
+               self.login_number = login_number
+               self.detail_uri = detail_uri
+               self.labeling_company = labeling_company
+               self.efficiency_rating = efficiency_rating
+               self.from_date_of_expiration = from_date_of_expiration
+               self.energy_efficiency_label_outer_uri = energy_efficiency_label_outer_uri
+               self.energy_efficiency_label_inner_uri = energy_efficiency_label_inner_uri
+               self.test_report_of_energy_efficiency = test_report_of_energy_efficiency
+               self.efficiency_benchmark = efficiency_benchmark
+               self.annual_power_consumption_degrees_dive_year = annual_power_consumption_degrees_dive_year
+               
+
+     class ecommerce(_Base):
+          __tablename__ = "ecommerce"
+          ecommerce_Id = Column("ecommerce_Id", TINYINT(unsigned=True), autoincrement=False)
+          en_name = Column("en_name", VARCHAR(length=8), nullable=False, server_default="None")
+          ch_name = Column("ch_name", NVARCHAR(length=10), nullable=False, server_default="None")
+
+          __table_args__ = (
+               PrimaryKeyConstraint("ecommerce_Id"),
+          )
+          def __init__(self, ecommerce_Id, en_name,ch_name):
+               self.ecommerce_Id = ecommerce_Id
+               self.en_name = en_name
+               self.ch_name = ch_name
+     
+     
+     # class (_Base):
+     #      __tablename__ = ""
+     #      = Column("", VARCHAR(length=), autoincrement=False)
+     #      = Column("", VARCHAR(length=), nullable=False, server_default="None")
+     #      __table_args__ = (
+     #           PrimaryKeyConstraint("product_model"),
+     #           ForeignKeyConstraint(
+                    
+     #           ) 
+
+     #      )
+     #      def __init__(self,,,,):
+     #           self. = 
+     #           self. = 
+     #           self. = 
+
+
+          # class (_Base):
+     #      __tablename__ = ""
+     #      = Column("", VARCHAR(length=), autoincrement=False)
+     #      = Column("", VARCHAR(length=), nullable=False, server_default="None")
+     #      __table_args__ = (
+     #           PrimaryKeyConstraint("product_model"),
+     #           ForeignKeyConstraint(
+                    
+     #           ) 
+
+     #      )
+     #      def __init__(self,,,,):
+     #           self. = 
+     #           self. = 
+     #           self. = 
+
+
+          # class (_Base):
+     #      __tablename__ = ""
+     #      = Column("", VARCHAR(length=), autoincrement=False)
+     #      = Column("", VARCHAR(length=), nullable=False, server_default="None")
+     #      __table_args__ = (
+     #           PrimaryKeyConstraint("product_model"),
+     #           ForeignKeyConstraint(
+                    
+     #           ) 
+
+     #      )
+     #      def __init__(self,,,,):
+     #           self. = 
+     #           self. = 
+     #           self. = 
+
+
+          # class (_Base):
+     #      __tablename__ = ""
+     #      = Column("", VARCHAR(length=), autoincrement=False)
+     #      = Column("", VARCHAR(length=), nullable=False, server_default="None")
+     #      __table_args__ = (
+     #           PrimaryKeyConstraint("product_model"),
+     #           ForeignKeyConstraint(
+                    
+     #           ) 
+
+     #      )
+     #      def __init__(self,,,,):
+     #           self. = 
+     #           self. = 
+     #           self. = 
+
+
+          # class (_Base):
+     #      __tablename__ = ""
+     #      = Column("", VARCHAR(length=), autoincrement=False)
+     #      = Column("", VARCHAR(length=), nullable=False, server_default="None")
+     #      __table_args__ = (
+     #           PrimaryKeyConstraint("product_model"),
+     #           ForeignKeyConstraint(
+                    
+     #           ) 
+
+     #      )
+     #      def __init__(self,,,,):
+     #           self. = 
+     #           self. = 
+     #           self. = 
+
+
+          # class (_Base):
+     #      __tablename__ = ""
+     #      = Column("", VARCHAR(length=), autoincrement=False)
+     #      = Column("", VARCHAR(length=), nullable=False, server_default="None")
+     #      __table_args__ = (
+     #           PrimaryKeyConstraint("product_model"),
+     #           ForeignKeyConstraint(
+                    
+     #           ) 
+
+     #      )
+     #      def __init__(self,,,,):
+     #           self. = 
+     #           self. = 
+     #           self. = 
+
+
+          # class (_Base):
+     #      __tablename__ = ""
+     #      = Column("", VARCHAR(length=), autoincrement=False)
+     #      = Column("", VARCHAR(length=), nullable=False, server_default="None")
+     #      __table_args__ = (
+     #           PrimaryKeyConstraint("product_model"),
+     #           ForeignKeyConstraint(
+                    
+     #           ) 
+
+     #      )
+     #      def __init__(self,,,,):
+     #           self. = 
+     #           self. = 
+     #           self. = 
+
+
+          # class (_Base):
+     #      __tablename__ = ""
+     #      = Column("", VARCHAR(length=), autoincrement=False)
+     #      = Column("", VARCHAR(length=), nullable=False, server_default="None")
+     #      __table_args__ = (
+     #           PrimaryKeyConstraint("product_model"),
+     #           ForeignKeyConstraint(
+                    
+     #           ) 
+
+     #      )
+     #      def __init__(self,,,,):
+     #           self. = 
+     #           self. = 
+     #           self. = 
+          
+
+     
 
 
 
+
+
+
+tableClassBase = iSelect3CTableClasses("iSelect3C", 
+               table1="classes_of_consumer_electronics",
+               table2="bureau_energy_products",
+               table3="ecommerce",
+               table4="ecommerce_products",
+               table5="news_keywords",
+               table6="news_title_from_selenium",
+               table7="publishers_mapping",
+               table8="selected_news_with_tfidf",
+               table9="administrative_divisions_of_Taiwan",
+               table10="observation_stations",
+               table11="weather_records_by_months")
+
+print(tableClassBase.getAlterUniqueSyntax())
