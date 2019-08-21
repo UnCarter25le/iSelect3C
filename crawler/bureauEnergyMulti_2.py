@@ -139,6 +139,8 @@ requests.exceptions.ConnectionError: HTTPSConnectionPool(host='ranking.energylab
 
 40 個進程：完成！一共耗時：5538.415146112442 秒
 
+20 個
+
 """
 
 
@@ -376,7 +378,7 @@ if __name__ == '__main__':
 
     # 啟動進程
     Process_1 = []  # 將overview資料夾的html打開清洗，並發送detailUri。  有12個分類
-    for w in range(8):
+    for w in range(3):
         dataMunging_proc = mp.Process(target=dataMunging, args=(keyword_queue, detailUri_queue, dirRoute,objectiveFolder, objective, domainUrl,))
         dataMunging_proc.daemon = True
         dataMunging_proc.start()
@@ -385,7 +387,7 @@ if __name__ == '__main__':
 
 
     Process_2 = [] # 接收detailUri，繼續爬蟲html。
-    for k in range(40):
+    for k in range(20):
         detailPageInARow_proc = mp.Process(target=detailPageInARow, args=(detailUri_queue, headers, objectiveFolder, objective,))
         detailPageInARow_proc.daemon = True
         detailPageInARow_proc.start()

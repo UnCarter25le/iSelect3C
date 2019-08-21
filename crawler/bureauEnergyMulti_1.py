@@ -31,6 +31,8 @@
 
 30個進程，完成！一共耗時：659.8574628829956 秒 。能源局官網上的類別12個都載下來。
 
+8個 完成！一共耗時：1897.172994852066 秒
+
 """
 
 
@@ -162,7 +164,7 @@ if __name__ == '__main__':
     
     # 啟動進程
     Process_1 = []  #發送overviewUri，總計有12個分類
-    for x in range(8):
+    for x in range(4):
         overviewUriDistributor_proc = mp.Process(target=overviewUriDistributor, args=(keyword_queue, overviewUri_queue, _bureauEnergyKeywordUrlPair, headers,dirRoute,objectiveFolder, objective,))
         overviewUriDistributor_proc.daemon = True
         overviewUriDistributor_proc.start()
@@ -171,7 +173,7 @@ if __name__ == '__main__':
 
 
     Process_2 = []   # 爬overview html
-    for p in range(30):
+    for p in range(8):
         getPageInARow_proc = mp.Process(target=getPageInARow, args=(overviewUri_queue, headers, objectiveFolder, objective,))
         getPageInARow_proc.daemon = True  #共同行程
         getPageInARow_proc.start()
