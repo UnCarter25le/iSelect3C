@@ -10,7 +10,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2]) 
 sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的module
 
-from libs.time import timeSleepRandomly
+from libs.timeWidget import timeSleepRandomly
 
 
 
