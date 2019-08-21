@@ -27,9 +27,9 @@ _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2])
 sys.path.append(_BASE_PATH)   # 因為此行生效，所以才能引用他處的module
 
 
-from libs.time import timeStampGenerator
-from libs.time import timeCalculate
-from libs.time import timeSleepOne
+from libs.timeWidget import timeStampGenerator
+from libs.timeWidget import timeCalculate
+from libs.timeWidget import timeSleepOne
 from libs.multiProcessing import distributeKeyword
 from libs.multiProcessing import _bureauEnergyKeywordUrlPair
 from libs.munging import bureauEnergyMunging
@@ -58,6 +58,7 @@ def zipJsonObject(modelPoolDict, comparedValue, bureauEnergyDetail):
 def dataMunging(input, dirRoute, objectiveFolderClean, objective):
     # begin = timeCalculate()
     thisPID = os.getpid()
+    bureauMunging = bureauEnergyMunging()
     while True:
         print(thisPID,"===========================================")
         searchword = input.get()
@@ -162,7 +163,6 @@ if __name__ == '__main__':
     dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/"
 
     # dirRouteClean = f"{_BASE_PATH}/dataMunging/{objectiveFolderClean}/{objective}/"
-    bureauMunging = bureauEnergyMunging()
 
     statistic = []
 
