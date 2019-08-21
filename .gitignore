@@ -13,11 +13,7 @@ bureauEnergyMulti_MultiQueue.py
 
 researchForMultiQueue.py
 
-newsTitle_stop_words.txt
-
-newsTitle_wanted_words.txt
-
-dataMining/dictionary/decision/*
+dataMining/dictionary/*
 
 requirements_ChineseLiterature.txt
 
