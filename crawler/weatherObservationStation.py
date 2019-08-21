@@ -23,8 +23,8 @@ sys.path.append(_BASE_PATH)
 
 from libs.splinterBrowser import buildSplinterBrowser
 from libs.splinterBrowser import browserWaitTime
-from libs.time import timeCalculate
-from libs.time import timeStampGenerator
+from libs.timeWidget import timeCalculate
+from libs.timeWidget import timeStampGenerator
 from libs.manipulateDir import mkdirForRawData
 from libs.manipulateDir import eraseRawData
 
