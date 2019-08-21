@@ -30,6 +30,7 @@ def wantedwordsLoad(filepath):
 # '經濟日報(新聞發布)': 20 https://money.udn.com/money/, 
 # 'NOWnews': 13 https://www.nownews.com/news/, 
 # 'TVBS新聞': 13 https://news.tvbs.com.tw/
+# "東森新聞" ETtoday
 _newsUrlCheckList = ["https://udn.com/news/",
                     "https://money.udn.com/money/",
 
@@ -68,4 +69,15 @@ _newsUrlCheckList = ["https://udn.com/news/",
                     "https://www.nownews.com/news/", 
                     "https://news.tvbs.com.tw/life/"]
 
-print(_newsUrlCheckList)
+# print(_newsUrlCheckList)
+
+# 所以一共選9家
+_newsUrlCheckDict = {"udn.com":"udn聯合新聞網",
+                    "money.udn.com":"經濟日報", #經濟日報(新聞發布)
+                    "ltn.com":"自由時報電子報",
+                    "chinatimes.com":"中時電子報", #中時電子報(新聞發布)
+                    "appledaily.com":"蘋果日報", #蘋果日報(新聞發布)
+                    "yahoo.com":"Yahoo奇摩新聞", #Yahoo奇摩新聞(新聞發布)
+                    "ettoday.net":"ETtoday",
+                    "nownews.com":"NOWnews",
+                    "tvbs.com":"TVBS新聞"}
