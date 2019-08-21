@@ -7,8 +7,8 @@ from bs4 import BeautifulSoup
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2])
 sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的module
 
-from libs.time import timeSleepOne
-from libs.time import timeStampGenerator
+from libs.timeWidget import timeSleepOne
+from libs.timeWidget import timeStampGenerator
 from libs.manipulateDir import initialFile
 from libs.regex import interDiv
 from libs.regex import searchFloatNums
@@ -23,7 +23,10 @@ def distributeKeyword(keywordUrlPair, output):
         print("這裡是distributeKeyword，準備送給  接下來的進程  處理: " + keyword)
         timeSleepOne() #暫停幾秒來模擬現實狀況。
 
-
+def selectColumn(textSoup, row):
+    selected = textSoup.find('div',{'class':'row text-center col-sm-12'}).select('.row')[row].text
+    selected = selected.split('：')[1]
+    return selected
 
 _monthsAvailable = [str(row) for row in range(1,13)]
 
@@ -81,14 +84,11 @@ _bureauEnergyKeywordUrlPair = {"無風管空氣調節機":("https://ranking.ener
                                 "&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&pageno=")
                                 }
 
-_googleSearchWord = {"家電促銷":"",
-                     "家電汰舊換新":"",
-                     "家電節能補助":""}
+_googleSearchWord = {"家電促銷":"https://www.google.com/",
+                     "家電汰舊換新":"https://www.google.com/",
+                     "家電節能補助":"https://www.google.com/"}
 
 
-# _momoKeywordUrlPair = {"溫熱型開飲機":("https://www.momoshop.com.tw/search/searchShop.jsp"
-#                         "?keyword=%E6%BA%AB%E7%86%B1%E5%9E%8B%E9%96%8B%E9%A3%B2%E6%A9%9F"
-#                         "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType")}
 
 _momoKeywordUrlPair = {"冷暖空調":("https://www.momoshop.com.tw/search/searchShop.jsp"
                         "?keyword=%E5%86%B7%E6%9A%96%E7%A9%BA%E8%AA%BF"
@@ -113,21 +113,29 @@ _momoKeywordUrlPair = {"冷暖空調":("https://www.momoshop.com.tw/search/searc
                                 "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType"),
                 "冰溫熱型飲水機":("https://www.momoshop.com.tw/search/searchShop.jsp"
                                 "?keyword=%E5%86%B0%E6%BA%AB%E7%86%B1%E5%9E%8B%E9%A3%B2%E6%B0%B4%E6%A9%9F"
+                                "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType"),
+                "貯備型電熱水器":("https://www.momoshop.com.tw/search/searchShop.jsp"
+                                "?keyword=%E8%B2%AF%E5%82%99%E5%9E%8B%E9%9B%BB%E7%86%B1%E6%B0%B4%E5%99%A8"
+                                "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType"),
+                "瓦斯熱水器":("https://www.momoshop.com.tw/search/searchShop.jsp"
+                                "?keyword=%E7%93%A6%E6%96%AF%E7%86%B1%E6%B0%B4%E5%99%A8"
+                                "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType"),
+                "瓦斯爐":("https://www.momoshop.com.tw/search/searchShop.jsp"
+                                "?keyword=%E7%93%A6%E6%96%AF%E7%88%90"
+                                "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType"),
+                "安定器內藏式螢光燈泡":("https://www.momoshop.com.tw/search/searchShop.jsp"
+                                "?keyword=%E5%AE%89%E5%AE%9A%E5%99%A8%E5%85%A7%E8%97%8F%E5%BC%8F%E8%9E%A2%E5%85%89%E7%87%88%E6%B3%A1"
                                 "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType")}
 
-_pchomeKeywordUrlPair = {"冷暖空調":"",
-                         "除濕機":"",
-                         "電冰箱":"",
-                         "電熱水瓶":"",
-                         "溫熱型開飲機":"",
-                         "溫熱型飲水機":"",
-                         "冰溫熱型開飲機":"",
-                         "冰溫熱型飲水機":""}
-
-
-def selectColumn(textSoup, row):
-    selected = textSoup.find('div',{'class':'row text-center col-sm-12'}).select('.row')[row].text
-    selected = selected.split('：')[1]
-    return selected
-
-
+_pchomeKeywordUrlPair = {"冷暖空調":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
+                         "除濕機":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
+                         "電冰箱":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
+                         "電熱水瓶":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
+                         "溫熱型開飲機":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
+                         "溫熱型飲水機":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
+                         "冰溫熱型開飲機":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
+                         "冰溫熱型飲水機":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
+                         "貯備型電熱水器":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
+                         "瓦斯熱水器":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
+                         "瓦斯爐":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
+                         "安定器內藏式螢光燈泡":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc"}
