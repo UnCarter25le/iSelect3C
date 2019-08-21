@@ -40,7 +40,9 @@ def randomChoice(arrayList):
     return random.choice(arrayList)
 
 def searchWordTrueOrFalse(regexword, wordsComparison):
+    # print(regexword)
     # 如果 regexword="(" or ")" ，compile會報錯 re_constants.error: missing ), unterminated subpattern at position 0 ；unbalanced parenthesis at position 0
+    # 如果 regexword="?" 會報錯：sre_constants.error: nothing to repeat at position 0   ，因為「?」的意思是前面的字元出現0~1次
     
     searchwrod = re.compile(f"{regexword}")
     searchResult = searchwrod.search(wordsComparison)
@@ -49,6 +51,17 @@ def searchWordTrueOrFalse(regexword, wordsComparison):
     else:
         return 0
 
+class textMiningRegex(object):
+    def sanitize(self, txt):
+        # 保留英數字, 中文 (\u4e00-\u9fa5) 及中文標點, 部分特殊符號
+        # http://ubuntu-rubyonrails.blogspot.com/2009/06/unicode.html
+        expr = re.compile('[^\u4e00-\u9fa5。；，：“”（）、？「」『』【】\s\w:/\-.()]')  # ^ 表示"非括號內指定的字元"
+        txt = re.sub(expr, '', txt)
+        txt = re.sub('[。；，：“”（）、？「」『』【】:/\-_.()]', ' ', txt)  # 用空白取代中英文標點
+        txt = re.sub('(\s)+', ' ', txt)  # 用單一空白取代多個換行或 tab 符號
+        txt = txt.replace('--', '')
+        txt = txt.lower()  # 英文字轉為小寫
+        return txt
 
 
 class bureauEnergyReplace(object):
@@ -114,16 +127,18 @@ class numsHandler(object):
         return round(A / B,2)
 
     
+# searchwrod = re.compile("udn.com")
+# searchResult = searchwrod.search("https://tw.appledaily.com/new/realtime/20190611/1579099/")
+# searchResult = searchwrod.search("https://udn.com/news/story/11319/3903974")
+# searchwrod = re.compile("\s+")
+# searchResult = searchwrod.search("1 23")
+# print(searchResult)
 
-searchwrod = re.compile("\s+")
-searchResult = searchwrod.search("1 23")
-print(searchResult.start())
-
-aa = numsHandler()
-print(aa.floatDiv("102.1" , "209"))
-aa = "LP-T228(NG1)"
-aa = "天然氣(NG1)"
-print(re.search("\([A-Z0-9]+\)", aa).group())
+# aa = numsHandler()
+# print(aa.floatDiv("102.1" , "209"))
+# aa = "LP-T228(NG1)"
+# aa = "天然氣(NG1)"
+# print(re.search("\([A-Z0-9]+\)", aa).group())
 
 # aa = "最低能源效率基準：1.09 Est,24 (度，kWh)".replace("Est,24 (度，kWh)", "kWh/24hr")
 # print(aa)
@@ -134,15 +149,4 @@ print(re.search("\([A-Z0-9]+\)", aa).group())
 # aa = "UR-9615AG-110V".replace("-220V", "")
 # print(re.search( "[a-zA-Z0-9-]+", aa).group())
 
-
-# def sanitize(txt):
-#     # 保留英數字, 中文 (\u4e00-\u9fa5) 及中文標點, 部分特殊符號
-#     # http://ubuntu-rubyonrails.blogspot.com/2009/06/unicode.html
-#     expr = re.compile('[^\u4e00-\u9fa5。；，：“”（）、？「」『』【】\s\w:/\-.()]')  # ^ 表示"非括號內指定的字元"
-#     txt = re.sub(expr, '', txt)
-#     txt = re.sub('[。；，：“”（）、？「」『』【】:/\-_.()]', ' ', txt)  # 用空白取代中英文標點
-#     txt = re.sub('(\s)+', ' ', txt)  # 用單一空白取代多個換行或 tab 符號
-#     txt = txt.replace('--', '')
-#     txt = txt.lower()  # 英文字轉為小寫
-#     return txt
 
