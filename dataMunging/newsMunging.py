@@ -27,8 +27,8 @@ from libs.multiProcessing import _googleSearchWord
 from libs.manipulateDir import listSecondDirBelowFiles
 from libs.manipulateDir import mkdirForRawData
 from libs.manipulateDir import eraseRawData
-from libs.time import timeCalculate
-from libs.time import timeStampGenerator
+from libs.timeWidget import timeCalculate
+from libs.timeWidget import timeStampGenerator
 
 
 if __name__ == '__main__':
