@@ -37,9 +37,9 @@ sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的mo
 
 from libs.manipulateDir import mkdirForRawData
 from libs.manipulateDir import eraseRawData
-from libs.time import timeSleepEight
-from libs.time import timeSleepRandomly
-from libs.time import timeSleepTwo
+from libs.timeWidget import timeSleepEight
+from libs.timeWidget import timeSleepRandomly
+from libs.timeWidget import timeSleepTwo
 
 
 def getPageFirst(keyword, searchword):
