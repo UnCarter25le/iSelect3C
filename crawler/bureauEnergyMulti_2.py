@@ -162,22 +162,22 @@ from libs.manipulateDir import eraseRawData
 from libs.manipulateDir import initialFile
 from libs.multiProcessing import distributeKeyword
 from libs.multiProcessing import _bureauEnergyKeywordUrlPair
-from libs.time import timeSleepRandomly
-from libs.time import timeSleepTwo
-from libs.time import timeSleepOne
-from libs.time import timeStampGenerator
-from libs.time import timeCalculate
+from libs.timeWidget import timeSleepRandomly
+from libs.timeWidget import timeSleepTwo
+from libs.timeWidget import timeSleepOne
+from libs.timeWidget import timeStampGenerator
+from libs.timeWidget import timeCalculate
 from libs.regex import bureauEnergyReplace
 from libs.regex import discardSpace
-from libs.requests import _headers
+from libs.httpRequests import _headers
 
 
 
 
 def dataMunging(input, output, dirRoute,objectiveFolder, objective, domainUrl, *args):
-    # begin = timeCalculate()
     thisPID = os.getpid()
     energyLabelUrl = "https://ranking.energylabel.org.tw/_Upload/applyMain/applyp/"
+    bureauReplace = bureauEnergyReplace()
     while True:
         print(thisPID,"===========================================")
         searchword = input.get() 
@@ -325,7 +325,6 @@ def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
                 timeSleepRandomly()
                 timeSleepTwo()
                 soup = ""
-            
         
         if not soup:
           badRequestRoute = "/".join(txtFileRoute.split("/")[:-3]) + "/badRequest"
@@ -365,8 +364,6 @@ if __name__ == '__main__':
     dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/"
     
     domainUrl = 'https://ranking.energylabel.org.tw/product/Approval/'
-
-    bureauReplace = bureauEnergyReplace()
 
     eraseRawData(objectiveFolder, objective, "badRequest")
     mkdirForRawData(objectiveFolder, objective, "badRequest")
