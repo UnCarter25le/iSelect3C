@@ -51,10 +51,10 @@ from libs.manipulateDir import eraseRawData
 from libs.manipulateDir import initialFile
 from libs.multiProcessing import distributeKeyword
 from libs.multiProcessing import _bureauEnergyKeywordUrlPair
-from libs.time import timeSleepRandomly
-from libs.time import timeCalculate
-from libs.time import timeSleepOne
-from libs.requests import _headers
+from libs.timeWidget import timeSleepRandomly
+from libs.timeWidget import timeCalculate
+from libs.timeWidget import timeSleepOne
+from libs.httpRequests import _headers
 
 
 
