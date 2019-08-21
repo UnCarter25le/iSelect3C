@@ -21,9 +21,46 @@ Message: chrome not reachable (Session info: chrome=65.0.3325.146)
 (Driver info: chromedriver=2.33.506092 (733a02544d189eeb751fe0d7ddca79a0ee28cce4),platform=Linux 4.13.0-36-generic x86_64)
 
 
+7317 ===========================================
+Process Process-7:
+Traceback (most recent call last):
+  File "/home/bluevc/.pyenv/versions/3.6.8/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/home/bluevc/.pyenv/versions/3.6.8/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/bluevc/2019/iSelect3C/crawler/momoMulti.py", line 171, in getPageInARowAdvanced
+    browser = buildSplinterBrowserHeadless('chrome')
+  File "/home/bluevc/2019/iSelect3C/libs/splinterBrowser.py", line 46, in buildSplinterBrowserHeadless
+    browser = Browser(driver_name = browserName, headless=True, incognito=True)
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/splinter/browser.py", line 64, in Browser
+    return driver(*args, **kwargs)
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/splinter/driver/webdriver/chrome.py", line 43, in __init__
+    self.driver = Chrome(options=options, **kwargs)
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/selenium/webdriver/chrome/webdriver.py", line 81, in __init__
+    desired_capabilities=desired_capabilities)
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 157, in __init__
+    self.start_session(capabilities, browser_profile)
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 252, in start_session
+    response = self.execute(Command.NEW_SESSION, parameters)
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
+    self.error_handler.check_response(response)
+  File "/home/bluevc/VIRTUALENV/iSelect3CPY36/lib/python3.6/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: Chrome failed to start: exited abnormally
+  (Driver info: chromedriver=2.36.540471 (9c759b81a907e70363c6312294d30b6ccccc2752),platform=Linux 4.15.0-55-generic x86_64)
+
+
+
+
+
+
 30個process
 完成！一共耗時：925.360677242279 秒
+完成！一共耗時：1003.4922308921814 秒
 
+14個
+完成！一共耗時：1257.2267136573792 秒
+try except 要改善  已有改善，待嘗試。
 """
 
 from bs4 import BeautifulSoup
@@ -41,19 +78,23 @@ import signal
 import multiprocessing as mp
 # from urllib3.exceptions import MaxRetryError
 # from urllib3.exceptions import NewConnectionError
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import (
+                                        TimeoutException,
+                                        WebDriverException
+                                    )
+
 
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2])
 sys.path.append(_BASE_PATH)
 
 from libs.manipulateDir import mkdirForRawData
 from libs.manipulateDir import eraseRawData
-from libs.time import timeSleepRandomly
-from libs.time import timeSleepEight
-from libs.time import timeSleepOne
-from libs.time import timeSleepTwo
-from libs.time import timeSleepFour
-from libs.time import timeCalculate
+from libs.timeWidget import timeSleepRandomly
+from libs.timeWidget import timeSleepEight
+from libs.timeWidget import timeSleepOne
+from libs.timeWidget import timeSleepTwo
+from libs.timeWidget import timeSleepFour
+from libs.timeWidget import timeCalculate
 from libs.multiProcessing import distributeKeyword
 from libs.multiProcessing import _momoKeywordUrlPair
 from libs.manipulateDir import initialFile
@@ -70,7 +111,6 @@ def requestsHandlingWhenTimeoutOccur(url, browserName):
         
 # 正式===============================================================================
 def getPageInARow(input, output, keywordUrlPair, objectiveFolder, objective):
-    begin = timeCalculate()
     thisPID = os.getpid()
     while True:
         print(thisPID,"===========================================")
@@ -82,34 +122,42 @@ def getPageInARow(input, output, keywordUrlPair, objectiveFolder, objective):
 
         url = keywordUrlPair[searchword]
 
+        # 建立browser的代碼放進while True裡面，就可以避免「同一個瀏覽器」持續拜訪網頁時，被拒絕的情況。
+        for i in range(3):
+            try:
+                timeSleepOne()
+                timeSleepRandomly()
+
+                browser = buildSplinterBrowserHeadless('chrome')
+                
+                timeSleepRandomly()
+                
+                browser.visit(url)
+                
+                browserWaitTime(browser)
+                timeSleepTwo()
+                
+                tempHtml = browser.html
+                
+                timeSleepRandomly()
+                soup = BeautifulSoup(tempHtml,'html.parser')
+                print(f"讀取{searchword}第 1 頁>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>成功！")
+                break
+            except (ConnectionRefusedError, TimeoutException, WebDriverException) as e:
+                print(f"{thisPID}__{getPageInARow_proc}  讀取{searchword}第 1 頁有問題。", e)
+                print(f"{thisPID}__{getPageInARow_proc}  重建browser物件，進行再處理 {i} 次!")
+                timeSleepFour()
+                timeSleepRandomly()
+                soup = ""
+            # else:
+            #     print(f"讀取{searchword}第 1 頁>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>成功！")
+
         try:
-            # 建立browser的代碼放進while True裡面，就可以避免「同一個瀏覽器」持續拜訪網頁時，被拒絕的情況。
-            timeSleepTwo()
-            browser = buildSplinterBrowserHeadless('chrome')
-            timeSleepRandomly()
-            browser.visit(url)
-        except (ConnectionRefusedError, TimeoutException) as e:
-            print(f"{thisPID}__{getPageInARow_proc}  讀取{searchword}第 1 頁有問題。", e)
-            print(f"{thisPID}__{getPageInARow_proc}  重建browser物件，進行再處理!")
-            timeSleepFour()
-            browser = buildSplinterBrowserHeadless('chrome')
-            timeSleepRandomly()
-            browser.visit(url)
-            print(f"再處理{searchword}第 1 頁>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>成功！")
-        else:
-            print(f"讀取{searchword}第 1 頁>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>成功！")
-
-        browserWaitTime(browser)
-        
-        timeSleepTwo()
-        
-        tempHtml = browser.html
-
-        timeSleepRandomly()
-
-        soup = BeautifulSoup(tempHtml,'html.parser')
-        
-        totalPage = interDiv(searchNums(soup.select_one('.totalTxt').text),30)
+            totalPage = interDiv(searchNums(soup.select_one('.totalTxt').text),30)
+        except AttributeError as e:
+            print("getPageInARow 出錯", e)
+            # 讓程式強制停下來
+            raise
         
         print('------接下來要處理 ' + searchword + ' 的頁數---------', totalPage, '頁')
         print()
@@ -137,7 +185,7 @@ def getPageInARow(input, output, keywordUrlPair, objectiveFolder, objective):
             strNum = str(num)
             consecutiveData = searchword + "+" + strNum + "+" + str(totalPage) + "+" + re.sub(r"curPage=1",f"curPage={strNum}",url)
             output.put(consecutiveData)
-            print(f'這裡是getPageInARow，準備送給  getPageInARowAdvanced  處理:  {searchword} 的 第 {strNum} 頁，總共{totalPage}')
+            # print(f'這裡是getPageInARow，準備送給  getPageInARowAdvanced  處理:  {searchword} 的 第 {strNum} 頁，總共{totalPage}')
             print()
         input.task_done()  #通知main process此次的input處理完成！
         end = timeCalculate()
@@ -145,72 +193,51 @@ def getPageInARow(input, output, keywordUrlPair, objectiveFolder, objective):
 
 
 
-# 補救用===============================================================================
-# def getPageInARow(input, output, index, keywordUrlPair, dirName):
-#     while True:
-#         browser = buildSplinterBrowserHeadless('chrome')
-#         print('getPageInARow is in new process %s, %s ' % (getPageInARow_proc, os.getpid()))
-#         print()
-        
-#         keyword = input.get()
-#         url = keywordUrlPair[keyword]
-        
-#         compensationList = [6, 25, 2, 11, 20, 21, 27, 33, 5, 28, 36]
-#         for num in compensationList:
-#             strNum = str(num)
-#             consecutiveData = keyword + "+" + strNum + "+" + re.sub(r"curPage=1",f"curPage={strNum}",url)
-#             output.put(consecutiveData)
-#             print(f'這裡是getPageInARow，準備送給  getPageInARowAdvanced  處理:  {keyword} 的 第 {strNum} 頁，總共{len(compensationList)}')
-#             print()
-#         input.task_done()  #通知main process此次的input處理完成！
-#         timeSleepTwo() #暫停幾秒來模擬現實狀況。
-
 def getPageInARowAdvanced(input, objectiveFolder, objective):
-    begin = timeCalculate()
     thisPID = os.getpid()
     while True:
         print(thisPID,"===========================================")
         consecutiveUrl = input.get()
         searchword, page, totalPage, url = consecutiveUrl.split('+')
-        print(url)
+        # print(url)
         print(f"{thisPID}__{getPageInARowAdvanced_proc} 開始處理 {searchword} 的第 {page} 頁：")
         
-        try:
-            # 建立browser的代碼放進while True裡面，就可以避免「同一個瀏覽器」持續拜訪網頁時，被拒絕的情況。
-            timeSleepFour()
-            browser = buildSplinterBrowserHeadless('chrome')
-            timeSleepRandomly()
-            browser.visit(url)
-        except (ConnectionRefusedError, TimeoutException) as e:
-            #要是頁面在此出錯，那麼要怎麼繼續處理錯誤的頁面？
-            print(f"{thisPID}__{getPageInARowAdvanced_proc} 讀取 {searchword} 第 {page} 頁有問題。",e)
-            print(f"{thisPID}__{getPageInARowAdvanced_proc} 重建browser物件，進行再處理-----------------------------")
-            # timeSleepFour()
-            # browser = buildSplinterBrowserHeadless('chrome')
-            # timeSleepRandomly()
-            # browser.visit(url)
+        # 建立browser的代碼放進while True裡面，就可以避免「同一個瀏覽器」持續拜訪網頁時，被拒絕的情況。
+        for i in range(3):
             try:
-                requestsHandlingWhenTimeoutOccur(url, "chrome")
-            except (ConnectionRefusedError, TimeoutException) as e:
-                print(f"{searchword}第 {page} 頁進行第三次處理。。。")
-                requestsHandlingWhenTimeoutOccur(url, "chrome")
-                print(f"再處理{searchword}第 {page} 頁，成功！")
-            else:
-                print(f"再處理{searchword}第 {page} 頁，成功！")
-        else:
-            print(f"讀取{searchword}第 {page} 頁，成功！")
+                timeSleepFour()
+                
+                browser = buildSplinterBrowserHeadless('chrome')
+                
+                timeSleepRandomly()
+                
+                browser.visit(url)
+                
+                browserWaitTime(browser)
+                timeSleepTwo()
+                
+                tempHtml = browser.html
+                timeSleepRandomly()
+                
+                soup = BeautifulSoup(tempHtml,'html.parser')
+                print(f"讀取{searchword}第 {page} 頁，成功！")
+                break
+            except (ConnectionRefusedError, TimeoutException, WebDriverException) as e:
+                print(f"{thisPID}__{getPageInARowAdvanced_proc} 讀取 {searchword} 第 {page} 頁有問題。",e)
+                print(f"{thisPID}__{getPageInARowAdvanced_proc} 重建browser物件，進行再處理 {i} 次!")
+                timeSleepFour()
+                timeSleepRandomly()
+                soup = ""
+            # else:
+            #     print(f"讀取{searchword}第 {page} 頁，成功！")
 
+
+        if not soup:
+            badRequestRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/badRequest"
+            with open(f"{badRequestRoute}/badRequest_{searchword}.txt", "a",  newline='', encoding='utf-8')as f: # newline沒作用...
+                errorMessage = url + "\n"
+                f.write(errorMessage)   #writelines作用在errorMessage是list時
         
-        browserWaitTime(browser)
-
-        timeSleepTwo()
-
-        tempHtml = browser.html
-
-        timeSleepRandomly()
-        
-        soup = BeautifulSoup(tempHtml,'html.parser')
-
         with open(f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/{searchword}/{page}_{totalPage}_{searchword}.txt", 'w', encoding='utf-8')as f:
             f.write(str(soup))
         print()
@@ -237,6 +264,8 @@ if __name__ == '__main__':
     
     print('start in main process %s' %os.getpid())
 
+    eraseRawData(objectiveFolder, objective, "badRequest")
+    mkdirForRawData(objectiveFolder, objective, "badRequest")
     print('-------------------------------------------------------------------------')
     
 
@@ -247,7 +276,7 @@ if __name__ == '__main__':
 
     # 啟動進程
     Process_1 = []
-    for p in range(8):
+    for p in range(4):
         getPageInARow_proc = mp.Process(target=getPageInARow, args=(searchword_queue, url_queue, _momoKeywordUrlPair, objectiveFolder, objective,))
         getPageInARow_proc.daemon = True
         getPageInARow_proc.start()
@@ -255,7 +284,7 @@ if __name__ == '__main__':
         Process_1.append(getPageInARow_proc)
     
     Process_2 = []
-    for u in range(30):
+    for u in range(10):
         getPageInARowAdvanced_proc = mp.Process(target=getPageInARowAdvanced, args=(url_queue,objectiveFolder, objective,))
         getPageInARowAdvanced_proc.daemon = True
         getPageInARowAdvanced_proc.start()
