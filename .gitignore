@@ -11,9 +11,19 @@ projectFolderBaseDescription.py
 
 bureauEnergyMulti_MultiQueue.py
 
+researchForMultiQueue.py
+
+newsTitle_stop_words.txt
+
+newsTitle_wanted_words.txt
+
+dataMining/dictionary/decision/*
+
 requirements_ChineseLiterature.txt
 
 requirements_iSelect3C.txt
+
+requirements_basic.txt
 
 *.ipynb
 
@@ -23,5 +33,6 @@ requirements_iSelect3C.txt
 /doc/NOTE.md
 /doc/NOTE.txt
 /doc/config_website.ini
+doc/UML.asta.lock
 
 dataMunging/rawData/*
