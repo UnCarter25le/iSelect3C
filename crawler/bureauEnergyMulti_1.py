@@ -31,7 +31,7 @@
 
 30個進程，完成！一共耗時：659.8574628829956 秒 。能源局官網上的類別12個都載下來。
 
-8個 完成！一共耗時：1897.172994852066 秒
+8個 完成！一共耗時：2266.2288768291473 秒
 
 """
 
@@ -123,6 +123,7 @@ def getPageInARow(input, headers, objectiveFolder, objective, *args):
         print('getPageInARow is in new process %s, %s ' % (getPageInARow_proc, os.getpid()))
         print('------接下來要處理 ' + searchword + '第' ,page, '頁---------共', totalPage, '頁')
 
+        timeSleepOne()
         res = requests.get(correctUrl, headers=headers)
         res.encoding = 'utf-8'
 
