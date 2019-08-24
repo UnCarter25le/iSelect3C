@@ -139,8 +139,7 @@ requests.exceptions.ConnectionError: HTTPSConnectionPool(host='ranking.energylab
 
 40 個進程：完成！一共耗時：5538.415146112442 秒
 
-20 個
-
+20 個 完成！一共耗時：11191.768384218216 秒
 """
 
 
@@ -296,13 +295,41 @@ def dataMunging(input, output, dirRoute,objectiveFolder, objective, domainUrl, *
 
 
 
+def badRequestComposed(searchword, url, txtFileRoute):
+  fileName = txtFileRoute.split("/")[-1]
+  badRequestRoute = "/".join(txtFileRoute.split("/")[:-3]) + "/badRequest"
+  with open(f"{badRequestRoute}/badRequest_{searchword}.txt", "a",  newline='', encoding='utf-8')as f: # newline沒作用...
+      errorMessage = url + "＋" + f"「{fileName}」" +"\n"
+      f.write(errorMessage)   #writelines作用在errorMessage是list時
+
+def judgeSoup(soup, searchword, url, txtFileRoute):
+  if not soup:
+    badRequestComposed(searchword, url, txtFileRoute)
+  elif soup.select_one('head').text.strip() == 'Service Unavailable':
+    """
+
+    「
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN""http://www.w3.org/TR/html4/strict.dtd">
+
+    <html><head><title>Service Unavailable</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/></head>
+    <body><h2>Service Unavailable</h2>
+    <hr/><p>HTTP Error 503. The service is unavailable.</p>
+    </body></html>
+    」
+
+    """
+    soup = ""
+    badRequestComposed(searchword, url, txtFileRoute)
+  else:
+    pass
+
 def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
     """
     As many as 28,000 detail urls we are supposed to crawl would inevitalby leave some processes to fail to get the correct responses.
     As such, we should extend more time while crawling , or establish exception handler in porgrams.
     
     """
-    
     # begin = timeCalculate()
     thisPID = os.getpid()
     while True:
@@ -316,23 +343,41 @@ def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
 
         for i in range(3):
             try:
-                res = requests.get(url, headers=headers)
-                res.encoding = 'utf-8'
-                timeSleepRandomly()
-                soup  = BeautifulSoup(res.text,'html.parser')
-                break
+              timeSleepOne()
+              res = requests.get(url, headers=headers)
+              res.encoding = 'utf-8'
+              timeSleepRandomly()
+              soup  = BeautifulSoup(res.text,'html.parser')
+              break
             except requests.exceptions.ConnectionError as e:
-                print(url, "發生問題。", e)
-                print()
-                timeSleepRandomly()
-                timeSleepTwo()
-                soup = ""
+              print(url, "發生問題。", e)
+              print()
+              timeSleepRandomly()
+              timeSleepTwo()
+              soup = ""
         
-        if not soup:
-          badRequestRoute = "/".join(txtFileRoute.split("/")[:-3]) + "/badRequest"
-          with open(f"{badRequestRoute}/badRequest_{searchword}.txt", "a",  newline='', encoding='utf-8')as f: # newline沒作用...
-              errorMessage = url + "\n"
-              f.write(errorMessage)   #writelines作用在errorMessage是list時
+        judgeSoup(soup, searchword, url, txtFileRoute)
+        # if not soup:
+        #   badRequestRoute = "/".join(txtFileRoute.split("/")[:-3]) + "/badRequest"
+        #   with open(f"{badRequestRoute}/badRequest_{searchword}.txt", "a",  newline='', encoding='utf-8')as f: # newline沒作用...
+        #       errorMessage = url + "\n"
+        #       f.write(errorMessage)   #writelines作用在errorMessage是list時
+        # elif soup.select_one('head').text.strip() == 'Service Unavailable':
+        #   """
+
+        #   「
+        #   <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN""http://www.w3.org/TR/html4/strict.dtd">
+
+        #   <html><head><title>Service Unavailable</title>
+        #   <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/></head>
+        #   <body><h2>Service Unavailable</h2>
+        #   <hr/><p>HTTP Error 503. The service is unavailable.</p>
+        #   </body></html>
+        #   」
+
+        #   """
+        #   soup = ""
+
 
         with open(txtFileRoute, 'w', encoding='utf-8')as f:
             f.write(str(soup))
@@ -340,7 +385,7 @@ def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
         fileName = txtFileRoute.split("/")[-1]
         productIndex = fileName.split("_")[0]
         productNums = fileName.split("_")[1]
-        # print(f"{thisPID}__成功寫出  {searchword}  detail頁， 第 {productIndex} 項， 共 {productNums} 項。")
+        print(f"{thisPID}__成功寫出  {searchword}  detail頁， 第 {productIndex} 項， 共 {productNums} 項。")
             
         timeSleepRandomly()
 
