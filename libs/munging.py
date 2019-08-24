@@ -70,7 +70,52 @@ class bureauEnergyMunging(object):
         def energyLabelUrl(cls):
                 return "https://ranking.energylabel.org.tw/_Upload/applyMain/applyp/"
 
+        def bureauDataProcessToSet(self, productList):
+                productArray = [file for file in productList]
 
+                print("未去重總筆數", len(productArray))
+                setDict = {}
+                for file in productArray:
+                        setDictInner = {}
+
+                        setDictInner['Id'] = file['Id']
+                        setDictInner['brand_name'] = file['brand_name']
+                        setDictInner['login_number'] = file['login_number']
+                        setDictInner['detailUri'] = file['detailUri']
+                        setDictInner['labeling_company'] = file['labeling_company']
+                        setDictInner['efficiency_rating'] = file['efficiency_rating']
+                        setDictInner['from_date_of_expiration'] = file['from_date_of_expiration']
+                        setDictInner['energy_efficiency_label_outerUri'] = file['energy_efficiency_label_outerUri']
+                        setDictInner['energy_efficiency_label_innerUri'] = file['energy_efficiency_label_innerUri']
+                        setDictInner['test_report_of_energy_efficiency'] = file['test_report_of_energy_efficiency']
+                        setDictInner['efficiency_benchmark'] = file['efficiency_benchmark']
+                        setDictInner['annual_power_consumption_degrees_dive_year'] = file['annual_power_consumption_degrees_dive_year']
+                        
+                        setDict[file['product_model']] = setDictInner
+                
+                print("去重總比數", len(setDict))
+
+                # 重新組裝
+                rebuildArray = []
+                for key in setDict:
+                        rebuildSetDict = {}
+                        rebuildSetDict['Id'] = setDict[key]['Id']
+                        rebuildSetDict['product_model'] = key
+                        rebuildSetDict['brand_name'] = setDict[key]['brand_name']
+                        rebuildSetDict['login_number'] = setDict[key]['login_number']
+                        rebuildSetDict['detailUri'] = setDict[key]['detailUri']
+                        rebuildSetDict['labeling_company'] = setDict[key]['labeling_company']
+                        rebuildSetDict['efficiency_rating'] = setDict[key]['efficiency_rating']
+                        rebuildSetDict['from_date_of_expiration'] = setDict[key]['from_date_of_expiration']
+                        rebuildSetDict['energy_efficiency_label_outerUri'] = setDict[key]['energy_efficiency_label_outerUri']
+                        rebuildSetDict['energy_efficiency_label_innerUri'] = setDict[key]['energy_efficiency_label_innerUri']
+                        rebuildSetDict['test_report_of_energy_efficiency'] = setDict[key]['test_report_of_energy_efficiency']
+                        rebuildSetDict['efficiency_benchmark'] = setDict[key]['efficiency_benchmark']
+                        rebuildSetDict['annual_power_consumption_degrees_dive_year'] = setDict[key]['annual_power_consumption_degrees_dive_year']
+
+                        rebuildArray.append(rebuildSetDict)
+
+                return rebuildArray, len(rebuildArray)
 
         def detailMungingEntry(self, searchword, directory):
                 bureauEnergyDetail = {}
@@ -1089,7 +1134,7 @@ class bureauEnergyMunging(object):
                         # 處理soup=""的情況
                         if not inn:
                                 continue
-                        
+                        # try:
                         productDetail = {}
                         textSoup = BeautifulSoup(inn,'html.parser')
 
@@ -1111,6 +1156,9 @@ class bureauEnergyMunging(object):
                         productDetail["energy_efficiency_label_innerUri"] = labelUri
                         productDetailArray.append(productDetail)
                         # print('done: '+file)
+                        # except AttributeError as e:
+                        #         print(e, file)
+                        #         raise
                 return productDetailArray
 
         # def detailGasStove(self, searchword, directory): #瓦斯爐(燃氣台爐)
