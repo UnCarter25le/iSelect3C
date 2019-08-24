@@ -15,6 +15,12 @@ researchForMultiQueue.py
 
 dataMining/dictionary/*
 
+database/referenceJSON/*
+
+libs/sqlDDLAndsqlAlchemyORM.py
+
+libs/sqlDMLAndsqlAlchemyORM.py
+
 requirements_ChineseLiterature.txt
 
 requirements_iSelect3C.txt
