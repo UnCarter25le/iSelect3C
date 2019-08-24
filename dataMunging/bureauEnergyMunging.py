@@ -11,6 +11,36 @@ https://www.energylabel.org.tw/
 
 
 
+8/22 發現即便有拜訪成功，但是回傳的html內容是不完全的！
+
+'NoneType' object has no attribute 'select' 2052_7778_瓦斯爐.txt
+Process Process-5:
+Traceback (most recent call last):
+  File "/home/bluevc/.pyenv/versions/3.6.8/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/home/bluevc/.pyenv/versions/3.6.8/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/bluevc/2019/iSelect3C/dataMunging/bureauEnergyMunging.py", line 113, in dataMunging
+    bureauEnergyDetail, totalNums = bureauMunging.detailMungingEntry(searchword, directory)
+  File "/home/bluevc/2019/iSelect3C/libs/munging.py", line 101, in detailMungingEntry
+    productDetailArray = self.detailGasStove_2(productDetailArray, directory,labelUrl)
+  File "/home/bluevc/2019/iSelect3C/libs/munging.py", line 1096, in detailGasStove_2
+    categoryOfGas = bureauEnergyMunging.selectColumn(textSoup, 3)
+  File "/home/bluevc/2019/iSelect3C/libs/munging.py", line 65, in selectColumn
+    selected = textSoup.find('div',{'class':'row text-center col-sm-12'}).select('.row')[row].text
+AttributeError: 'NoneType' object has no attribute 'select'
+
+「
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN""http://www.w3.org/TR/html4/strict.dtd">
+
+<html><head><title>Service Unavailable</title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/></head>
+<body><h2>Service Unavailable</h2>
+<hr/><p>HTTP Error 503. The service is unavailable.</p>
+</body></html>
+」
+
+
 * detail的產品型號要同overview一樣清洗。
 
 12個完成！完成！一共耗時：291.0394244194031 秒 總數量 : 0
