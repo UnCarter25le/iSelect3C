@@ -19,14 +19,24 @@ import os
 import sys
 import json
 import datetime
+import sqlalchemy as sqla
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2])
 sys.path.append(_BASE_PATH)
 
-from libs.manipulateDir import initialFile
-from libs.manipulateDir import mkdirForCleanData
 from libs.munging import EcommerceDataProcessToSet
 from libs.multiProcessing import _pchomeKeywordUrlPair
 from libs.timeWidget import timeStampGenerator
+from libs.manipulateDir import (
+                                initialFile,
+                               mkdirForCleanData
+                                )
+from libs.sqlDDLAndsqlAlchemyORM import (
+                                        sqlObjectInitail,
+                                        sqlORMForTables
+                                        )
+
+
+    
 
 
 def mungingPchome(_BASE_PATH, searchword, objectiveFolder, objectiveFolderClean, objective):
@@ -78,6 +88,10 @@ def mungingPchome(_BASE_PATH, searchword, objectiveFolder, objectiveFolderClean,
 
     print(f"===========完成 {searchword}(24h_vdr_kdn) 清洗！=============")
 
+    # print(f"===========開始 {searchword}(24h_vdr_kdn) 資料 INSERT！=============")
+    
+
+
 
 
 if __name__ == '__main__':
@@ -92,7 +106,13 @@ if __name__ == '__main__':
 
     timeStamp = timeStampGenerator()
 
-    searchwordList = [row for row in _pchomeKeywordUrlPair]
+    tableClassBase = sqlObjectInitail()._tableClassBase
+    engine = tableClassBase.connectToMySQLEngine()
 
-    for searchword in searchwordList:
+    # 清洗
+    for searchword in _pchomeKeywordUrlPair:
         mungingPchome(_BASE_PATH, searchword, objectiveFolder, objectiveFolderClean, objective)
+
+    # in
+
+    
