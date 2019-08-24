@@ -27,7 +27,9 @@ if __name__ == '__main__':
 
     dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/newsIntegration"
 
-    fileName = os.listdir(dirRoute).pop()
+    fileName = os.listdir(dirRoute)
+    fileName.sort(key= lambda x: x.split("_")[1])
+    fileName = fileName.pop()
     print(fileName)
     counterNum = Counter()
 
