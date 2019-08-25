@@ -30,11 +30,21 @@ def eraseRawData(objectiveFolder, objective, searchword, keyword=""):
         print(f"已經清空 {dirRoute}")
 
 
-def initialFile(directory):
+def initialFileZeroUnderscoreInt(directory):
     readyFile = os.listdir(directory)
     readyFile.sort(key= lambda x: int(x.split('_')[0]))
     return readyFile  
 
+
+def initialFileFirstUnderscoreString(directory):
+    readyFile = os.listdir(directory)
+    readyFile.sort(key= lambda x: x.split('_')[1])
+    return readyFile
+
+def initialFileFourthUnderscoreString(directory):
+    readyFile = os.listdir(directory)
+    readyFile.sort(key= lambda x: x.split('_')[4])
+    return readyFile
 
 def mkdirForCleanData(objectiveFolderClean, objective):
     dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolderClean}/{objective}"
@@ -66,11 +76,11 @@ def listSecondDirBelowFiles(dirRoute):
             # if row[-1]: #捕捉到檔案名
             #     dirRoute = row[0]
                 try:
-                    readyFile = initialFile(rawDir)
+                    readyFile = initialFileZeroUnderscoreInt(rawDir)
                     for rawFile in readyFile:
                         completeName = rawDir+ "/" + rawFile
                         yield completeName
-                except ValueError: #不適合用 initialFile列舉的檔案
+                except ValueError: #不適合用 initialFileZeroUnderscoreInt列舉的檔案
                     readyFile = os.listdir(rawDir)
                     for rawFile in readyFile:
                         completeName = rawDir+ "/" + rawFile
