@@ -50,7 +50,7 @@ sys.path.append(_BASE_PATH)   # 因為此行生效，所以才能引用他處的
 
 from libs.manipulateDir import mkdirForRawData
 from libs.manipulateDir import eraseRawData
-from libs.manipulateDir import initialFile
+from libs.manipulateDir import initialFileZeroUnderscoreInt
 from libs.multiProcessing import distributeKeyword
 from libs.multiProcessing import _bureauEnergyKeywordUrlPair
 from libs.timeWidget import timeSleepRandomly

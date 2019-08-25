@@ -160,7 +160,7 @@ sys.path.append(_BASE_PATH)
 
 from libs.manipulateDir import mkdirForRawData
 from libs.manipulateDir import eraseRawData
-from libs.manipulateDir import initialFile
+from libs.manipulateDir import initialFileZeroUnderscoreInt
 from libs.multiProcessing import distributeKeyword
 from libs.multiProcessing import _bureauEnergyKeywordUrlPair
 from libs.timeWidget import timeSleepRandomly
@@ -204,7 +204,7 @@ def dataMunging(input, output, dirRoute,objectiveFolder, objective, domainUrl, *
         bureauEnergyDict = {}
         productArray= [] 
         
-        for file in initialFile(dirNameAccepted):
+        for file in initialFileZeroUnderscoreInt(dirNameAccepted):
             # print(" start " + file + " ! ")
                 
             with open(dirNameAccepted + file)as f:
