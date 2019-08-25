@@ -4,6 +4,7 @@
 import os
 import sys
 import re
+import sre_constants
 import random
 from math import ceil
 
@@ -43,12 +44,44 @@ def searchWordTrueOrFalse(regexword, wordsComparison):
     # print(regexword)
     # 如果 regexword="(" or ")" ，compile會報錯 re_constants.error: missing ), unterminated subpattern at position 0 ；unbalanced parenthesis at position 0
     # 如果 regexword="?" 會報錯：sre_constants.error: nothing to repeat at position 0   ，因為「?」的意思是前面的字元出現0~1次
+
+    # 此商品型號放進re裡面，報錯 sre_constants.error: bad escape \V at position 18
+    # 12791＋CGWLUX301GAIALTRCI\Vr00(NG1
+    # https://ranking.energylabel.org.tw/product/Approval/upt.aspx?pageno=240&key2=&key=&con=0&pprovedateA=&pprovedateB=&approvedateA=&approvedateB=&Type=45&comp=0&RANK=0&refreA=0&refreB=0&condiA=0&condiB=0&HDA=0&HDB=0&SWHA=0&SWHB=0&p0=51335&id=12791#    
+    
+    try:
+        searchwrod = re.compile(f"{regexword}")
+        searchResult = searchwrod.search(wordsComparison)
+        if searchResult:
+            return 1
+        else:
+            return 0
+    except sre_constants.error as e:
+        print(f"「{regexword}」 has error code:", e)
+        # raise
+        return 0
+
+def searchWordStartAndEnd(regexword, wordsComparison):
+    
     
     searchwrod = re.compile(f"{regexword}")
     searchResult = searchwrod.search(wordsComparison)
-    if searchResult:
-        return 1
-    else:
+    
+    return searchResult.start()
+    
+
+def fullMatchWordTrueOrFalse(regexword, wordsComparison):
+
+    try:
+        fullMatchwrod = re.compile(f"{regexword}")
+        fullMatchResult = fullMatchwrod.fullmatch(wordsComparison)
+        if fullMatchResult:
+            return 1
+        else:
+            return 0
+    except sre_constants.error as e:
+        print(f"「{regexword}」 has error code:", e)
+        # raise
         return 0
 
 class textMiningRegex(object):
@@ -103,6 +136,44 @@ class bureauEnergyReplace(object):
         category = searchCategory.search(category).group()
         return category  # "LP-T228(NG1)"   --->  (NG1)
 
+    def productModelExtract(self, productModel):
+        if not "/" in productModel:
+            searchProductModel = re.compile("[a-zA-Z0-9-]+")
+            productModel = searchProductModel.search(productModel).group()
+            # "旺旺LP-CH-903(110V)"  ---> LP-CH-903
+        else:
+            searchProductModel = re.compile("[a-zA-Z0-9-/]+")
+            productModel = searchProductModel.search(productModel).group()
+            # E/7303GAIAL2TR(NG1)  ---> E/7303GAIAL2TR
+        return productModel 
+
+    def productModelExtractAdvanced(self, productModel):
+        # 避免這種情況 ："櫻花牌--SH-1335--13公升恆溫強制排氣熱水器(部分地區含基本安裝)"
+        # ---> "SH-1335"
+        try:
+        # 只比對以「-」相連的型號，如「SH-1335-A23d」
+            searchProductModel = re.compile("[a-zA-Z0-9]+-?[a-zA-Z0-9]+-?[a-zA-Z0-9]+-?[a-zA-Z0-9]+-?[a-zA-Z0-9]+")
+            productModel = searchProductModel.search(productModel).group()    
+        except AttributeError as e:
+        # 型號沒有一槓 ：SD20
+            searchProductModel = re.compile("[a-zA-Z0-9]+")
+            productModel = searchProductModel.search(productModel).group()    
+        return productModel 
+    
+
+    def productNameExtract(self, productName):
+        seachBrandName = re.compile("[a-zA-Z]+")
+        remainingName = seachBrandName.sub("", productName)
+
+        searchProductModel = re.compile("[a-zA-Z0-9-/ ]{5,100}")
+        try:
+            productModel = searchProductModel.search(remainingName).group()
+        except AttributeError as e:
+            productModel = "nothingBeFound"
+        return productModel
+
+
+
 class numsHandler(object):
     def searchNums(self, bookurl):
         searchNum = re.compile('\d+')
@@ -145,8 +216,68 @@ class numsHandler(object):
 # aa = "LP-CH-906A(220V)附RO逆滲透純水機"
 # aa = "LP-CH-903(110V)"
 # print(re.match( "[a-zA-Z0-9-]+", aa).group())
+# print(re.search( "[a-zA-Z0-9-]+", aa).group())
 # aa = "QB R 80 V 2,5K TW ".replace(" ","")
 # aa = "UR-9615AG-110V".replace("-220V", "")
 # print(re.search( "[a-zA-Z0-9-]+", aa).group())
 
 
+# # aa = "國際牌14.5坪頂級LJ系列R32冷媒變頻單冷分離式CS-LJ90BA2/CU-LJ90BCA2"
+# aa = "【SAMPO聲寶】5-7坪變頻右吹窗型冷氣AW-PC36D"
+# # aa = "【中古】Panasonic エアコンリモコン ACXA75C13980"
+# # aa = "德國 JJPRO 7000BTU(3坪 移動式冷氣/空調 (冷氣/風扇/除濕/乾衣 四機和一 JPP05)"
+# # aa = "【奇美CHIMEI】7-9坪極光系列變頻冷暖一對一分離式空調RB-S50HF1/ RC-S50HF1"
+# # aa = "【hokua北陸】Wu Wen Pan+ 名廚聯名炒鍋(瓦斯爐專用) 24cm"
+# aaa = re.compile("[a-zA-Z]+")
+
+# aa = "莊頭北 TH-5127RF 加強抗風12L屋外型熱水器"
+# bb = aaa.sub("" ,aa, count=1) # count= 只取代幾次
+# print(bb)
+# # HERAN
+# print(bb)
+# # aa = "MAXE萬士益 MVH系列變頻冷暖一對一分離式空調 RA-50MVH/MAS-50MVH"
+# # aa = "德國 JJPRO 7000BTU(3坪 移動式冷氣/空調 (冷氣/風扇/除濕/乾衣 四機和一 JPP05)"
+
+# try:
+#     # print(re.search( "[a-zA-Z0-9-/ ]{5,100}", bb).group())
+#     dd = re.search( "[a-zA-Z0-9-/ ]{5,100}", bb).group()
+#     cc = (r for r in dd.split("/"))
+#     # print(dd)
+#     for r in cc:
+#         print(r)
+# except AttributeError as e:
+#     print("nothingFound")
+
+
+
+# print(searchWordTrueOrFalse("PH-1215FE", "PH-1215FEA"))
+
+
+
+# gg = re.search("SH-1335", "櫻花SAKURA 數位恆溫13L強制排氣型熱水器 SH-1335桶裝瓦斯")
+# # gg = re.search("CS-LJ90", "分離式CS-LJ90BA2/CU-LJ90BCA2")
+# print(gg.start())
+# # 避免start後，name變成這樣「SH-1335桶裝瓦斯」，所以在用re比對一次，變成「SH-1335」
+# print(bureauEnergyReplace().productModelExtract("櫻花SAKURA 數位恆溫13L強制排氣型熱水器 SH-1335桶裝瓦斯"[25:]).split("/"))
+
+
+# "櫻花牌--SH-1335--13公升恆溫強制排氣熱水器(部分地區含基本安裝)"
+# gg = re.search("SH-1335", "櫻花牌--SH-1335--13公升恆溫強制排氣熱水器(部分地區含基本安裝)")
+# print(gg.start())
+# print(bureauEnergyReplace().productModelExtractAdvanced("SD20"))
+# print(bureauEnergyReplace().productModelExtractAdvanced("SH-1335--"))
+# print(bureauEnergyReplace().productModelExtractAdvanced("櫻花牌--SH-1335-D3 13公升----13公升恆溫強制排氣熱水器(部分地區含基本安裝)"))
+# "【Frigidaire 富及第】11L 超靜音節能除濕機 FDH-1111KA 5-7坪"
+# print(bureauEnergyReplace().productModelExtractAdvanced("節能除濕機 FDH-1111KA 5-7坪"))
+
+# print(bureauEnergyReplace().productModelExtractAdvanced("LC-060I SPA-ZA WHALE LIGHT "))
+# print(re.search("[ 0-9]+", "SH-13 35--13公升恆溫強制排氣熱水器(部分地區含基本安裝)").group())
+# aa = "E/730 3G AI AL 2TR"
+# aa = "E/7303GAIAL2TR(NG1)"
+# print(bureauEnergyReplace().productModelExtract(aa))
+
+# print(re.search("[a-zA-Z0-9-/]+", aa).group())
+
+# aa = "FLE20TBX/827/E27120V"
+# aa = "FSL21L-EX120/T3"
+# print(bureauEnergyReplace().productModelExtract(aa))
