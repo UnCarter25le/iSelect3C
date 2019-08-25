@@ -11,7 +11,7 @@ sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的mo
 
 from libs.timeWidget import timeSleepOne
 from libs.timeWidget import timeStampGenerator
-from libs.manipulateDir import initialFile
+from libs.manipulateDir import initialFileZeroUnderscoreInt
 # from libs.regex import interDiv
 # from libs.regex import searchFloatNums
 # from libs.regex import searchNums
@@ -177,7 +177,7 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/HDN_photo1/product_model_original.jpg`
                 
                 """
-                for file in initialFile(directory):
+                for file in initialFileZeroUnderscoreInt(directory):
                         #print("start: " + file)
                         with open(directory + file)as f:
                                 inn = f.read()
@@ -213,7 +213,7 @@ class bureauEnergyMunging(object):
         #         productDetailArray = []
         #         labelUrl = bureauEnergyMunging.energyLabelUrl()
                 
-        #         for file in initialFile(directory):
+        #         for file in initialFileZeroUnderscoreInt(directory):
         #                 #print("start: " + file)
         #                 with open(directory + file)as f:
         #                         inn = f.read()
@@ -277,7 +277,7 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/ACN_photo1/product_model_original.jpg`
                 
                 """
-                for file in initialFile(directory):
+                for file in initialFileZeroUnderscoreInt(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
@@ -313,7 +313,7 @@ class bureauEnergyMunging(object):
         #         productDetailArray = []
         #         labelUrl = bureauEnergyMunging.energyLabelUrl()
 
-        #         for file in initialFile(directory):
+        #         for file in initialFileZeroUnderscoreInt(directory):
         #                 # print('start: '+file)
         #                 with open(directory + file)as f:
         #                         inn = f.read()
@@ -373,7 +373,7 @@ class bureauEnergyMunging(object):
  
                 `summary: {p1}/RFn_photo1/product_model_original.jpg`
                 """
-                for file in initialFile(directory):
+                for file in initialFileZeroUnderscoreInt(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
@@ -408,7 +408,7 @@ class bureauEnergyMunging(object):
         #         productDetailArray = []
         #         labelUrl = bureauEnergyMunging.energyLabelUrl()
                 
-        #         for file in initialFile(directory):
+        #         for file in initialFileZeroUnderscoreInt(directory):
         #                 # print('start: '+file)
         #                 with open(directory + file)as f:
         #                         inn = f.read()
@@ -466,7 +466,7 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/TB_photo1/product_model_original.jpg`
    
                 """
-                for file in initialFile(directory):
+                for file in initialFileZeroUnderscoreInt(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
@@ -501,7 +501,7 @@ class bureauEnergyMunging(object):
         #         productDetailArray = []
         #         labelUrl = bureauEnergyMunging.energyLabelUrl()
                 
-        #         for file in initialFile(directory):
+        #         for file in initialFileZeroUnderscoreInt(directory):
         #                 # print('start: '+file)
         #                 with open(directory + file)as f:
         #                         inn = f.read()
@@ -560,7 +560,7 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/WD_photo1/product_model_original_{p0}.jpg`
 
                 """
-                for file in initialFile(directory):
+                for file in initialFileZeroUnderscoreInt(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
@@ -595,7 +595,7 @@ class bureauEnergyMunging(object):
         #         productDetailArray = []
         #         labelUrl = bureauEnergyMunging.energyLabelUrl()
                 
-        #         for file in initialFile(directory):
+        #         for file in initialFileZeroUnderscoreInt(directory):
         #                 # print('start: '+file)
         #                 with open(directory + file)as f:
         #                         inn = f.read()
@@ -653,7 +653,7 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/WF_photo1/product_model_original_{p0}.jpg`
 
                 """
-                for file in initialFile(directory):
+                for file in initialFileZeroUnderscoreInt(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
@@ -687,7 +687,7 @@ class bureauEnergyMunging(object):
         #         productDetailArray = []
         #         labelUrl = bureauEnergyMunging.energyLabelUrl()
                 
-        #         for file in initialFile(directory):
+        #         for file in initialFileZeroUnderscoreInt(directory):
         #                 # print('start: '+file)
         #                 with open(directory + file)as f:
         #                         inn = f.read()
@@ -745,7 +745,7 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/WW_photo1/product_model_original_{p0}.jpg`
                 
                 """
-                for file in initialFile(directory):
+                for file in initialFileZeroUnderscoreInt(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
@@ -781,7 +781,7 @@ class bureauEnergyMunging(object):
         #         productDetailArray = []
         #         labelUrl = bureauEnergyMunging.energyLabelUrl()
                 
-        #         for file in initialFile(directory):
+        #         for file in initialFileZeroUnderscoreInt(directory):
         #                 # print('start: '+file)
         #                 with open(directory + file)as f:
         #                         inn = f.read()
@@ -843,7 +843,7 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/DF_photo1/product_model_original_{p0}.jpg`
 
                 """
-                for file in initialFile(directory):
+                for file in initialFileZeroUnderscoreInt(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
@@ -879,7 +879,7 @@ class bureauEnergyMunging(object):
         #         productDetailArray = []
         #         labelUrl = bureauEnergyMunging.energyLabelUrl()
                 
-        #         for file in initialFile(directory):
+        #         for file in initialFileZeroUnderscoreInt(directory):
         #                 # print('start: '+file)
         #                 with open(directory + file)as f:
         #                         inn = f.read()
@@ -941,7 +941,7 @@ class bureauEnergyMunging(object):
 
                 `summary: {p1}/SWH_photo1/product_model_original.jpg`
                 """
-                for file in initialFile(directory):
+                for file in initialFileZeroUnderscoreInt(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
@@ -976,7 +976,7 @@ class bureauEnergyMunging(object):
         #         productDetailArray = []
         #         labelUrl = bureauEnergyMunging.energyLabelUrl()
                 
-        #         for file in initialFile(directory):
+        #         for file in initialFileZeroUnderscoreInt(directory):
         #                 # print('start: '+file)
         #                 with open(directory + file)as f:
         #                         inn = f.read()
@@ -1032,7 +1032,7 @@ class bureauEnergyMunging(object):
                 `summary: {p1}/WH_photo1/product_model_original(斜線變底線)_{p0}.jpg`
                 
                 """
-                for file in initialFile(directory):
+                for file in initialFileZeroUnderscoreInt(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
@@ -1068,7 +1068,7 @@ class bureauEnergyMunging(object):
         #         productDetailArray = []
         #         labelUrl = bureauEnergyMunging.energyLabelUrl()
 
-        #         for file in initialFile(directory):
+        #         for file in initialFileZeroUnderscoreInt(directory):
         #                 # print('start: '+file)
         #                 with open(directory + file)as f:
         #                         inn = f.read()
@@ -1126,7 +1126,7 @@ class bureauEnergyMunging(object):
                 
                 `summary: {p1}/GB_photo1/product_model_original(類別)_{p0}.jpg`
                 """
-                for file in initialFile(directory):
+                for file in initialFileZeroUnderscoreInt(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
@@ -1167,7 +1167,7 @@ class bureauEnergyMunging(object):
         #         productDetailArray = []
         #         labelUrl = bureauEnergyMunging.energyLabelUrl()
                 
-        #         for file in initialFile(directory):
+        #         for file in initialFileZeroUnderscoreInt(directory):
         #                 # print('start: '+file)
         #                 with open(directory + file)as f:
         #                         inn = f.read()
@@ -1226,7 +1226,7 @@ class bureauEnergyMunging(object):
 
                 `summary: {p1}/SB_photo1/product_model_original.jpg`
                 """
-                for file in initialFile(directory):
+                for file in initialFileZeroUnderscoreInt(directory):
                         # print('start: '+file)
                         with open(directory + file)as f:
                                 inn = f.read()
@@ -1262,7 +1262,7 @@ class bureauEnergyMunging(object):
         #         productDetailArray = []
         #         labelUrl = bureauEnergyMunging.energyLabelUrl()
 
-        #         for file in initialFile(directory):
+        #         for file in initialFileZeroUnderscoreInt(directory):
         #                 # print('start: '+file)
         #                 with open(directory + file)as f:
         #                         inn = f.read()
