@@ -9,7 +9,7 @@ sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的mo
 
 from libs.timeWidget import timeSleepOne
 from libs.timeWidget import timeStampGenerator
-from libs.manipulateDir import initialFile
+from libs.manipulateDir import initialFileZeroUnderscoreInt
 from libs.regex import interDiv
 from libs.regex import searchFloatNums
 # from libs.regex import searchNums
