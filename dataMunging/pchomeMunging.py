@@ -27,7 +27,7 @@ from libs.munging import EcommerceDataProcessToSet
 from libs.multiProcessing import _pchomeKeywordUrlPair
 from libs.timeWidget import timeStampGenerator
 from libs.manipulateDir import (
-                                initialFile,
+                                initialFileZeroUnderscoreInt,
                                mkdirForCleanData
                                 )
 from libs.sqlDDLAndsqlAlchemyORM import (
@@ -54,8 +54,8 @@ def mungingPchome(_BASE_PATH, searchword, objectiveFolder, objectiveFolderClean,
     pchomeDict["dateTime"] = timeStamp
 
     for directory in [dir1, dir2, dir3]:
-        if initialFile(directory): #有些資料夾下面沒有檔案
-            for file in initialFile(directory):
+        if initialFileZeroUnderscoreInt(directory): #有些資料夾下面沒有檔案
+            for file in initialFileZeroUnderscoreInt(directory):
                 with open(directory + file)as f:
                     inn = json.load(f)
 

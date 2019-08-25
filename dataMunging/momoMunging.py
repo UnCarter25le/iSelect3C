@@ -22,7 +22,7 @@ import multiprocessing as mp
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2])
 sys.path.append(_BASE_PATH)
 
-from libs.manipulateDir import initialFile
+from libs.manipulateDir import initialFileZeroUnderscoreInt
 from libs.manipulateDir import mkdirForCleanData
 from libs.regex import searchNums
 from libs.regex import interDiv
@@ -63,7 +63,7 @@ def dataMunging(input, dirRoute, objectiveFolderClean, objective, domainUrl):
         momoDict = {}
         productArray= [] 
 
-        for file in initialFile(fileRoute):
+        for file in initialFileZeroUnderscoreInt(fileRoute):
             # print("start " + file + " ! ")
 
             with open(fileRoute + "/" + file)as f:
