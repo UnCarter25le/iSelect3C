@@ -49,11 +49,11 @@ if __name__ == '__main__':
         for table in sqlDDL.getTables():
             conn.execute(f"DROP TABLE if exists {table}")
         
-        # 使用raw sqlString創建
+        # 使用raw sqlString創建----------------------
         # for syn in sqlDDL.getMySQLSyntax():
         #     conn.execute(syn)
 
-        # 利用 ORM 建立所有class資料表！
+        # 利用 ORM 建立所有class資料表！----------------------
         tableClassBase._Base.metadata.create_all(conn)
         for key in iter(rawSQLString().MySQLAlterUniqueRawStringDict):
             alterSQLString = rawSQLString().MySQLAlterUniqueRawStringDict[key]
@@ -62,11 +62,12 @@ if __name__ == '__main__':
         
     except (sqla.exc.InternalError, sqla.exc.ProgrammingError, sqla.exc.IntegrityError) as e:
         trans.rollback()
+        # conn.rollback()  # AttribueError
         print()
         print("error code:", e)
         raise
     else:
-        print("establish table:", [t for t in tableClassBase.getTables()])
+        print("establish table:\n", "\n".join([t for t in tableClassBase.getTables()]))
     finally:
         conn.execute("SET foreign_key_checks = 1")
         trans.close()
