@@ -40,7 +40,7 @@ _weatherRecordAvailable = {"2009": _monthsAvailable,
                         "2016": _monthsAvailable,
                         "2017": _monthsAvailable,
                         "2018": _monthsAvailable,
-                        "2019": [str(row) for row in range(1,6)]}
+                        "2019": [str(row) for row in range(1,8)]}
 
 
 # 除濕機與電冰箱是採「107年新分級基準」。
