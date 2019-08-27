@@ -9,15 +9,23 @@ from urllib.parse import urlparse, parse_qs
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2]) 
 sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的module
 
-from libs.timeWidget import timeSleepOne
-from libs.timeWidget import timeStampGenerator
-from libs.manipulateDir import initialFileZeroUnderscoreInt
+from libs.timeWidget import (
+                        timeSleepOne,
+                        timeStampGenerator
+                        )
+from libs.manipulateDir import (
+                        initialFileZeroUnderscoreInt,
+                        listSecondDirBelowFiles
+                        )
 # from libs.regex import interDiv
 # from libs.regex import searchFloatNums
 # from libs.regex import searchNums
 # from libs.regex import floatDiv
-from libs.regex import bureauEnergyReplace
-from libs.regex import numsHandler
+from libs.regex import (
+                        bureauEnergyReplace,
+                        numsHandler
+                        )
+
 
 
 
@@ -59,7 +67,105 @@ def EcommerceDataProcessToSet(productList):
 
 
 
-class bureauEnergyMunging(object):
+
+class rawDataMunging(object):
+        """
+        類別可以直接取用屬性，不用建立物件
+        
+        """
+        
+        _objectiveMunging = "dataMunging"
+
+        _objectiveMining = "dataMining"
+
+        _objectiveDatabase = "database"
+
+
+
+        _objectiveFolderReferenceJSON = "referenceJSON"
+
+        _objectiveFolderRawData = "rawData"
+
+        _objectiveFolderCleanData = "cleanData"
+
+        _objectiveFolderDictionary = "dictionary"
+
+        _objectiveFolderWeather = "weather"
+
+        _objectiveFolderObservationStation = "observationStation"
+
+
+        _dirRouteMungingRaw = f"{_BASE_PATH}/{_objectiveMunging}/{_objectiveFolderRawData}/"
+
+        _dirRouteMungingClean = f"{_BASE_PATH}/{_objectiveMunging}/{_objectiveFolderCleanData}/"
+
+        _dirRouteMiningDictionary = f"{_BASE_PATH}/{_objectiveMining}/{_objectiveFolderCleanData}/{_objectiveFolderDictionary}/"
+
+        _dirRouteDatabaseReferenceJSON = f"{_BASE_PATH}/{_objectiveDatabase}/{_objectiveFolderReferenceJSON}/"
+
+        # _dirRoute = f"{_BASE_PATH}/{_objectiveFolder}/{_objective}/"
+
+
+
+class weatherRecordMunging(rawDataMunging):
+        _weather = "weather"
+
+        def selectColumn(self, everyStationData, row):
+                rowData = everyStationData.select("td")[row].text
+                return rowData
+
+        def selectStationName(self, everyStationData):
+                return everyStationData.select_one("th").text
+
+        def generateDateFromFileRoute(self, fileRoute):
+                """
+                "/home/bluevc/2019/iSelect3C/dataMunging/rawData/weather/2019/6_2019.txt"
+                """
+                month, year = fileRoute.split("/")[-1].replace(".txt", "").split("_")
+                return month, year
+        
+        def composeDate(self, year, month, everyStationData, row):
+                return f"{year}-{month}-{numsHandler.searchFloatNumsMultiple(self.selectColumn(everyStationData, row))[-1]}"
+        
+
+
+
+class ecommerceMunging(rawDataMunging):
+        
+        def EcommerceDataProcessToSet(self, productList):
+                productArray = [file for file in productList]
+
+                print("未去重總筆數", len(productArray))
+                setDict = {}
+                for file in productArray:
+                        setDictInner = {}
+                        setDictInner['name'] = file['name']
+                        setDictInner['originprice'] = file['originprice']
+                        setDictInner['pics'] = file['pics']
+                        setDictInner['picb'] = file['picb']
+                        setDictInner['produrl'] = file['produrl']
+                        
+                        setDict[file['Id']] = setDictInner
+                
+                print("去重總比數", len(setDict))
+
+                # 重新組裝
+                rebuildArray = []
+                for key in setDict:
+                        rebuildSetDict = {}
+                        rebuildSetDict['Id'] = key
+                        rebuildSetDict['name'] = setDict[key]['name']
+                        rebuildSetDict['originprice'] = setDict[key]['originprice']
+                        rebuildSetDict['pics'] = setDict[key]['pics']
+                        rebuildSetDict['picb'] = setDict[key]['picb']
+                        rebuildSetDict['produrl'] = setDict[key]['produrl']
+
+                        rebuildArray.append(rebuildSetDict)
+
+                return rebuildArray, len(rebuildArray)
+
+
+class bureauEnergyMunging(rawDataMunging):
         @classmethod
         def selectColumn(cls, textSoup, row):
                 selected = textSoup.find('div',{'class':'row text-center col-sm-12'}).select('.row')[row].text
@@ -85,13 +191,22 @@ class bureauEnergyMunging(object):
                         setDictInner['labeling_company'] = file['labeling_company']
                         setDictInner['efficiency_rating'] = file['efficiency_rating']
                         setDictInner['from_date_of_expiration'] = file['from_date_of_expiration']
-                        setDictInner['energy_efficiency_label_outerUri'] = file['energy_efficiency_label_outerUri']
-                        setDictInner['energy_efficiency_label_innerUri'] = file['energy_efficiency_label_innerUri']
+                        
+                        try: # 歷史檔案的欄位比較少，會有KeyError的問題
+                                setDictInner['energy_efficiency_label_outerUri'] = file['energy_efficiency_label_outerUri']
+                                setDictInner['energy_efficiency_label_innerUri'] = file['energy_efficiency_label_innerUri']
+                        except KeyError as e:
+                                # print()
+                                # print("error code:", e)
+                                setDictInner['energy_efficiency_label_outerUri'] = "None"
+                                setDictInner['energy_efficiency_label_innerUri'] = "None"
+
                         setDictInner['test_report_of_energy_efficiency'] = file['test_report_of_energy_efficiency']
                         setDictInner['efficiency_benchmark'] = file['efficiency_benchmark']
                         setDictInner['annual_power_consumption_degrees_dive_year'] = file['annual_power_consumption_degrees_dive_year']
                         
                         setDict[file['product_model']] = setDictInner
+                        
                 
                 print("去重總比數", len(setDict))
 
