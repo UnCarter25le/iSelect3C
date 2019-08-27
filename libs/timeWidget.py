@@ -69,3 +69,17 @@ def timeStampCalculate(hoursOrMinutesAgo):
         strfTime = hoursOrMinutesAgo.replace("年","-").replace("月","-").replace("日","")
         fmt = "%Y-%m-%d"  #"%Y年%m月%d日"
         return datetime.datetime.strptime(strfTime, fmt).date().__str__()
+
+def timeStampIntervalSwitch(chineseIntervalTimeStr):
+    """
+    2019年05月29日14時51分  -->  2019-05-29-14-51
+    
+    """
+    fmt = "%Y-%m-%d-%H-%M"  #"%Y年%m月%d日"
+    dashIntervalTimeStr = chineseIntervalTimeStr.replace("年","-").replace("月","-").replace("日","-").replace("時","-").replace("分","")
+    # dashIntervalTimeObject = datetime.datetime.strptime(dashIntervalTimeStr, fmt)
+    # dashIntervalTimeStr = datetime.datetime.strftime(dashIntervalTimeObject, fmt)
+
+    return dashIntervalTimeStr
+
+# print(timeStampIntervalSwitch("2019年05月29日14時51分"))
