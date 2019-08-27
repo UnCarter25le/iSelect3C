@@ -7,7 +7,7 @@
 
 備　　註：
 
-    omo 花費： 3356.2910916805267 秒
+    能源局 、pchome、momo 花費： 3356.2910916805267 秒
 
 """
 
@@ -27,7 +27,10 @@ from libs.sqlDDLAndsqlAlchemyORM import (
 from libs.sqlDMLAndsqlAlchemyORM import (
                                         referenceFiles, 
                                         bureauEnergyMunging, 
+                                        bureauEnergyMungingHistorical,
                                         ecommerceMunging,
+                                        ecommerceMungingHistorical,
+                                        weatherMunging,
                                         multiSourceObjectInitial
                                         )
 from libs.timeWidget import timeCalculate
@@ -43,45 +46,114 @@ if __name__ == '__main__':
     tableClassBase = sqlObjectInitail()._tableClassBase
     engine = tableClassBase.connectToMySQLEngine()
     
-    multiSourceObject = multiSourceObjectInitial(bureauEnergyM=bureauEnergyMunging(), ecommerceM=ecommerceMunging())
+    multiSourceObject = multiSourceObjectInitial(bureauEnergyM=bureauEnergyMunging(), ecommerceM=ecommerceMunging(), weatherM=weatherMunging())
+    multiSourceObjectForBackupTable = multiSourceObjectInitial(bureauEnergyM=bureauEnergyMungingHistorical(), ecommerceM=ecommerceMungingHistorical())
     
     bureauEnergyFolder = multiSourceObject.bureauEnergyM._objectiveBureauEnergy
     pchomeFoler = multiSourceObject.ecommerceM._objectivePchome
     momoFolder = multiSourceObject.ecommerceM._objectiveMomo
+    weatherFolder = multiSourceObject.weatherM._objectiveWeather
     
     
-    begin = timeCalculate()
+    
+    
 
-    #-------------------------------------
-
-    # # 插入 referenceFiles-------------------------------------
+    
+    """
+    PART (1)
+    寫入 referenceFiles-------------------------------------
+    This session is one-time procedure!
+    """
+    # begin = timeCalculate()
     # referenceFiles().writeReferenceDataIntoDB(tableClassBase, engine)
     # end = timeCalculate()
 
     # print("referenceFiles完成：", end-begin, "秒。")
 
 
-
+    """
+    PART (2)-1
+    寫入 能源局產品-------------------------------------
+    This session is one-time procedure!
+    """
+    # begin = timeCalculate()
     # multiSourceObject.writeLatestDataIntoDB(multiSourceObject.bureauEnergyM, 
-    #                 sourceDataFolderName=bureauEnergyFolder, 
-    #                 bureauSET=bureauSET())
-
+    #                 sourceDataFolderName=bureauEnergyFolder, bureauSET=bureauSET())
     # end = timeCalculate()
-    # print(f"{bureauEnergyFolder} 花費：", end-begin, "秒。")
+    # print(f"最新檔案 {bureauEnergyFolder} 花費：", end-begin, "秒。")
+
+    
+    
+    """
+    PART (2)-2
+    將最新的檔案寫入backup表格
+    This session is alternative;Please refer to 'inserHistoricalDataIntoDB.py".
+    """
+    # begin = timeCalculate()
+    # multiSourceObjectForBackupTable.bureauEnergyM.alterStillWorkToZero(1)
+    # multiSourceObjectForBackupTable.writeHistoricalDataIntoDB(multiSourceObjectForBackupTable.bureauEnergyM, 
+    #                     sourceDataFolderName=bureauEnergyFolder, bureauSET=bureauSET(), latestBoolean=1)
+    # end = timeCalculate()
+    # print(f"最新檔案 {bureauEnergyFolder} 寫入backup表格 花費：", end-begin, "秒。")
 
 
 
-    multiSourceObject.writeLatestDataIntoDB(multiSourceObject.ecommerceM,
-                    sourceDataFolderName=pchomeFoler)
-    end = timeCalculate()
-    print(f"{pchomeFoler} 花費：", end-begin, "秒。")
+
+
+    """
+    PART (3)-1
+    寫入 電商商品-------------------------------------
+    This session is one-time procedure!
+    """
+    # begin = timeCalculate()
+    # multiSourceObject.writeLatestDataIntoDB(multiSourceObject.ecommerceM,
+    #                 sourceDataFolderName=pchomeFoler)
+    # end = timeCalculate()
+    # print(f"最新檔案 {pchomeFoler} 花費：", end-begin, "秒。")
+
+    # begin = timeCalculate()
+    # multiSourceObject.writeLatestDataIntoDB(multiSourceObject.ecommerceM, 
+    #                 sourceDataFolderName=momoFolder)
+    # end = timeCalculate()
+    # print(f"最新檔案 {momoFolder} 花費：", end-begin, "秒。")
 
 
 
-    multiSourceObject.writeLatestDataIntoDB(multiSourceObject.ecommerceM, 
-                    sourceDataFolderName=momoFolder)
-    end = timeCalculate()
-    print(f"{momoFolder} 花費：", end-begin, "秒。")
+
+    """
+    PART (3)-2
+    將最新的檔案寫入backup表格
+    This session is alternative;Please refer to 'inserHistoricalDataIntoDB.py".
+    """
+
+    # begin = timeCalculate()
+
+    # multiSourceObjectForBackupTable.ecommerceM.alterStillWorkToZero(1)
+    # multiSourceObjectForBackupTable.writeHistoricalDataIntoDB(multiSourceObjectForBackupTable.ecommerceM, 
+    #                                 sourceDataFolderName=pchomeFoler, latestBoolean=1)
+    # end = timeCalculate()
+    # print(f"最新檔案 {pchomeFoler}, {momoFolder} 花費：", end-begin, "秒。")
+
+
+
+
+
+
+
+
+    """
+    PART (4)
+    將氣象歷史資料入DB-------------------------------------
+    This session is one-time procedure!
+    """
+    # begin = timeCalculate()
+
+    # multiSourceObject.weatherM.truncateTable(1)
+    # multiSourceObject.writeLatestDataIntoDB(multiSourceObject.weatherM, 
+    #                                 sourceDataFolderName=weatherFolder)
+    # end = timeCalculate()
+    # print(f"最新檔案 {weatherFolder} 花費：", end-begin, "秒。")
+
 
 
 
@@ -104,9 +176,10 @@ if __name__ == '__main__':
     # # rows = result.fetchall()
     # # print(rows[-5:])
 
-    # result = pchome.getReferenceTupleFromDB(tableClassBase,session, "1")
-    
-    # print(result[-100:])
+    # # result = ecommerceMunging().getReferenceTupleFromDB(tableClassBase,session, "1")
+    # # print(result[-100:])
+    # obj = session.query(tableClassBase.bureauEnergyProducts).filter(tableClassBase.bureauEnergyProducts.product_model=="18356＋UN-1322AG-1").first()
+    # print(obj.product_model)
 
     # session.close()
     # conn.close()
