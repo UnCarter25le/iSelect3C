@@ -20,6 +20,15 @@ def mkdirForRawData(objectiveFolder, objective, searchword, keyword=""):
         pass
 
 
+def eraseCleanData(objectiveFolder, objective, searchword="", keyword=""):
+    dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/{searchword}/{keyword}"
+    if not os.path.isdir(dirRoute):
+        print(f"沒有存在 {dirRoute} 的資料夾，因此不用清空。")
+        pass
+    else:
+        shutil.rmtree(dirRoute)
+        print(f"已經清空 {dirRoute}")
+
 def eraseRawData(objectiveFolder, objective, searchword, keyword=""):
     dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/{searchword}/{keyword}"
     if not os.path.isdir(dirRoute):
