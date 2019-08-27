@@ -59,13 +59,19 @@ _BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 專�
 sys.path.append(_BASE_PATH)
 
 from libs.httpRequests import _headers
-from libs.timeWidget import timeSleepRandomly
-from libs.timeWidget import timeCalculate
-from libs.timeWidget import timeSleepOne
-from libs.manipulateDir import mkdirForRawData
-from libs.manipulateDir import eraseRawData
-from libs.multiProcessing import _weatherRecordAvailable
-from libs.multiProcessing import distributeKeyword
+from libs.timeWidget import (
+                            timeSleepRandomly,
+                            timeCalculate,
+                            timeSleepOne
+                            )
+from libs.manipulateDir import (
+                            mkdirForRawData,
+                            eraseRawData
+                            )
+from libs.multiProcessing import (
+                            _weatherRecordAvailable,
+                            distributeKeyword
+                                )
 
 
 
@@ -129,7 +135,7 @@ if __name__ == '__main__':
 
     #啟動進程
     Process_1 = []
-    for p in range(5):
+    for p in range(3):
         distributeMonthAvailable_proc = mp.Process(target=distributeMonthAvailable, args=(year_queue, month_queue, _weatherRecordAvailable, objectiveFolder, objective,))
         distributeMonthAvailable_proc.daemon = True
         distributeMonthAvailable_proc.start()
@@ -138,7 +144,7 @@ if __name__ == '__main__':
 
 
     Process_2 = []
-    for w in range(20):
+    for w in range(8):
         getPageInARaw_proc = mp.Process(target=getPageInARaw, args=(month_queue, _headers, objectiveFolder, objective,))
         getPageInARaw_proc.daemon = True
         getPageInARaw_proc.start()
