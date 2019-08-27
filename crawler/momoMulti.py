@@ -115,7 +115,7 @@ def getPageInARow(input, output, keywordUrlPair, objectiveFolder, objective):
     while True:
         print(thisPID,"===========================================")
         searchword = input.get()
-        print('getPageInARow is in new process %s, %s ' % (getPageInARow_proc, os.getpid()))
+        print('getPageInARow is in new process %s, %s ' % (getPageInARow_proc, thisPID))
         print()
         eraseRawData(objectiveFolder, objective, searchword)
         mkdirForRawData(objectiveFolder, objective, searchword)
