@@ -190,6 +190,12 @@ class numsHandler(object):
         number = searchNum.search(bookurl).group()
         return number
 
+    @classmethod
+    def searchFloatNumsMultiple(cls, bookurl):
+        searchNum = re.compile('\d+\.*\d*')
+        number = searchNum.findall(bookurl)
+        return number
+
 
     def floatDiv(self, Anum, Bnum):
 
