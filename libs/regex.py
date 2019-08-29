@@ -7,6 +7,10 @@ import re
 import sre_constants
 import random
 from math import ceil
+from urllib.parse import (
+                        urlparse,
+                        parse_qs
+                        )
 
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2]) 
 # sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的module
@@ -97,6 +101,16 @@ class textMiningRegex(object):
         return txt
 
 
+class urlParseDealing(object):
+    
+    @classmethod
+    def urlParseDealing(cls, url):
+        parsedUrl = urlparse(url)
+        parsedUrlQueryWithQS = parse_qs(parsedUrl.query)
+
+        return parsedUrl, parsedUrlQueryWithQS
+
+
 class bureauEnergyReplace(object):
     def productModel(self, product_model):
         """
@@ -151,8 +165,9 @@ class bureauEnergyReplace(object):
         # 避免這種情況 ："櫻花牌--SH-1335--13公升恆溫強制排氣熱水器(部分地區含基本安裝)"
         # ---> "SH-1335"
         try:
-        # 只比對以「-」相連的型號，如「SH-1335-A23d」
-            searchProductModel = re.compile("[a-zA-Z0-9]+-?[a-zA-Z0-9]+-?[a-zA-Z0-9]+-?[a-zA-Z0-9]+-?[a-zA-Z0-9]+")
+        # 只比對以「-」相連的型號，如「SH-1335-A23d」 ； 
+        # 因應 【A. O. Smith】CAHP-1.5DT-80-6(熱泵熱水器 熱水器 熱泵 AO史密斯) 這樣的產品名稱，在第一個一槓後，正則[]裡面皆增加「.」。
+            searchProductModel = re.compile("[a-zA-Z0-9]+-?[a-zA-Z0-9.]+-?[a-zA-Z0-9.]+-?[a-zA-Z0-9.]+-?[a-zA-Z0-9.]+")
             productModel = searchProductModel.search(productModel).group()    
         except AttributeError as e:
         # 型號沒有一槓 ：SD20
@@ -195,6 +210,13 @@ class numsHandler(object):
         searchNum = re.compile('\d+\.*\d*')
         number = searchNum.findall(bookurl)
         return number
+
+    @classmethod
+    def searchNumsMultiple(cls, bookurl):
+        searchNum = re.compile('\d+')
+        number = searchNum.findall(bookurl)
+        return number
+
 
 
     def floatDiv(self, Anum, Bnum):
@@ -287,3 +309,7 @@ class numsHandler(object):
 # aa = "FLE20TBX/827/E27120V"
 # aa = "FSL21L-EX120/T3"
 # print(bureauEnergyReplace().productModelExtract(aa))
+
+# aa= "【A. O. Smith】CAHP-1.5DT-80-6(熱泵熱水器 熱水器 熱泵 AO史密斯)"
+# aa = "SD20"
+# print(bureauEnergyReplace().productModelExtractAdvanced(aa))
