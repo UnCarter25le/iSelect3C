@@ -57,7 +57,8 @@ if __name__ == '__main__':
     tableClassBase = sqlObjectInitail()._tableClassBase
     engine = tableClassBase.connectToMySQLEngine()
     
-    multiSourceObject = multiSourceObjectInitial(bureauEnergyM=bureauEnergyMungingHistorical(), ecommerceM=ecommerceMungingHistorical())
+    multiSourceObject = multiSourceObjectInitial(bureauEnergyM=bureauEnergyMungingHistorical(), 
+                                        ecommerceM=ecommerceMungingHistorical())
     
     bureauEnergyFolder = multiSourceObject.bureauEnergyM._objectiveBureauEnergy
     pchomeFoler = multiSourceObject.ecommerceM._objectivePchome
@@ -68,7 +69,7 @@ if __name__ == '__main__':
 
     """
     PART (1)-1
-    插入 歷史檔案 能源局產品-------------------------------------
+    歷史檔案 能源局產品 寫入bureau_energy_products_backup 表格-------------------------------------
 
     This session is one-time procedure!
     """
@@ -82,9 +83,9 @@ if __name__ == '__main__':
 
     """
     PART (1)-2
-    插入 最新檔案 能源局產品-------------------------------------
+    最新檔案 能源局產品  寫入bureau_energy_products_backup 表格-------------------------------------
 
-    This session is alternative;We are allowed to execute programs here or at "insertLatestDataIntoDB.py"。
+    This session is alternative;We are allowed to execute programs here or at "insertLatestDataIntoDB.py  PART (2)-2"。
     What worth giving attention is whether historical data in DB at first?
     """
 
@@ -101,7 +102,8 @@ if __name__ == '__main__':
 
     """
     PART (2)-1
-    插入 歷史檔案 電商產品-------------------------------------
+    歷史檔案 電商產品 寫入 ecommerce_products_backup 表格 
+    ----------連同價格異動的情況送進 ecommerce_products_price_records資料表--------------------------
     This session is one-time procedure!
     """
     # begin = timeCalculate()
@@ -120,8 +122,9 @@ if __name__ == '__main__':
 
     """
     PART (2)-2
-    插入 最新檔案 電商產品-------------------------------------
-    This session is alternative;We are allowed to execute programs here or at "insertLatestDataIntoDB.py"。
+    最新檔案 電商產品 寫入 ecommerce_products_backup 表格 
+    -----------連同價格異動的情況送進 ecommerce_products_price_records資料表--------------------------
+    This session is alternative;We are allowed to execute programs here or at "insertLatestDataIntoDB.py  PART (3)-2"。
     What worth giving attention is whether historical data in DB at first?
     """
     # begin = timeCalculate()
