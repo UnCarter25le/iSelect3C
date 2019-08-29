@@ -33,6 +33,7 @@ bureauReplace = bureauEnergyReplace()
 numsHandler = numsHandler()
 
 
+
 def EcommerceDataProcessToSet(productList):
     productArray = [file for file in productList]
 
@@ -91,6 +92,10 @@ class rawDataMunging(object):
         _objectiveFolderDictionary = "dictionary"
 
         _objectiveFolderWeather = "weather"
+
+        _objectiveFolderNews = "news"
+
+        _objectiveFolderNewsIntegra = "newsIntegration"
 
         _objectiveFolderObservationStation = "observationStation"
 
