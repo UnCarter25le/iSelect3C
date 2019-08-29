@@ -66,6 +66,7 @@ if __name__ == '__main__':
         # --->MetaData(bind=Engine(mysql+pymysql://root:***@localhost:3306/iSelect3C?charset=utf8mb4))
         # trans = conn.begin() 
         # for table in MetaData.sorted_tables:
+            # print(table)
         #     conn.execute(table.delete())
         # trans.commit()
         
@@ -84,7 +85,7 @@ if __name__ == '__main__':
         # for syn in sqlDDL.getMySQLSyntax():
         #     conn.execute(syn)
 
-        # # 利用 ORM 建立所有class資料表！----------------------
+        # # 利用 ORM 建立所有class資料表！----------------------若只想單獨重建表格「news_title_from_selenium」，則需要將相關聯的表格一起drop，才能重建。不想要同時重建的表格，必須註解。
         # tableClassBase._Base.metadata.create_all(conn)
         # for key in iter(rawSQLString().MySQLAlterUniqueRawStringDict):
         #     alterSQLString = rawSQLString().MySQLAlterUniqueRawStringDict[key]
