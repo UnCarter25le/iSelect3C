@@ -1,9 +1,38 @@
+*.ipynb
+
+.ipynb_checkpoints
 
 *.pyc
 
 .vscode
 
 __pycache__
+
+geckodriver.log
+
+
+
+
+dataMining/dictionary/*
+
+database/referenceJSON/*
+
+dataMunging/rawData/*
+
+dataMunging/cleanData/*
+
+doc/UML.asta
+
+doc/NOTE.md
+
+doc/NOTE.txt
+
+doc/config_website.ini
+
+doc/UML.asta.lock
+
+
+
 
 vsJupyter.py
 
@@ -13,28 +42,15 @@ bureauEnergyMulti_MultiQueue.py
 
 researchForMultiQueue.py
 
-dataMining/dictionary/*
-
-database/referenceJSON/*
-
 libs/sqlDDLAndsqlAlchemyORM.py
 
 libs/sqlDMLAndsqlAlchemyORM.py
+
+
+
 
 requirements_ChineseLiterature.txt
 
 requirements_iSelect3C.txt
 
 requirements_basic.txt
-
-*.ipynb
-
-.ipynb_checkpoints
-
-/doc/UML.asta
-/doc/NOTE.md
-/doc/NOTE.txt
-/doc/config_website.ini
-doc/UML.asta.lock
-
-dataMunging/rawData/*
