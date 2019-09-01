@@ -12,7 +12,7 @@ sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的mo
 
 from libs.timeWidget import timeSleepRandomly
 
-
+#hidecommandPromptwindow
 
 def buildSplinterBrowser(browserName):
     # chrome_options = webdriver.ChromeOptions()
