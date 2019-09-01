@@ -28,8 +28,9 @@ from libs.sqlDDLAndsqlAlchemyORM import (
                                         sqlDDLForTables,
                                         sqlORMForTables,
                                         rawSQLString,
-                                        sqlObjectInitail
+                                        sqlObjectInitial
                                         )
+from libs.sqlDMLAndsqlAlchemyORM import writeDataWhenMunging
 
 
 
@@ -40,20 +41,31 @@ if __name__ == '__main__':
     # must create a database in advance:
     #create database iSelect3C CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-    sqlDDL = sqlObjectInitail()._sqlDDL
-    tableClassBase = sqlObjectInitail()._tableClassBase
+    sqlDDL = sqlObjectInitial._sqlDDL
     
-    engine = tableClassBase.connectToMySQLEngine()
-
+    """
+    在 sqlDMLAndsqlAlchemyORM 的 class writeDataWhenMunging(referenceFiles): 
+    選擇 tableClassBase
+    
+    """
+    tableClassBase = writeDataWhenMunging._tableClassBase
+    
+    engine = sqlObjectInitial.loadCorrectEngine(tableClassBase, tableClassBase.databaseName)
+    
 
     # transaction 似乎只對DML有用。
     conn = engine.connect()
     trans = conn.begin()
+
+    foreignKeyClose, foreignKeyOpen = sqlObjectInitial.loadCorrectForeignKeyConstraintSet(tableClassBase.databaseName)
     
+    print(foreignKeyClose, foreignKeyOpen)
     try:
-        conn.execute("SET foreign_key_checks = 0")
+        conn.execute(f"{foreignKeyClose}")
 
         
+
+        #------------------------------------------------------------------------------------------
 
         # 使用raw sqlstring drop tables
         # for table in sqlDDL.getTables():
@@ -104,7 +116,7 @@ if __name__ == '__main__':
     else:
         print("establish table:\n", "\n".join([t for t in tableClassBase.getTables()]))
     finally:
-        conn.execute("SET foreign_key_checks = 1")
+        conn.execute(f"{foreignKeyOpen}")
         trans.close()
         conn.close()
     
