@@ -95,6 +95,8 @@ class rawDataMunging(object):
 
         _objectiveFolderNews = "news"
 
+        _objectiveFolderNewsWithContent = "newsWithContent"
+
         _objectiveFolderNewsIntegra = "newsIntegration"
 
         _objectiveFolderObservationStation = "observationStation"
