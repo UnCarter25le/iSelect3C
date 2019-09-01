@@ -17,6 +17,7 @@
 11.11
 618
 6.18
+苏宁818
 
     呼籲  聰明用電   是節電的新聞
 
@@ -107,7 +108,7 @@ if __name__ == '__main__':
             counterNum[word] = 1
 
     print("統計頻率字結果：")
-    print(counterNum.most_common(50))
+    print(counterNum.most_common(60))
 
     
     newsList = [newsObject[key][0] for key in newsObject]
@@ -128,14 +129,14 @@ if __name__ == '__main__':
     
     # print(TFIDF.most_common(3505)[3300:][::-1])
     print()
-    print(TFIDF.most_common(50))
+    print(TFIDF.most_common(60))
 
 
     with open(f"{_BASE_PATH}/{objectiveFolderDataMining}/{objectiveFolderDictionary}/jiebaCut_resultOfNewsTitle.json", "w", encoding="utf-8") as f:
-        json.dump(counterNum.most_common(50),f, indent=2, ensure_ascii=False)
+        json.dump(counterNum.most_common(60),f, indent=2, ensure_ascii=False)
 
     with open(f"{_BASE_PATH}/{objectiveFolderDataMining}/{objectiveFolderDictionary}/TFIDF_resultOfNewsTitle.json", "w", encoding="utf-8") as f:
-        json.dump(TFIDF.most_common(50),f, indent=2, ensure_ascii=False)
+        json.dump(TFIDF.most_common(60),f, indent=2, ensure_ascii=False)
 
     
     
