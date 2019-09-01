@@ -48,20 +48,25 @@ import multiprocessing as mp
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2])
 sys.path.append(_BASE_PATH)   # 因為此行生效，所以才能引用他處的module
 
-from libs.manipulateDir import mkdirForRawData
-from libs.manipulateDir import eraseRawData
-from libs.manipulateDir import initialFileZeroUnderscoreInt
-from libs.multiProcessing import distributeKeyword
-from libs.multiProcessing import _bureauEnergyKeywordUrlPair
-from libs.timeWidget import timeSleepRandomly
-from libs.timeWidget import timeCalculate
-from libs.timeWidget import timeSleepOne
+from libs.manipulateDir import (
+                                mkdirForRawData,
+                                eraseRawData,
+                                initialFileZeroUnderscoreInt
+                                )
+from libs.multiProcessing import (
+                                distributeKeyword,
+                                _bureauEnergyKeywordUrlPair
+                                )
+from libs.timeWidget import (
+                            timeSleepRandomly,
+                            timeCalculate,
+                            timeSleepOne
+                            )
 from libs.httpRequests import _headers
 
 
 
 def overviewUriDistributor(input, output, keywordUrlPair, headers, dirRoute,objectiveFolder, objective, *args):
-    begin = timeCalculate()
     thisPID = os.getpid()
     while True:
         print(thisPID,"===========================================")
@@ -109,10 +114,9 @@ def getPageFirst(url, headers):
 
     
 def getPageInARow(input, headers, objectiveFolder, objective, *args):
-    begin = timeCalculate()
     thisPID = os.getpid()
     while True:
-        print(thisPID,"===========================================")
+        # print(thisPID,"===========================================")
         consecutiveUrl = input.get()
         searchword, correctUrl, txtFileRoute = consecutiveUrl.split("+")
 
@@ -120,10 +124,11 @@ def getPageInARow(input, headers, objectiveFolder, objective, *args):
         page = fileName.split("_")[0]
         totalPage = fileName.split("_")[1]
         
-        print('getPageInARow is in new process %s, %s ' % (getPageInARow_proc, os.getpid()))
-        print('------接下來要處理 ' + searchword + '第' ,page, '頁---------共', totalPage, '頁')
+        # print('getPageInARow is in new process %s, %s ' % (getPageInARow_proc, os.getpid()))
+        # print('------接下來要處理 ' + searchword + '第' ,page, '頁---------共', totalPage, '頁')
 
         timeSleepOne()
+        timeSleepRandomly()
         res = requests.get(correctUrl, headers=headers)
         res.encoding = 'utf-8'
 
