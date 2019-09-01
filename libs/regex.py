@@ -99,6 +99,17 @@ class textMiningRegex(object):
         txt = txt.replace('--', '')
         txt = txt.lower()  # 英文字轉為小寫
         return txt
+    @classmethod
+    def replaceEscapeAlphabet(cls, originalString):
+
+        for w in ["\u3000", "\r\n", "\n", "\r"]: 
+            originalString = originalString.replace(w, "")
+        
+        return originalString
+    
+    @classmethod
+    def discardSpace(cls, word):
+        return word.replace(" ","")
 
 
 class urlParseDealing(object):
@@ -109,6 +120,13 @@ class urlParseDealing(object):
         parsedUrlQueryWithQS = parse_qs(parsedUrl.query)
 
         return parsedUrl, parsedUrlQueryWithQS
+
+    @classmethod
+    def urlParsePath(cls, url):
+        parsedUrlPath = urlparse(url).path
+
+        return parsedUrlPath
+
 
 
 class bureauEnergyReplace(object):
@@ -154,7 +172,7 @@ class bureauEnergyReplace(object):
         if not "/" in productModel:
             searchProductModel = re.compile("[a-zA-Z0-9-]+")
             productModel = searchProductModel.search(productModel).group()
-            # "旺旺LP-CH-903(110V)"  ---> LP-CH-903
+            # 能源局的..."旺旺LP-CH-903(110V)"  ---> LP-CH-903
         else:
             searchProductModel = re.compile("[a-zA-Z0-9-/]+")
             productModel = searchProductModel.search(productModel).group()
@@ -312,4 +330,7 @@ class numsHandler(object):
 
 # aa= "【A. O. Smith】CAHP-1.5DT-80-6(熱泵熱水器 熱水器 熱泵 AO史密斯)"
 # aa = "SD20"
+
+# "能源局型號 EH1200TS4"
+# aa = "櫻花【儲熱式】電熱水器 EH-1200TS4【標準安裝+舊機清運】"
 # print(bureauEnergyReplace().productModelExtractAdvanced(aa))
