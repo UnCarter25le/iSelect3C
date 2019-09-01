@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 """
-程式名稱：以『關鍵搜索字』爬蟲pchome。
+程式名稱：pchomeApiMulti.py
 程式描述：
 
     1. 指定 searchword ，就可以在pchome 三個分類上(24h、購物中心、代購服務)查詢，每個分類最多回應2000筆。
@@ -23,6 +23,15 @@
 
     try except 要改善  已有改善，待嘗試。
 
+
+<Process(Process-1, started daemon)> has terminated!
+<Process(Process-2, started daemon)> has terminated!
+<Process(Process-3, started daemon)> has terminated!
+<Process(Process-4, started daemon)> has terminated!
+<Process(Process-5, started daemon)> has terminated!
+<Process(Process-6, started daemon)> has terminated!
+完成！一共耗時：2710.9598462581635 秒
+
 """
 
 from bs4 import BeautifulSoup
@@ -41,22 +50,28 @@ import multiprocessing as mp
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2])
 sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的module
 
-from libs.manipulateDir import mkdirForRawData
-from libs.manipulateDir import eraseRawData
-from libs.multiProcessing import distributeKeyword
-from libs.multiProcessing import _pchomeKeywordUrlPair
-from libs.timeWidget import timeSleepEight
-from libs.timeWidget import timeSleepRandomly
-from libs.timeWidget import timeSleepOne
+from libs.manipulateDir import (
+                                mkdirForRawData,
+                                eraseRawData
+                                )
+from libs.multiProcessing import (
+                                distributeKeyword,
+                                 _pchomeKeywordUrlPair
+                                 )
+from libs.timeWidget import (
+                        timeSleepEight,
+                        timeSleepRandomly,
+                        timeSleepOne
+                        )
 from libs.regex import randomChoice
 
 def getPageFirst(searchword, keyword, headers):
     url = "https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page=1&sort=sale/dc".format(keyword, searchword)
     for i in range(3):
         try:
+            timeSleepRandomly()
             res = requests.get(url, headers=headers)
             timeSleepRandomly()
-            timeSleepOne()
             res.encoding = 'utf-8'
             jsonPage = json.loads(res.text)
             totalPage = jsonPage['totalPage']
@@ -100,10 +115,10 @@ def getPageInARow(input, headers, objectiveFolder, objective, *args):
             
             for i in range(3):
                 try:
+                    timeSleepRandomly()
                     res = requests.get(url, headers=headers)
                     res.encoding = 'utf-8'
                     timeSleepRandomly()
-                    timeSleepOne()
                     jsonPage = json.loads(res.text)
                     timeSleepEight()
                     timeSleepRandomly()
@@ -151,7 +166,7 @@ if __name__ == '__main__':
 
     # 啟動行程
     Process_1 = []
-    for p in range(4): #開5個進程時，沒有出錯。
+    for p in range(6): #開5個進程時，沒有出錯。
         getPageInARow_proc = mp.Process(target=getPageInARow, args=(keyword_queue, headers, objectiveFolder, objective,))#*args
         getPageInARow_proc.daemon = True
         getPageInARow_proc.start()

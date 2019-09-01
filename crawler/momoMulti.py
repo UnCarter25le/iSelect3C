@@ -59,7 +59,7 @@ selenium.common.exceptions.WebDriverException: Message: unknown error: Chrome fa
 完成！一共耗時：1003.4922308921814 秒
 
 14個
-完成！一共耗時：1257.2267136573792 秒
+成！一共耗時：1825.5846257209778 秒
 try except 要改善  已有改善，待嘗試。
 """
 
@@ -87,21 +87,31 @@ from selenium.common.exceptions import (
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2])
 sys.path.append(_BASE_PATH)
 
-from libs.manipulateDir import mkdirForRawData
-from libs.manipulateDir import eraseRawData
-from libs.timeWidget import timeSleepRandomly
-from libs.timeWidget import timeSleepEight
-from libs.timeWidget import timeSleepOne
-from libs.timeWidget import timeSleepTwo
-from libs.timeWidget import timeSleepFour
-from libs.timeWidget import timeCalculate
-from libs.multiProcessing import distributeKeyword
-from libs.multiProcessing import _momoKeywordUrlPair
+from libs.manipulateDir import (
+                              mkdirForRawData,
+                              eraseRawData
+                              )
+from libs.timeWidget import (
+                            timeSleepRandomly,
+                            timeSleepEight,
+                            timeSleepOne,
+                            timeSleepTwo,
+                            timeSleepFour,
+                            timeCalculate
+                            )
+from libs.multiProcessing import (
+                              distributeKeyword,
+                              _momoKeywordUrlPair
+                              )
 from libs.manipulateDir import initialFileZeroUnderscoreInt
-from libs.regex import searchNums
-from libs.regex import interDiv
-from libs.splinterBrowser import buildSplinterBrowserHeadless
-from libs.splinterBrowser import browserWaitTime
+from libs.regex import (
+                      searchNums,
+                      interDiv
+                      )
+from libs.splinterBrowser import (
+                              buildSplinterBrowserHeadless,
+                              browserWaitTime
+                                )
 
 def requestsHandlingWhenTimeoutOccur(url, browserName):
     timeSleepEight()
