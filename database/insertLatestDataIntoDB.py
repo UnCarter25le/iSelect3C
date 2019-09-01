@@ -24,7 +24,7 @@ sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的mo
 
 from libs.sqlDDLAndsqlAlchemyORM import (
                                         sqlORMForTables,
-                                        sqlObjectInitail
+                                        sqlObjectInitial
                                         )
 from libs.sqlDMLAndsqlAlchemyORM import (
                                         referenceFiles, 
@@ -46,8 +46,8 @@ from libs.manipulateDir import (
 
 
 if __name__ == '__main__':
-    tableClassBase = sqlObjectInitail()._tableClassBase
-    engine = tableClassBase.connectToMySQLEngine()
+    tableClassBase = writeDataWhenMunging._tableClassBase
+    engine = sqlObjectInitial.loadCorrectEngine(tableClassBase, tableClassBase.databaseName)
     
     multiSourceObject = multiSourceObjectInitial(bureauEnergyM=bureauEnergyMunging(), 
                                                 ecommerceM=ecommerceMunging(), 
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     """
     PART (1)
     寫入 referenceFiles-------------------------------------
-    This session is one-time procedure!
+    This session is one-time procedure! No need to do it again if done.
     """
     # begin = timeCalculate()
     # referenceFiles().writeReferenceDataIntoDB(tableClassBase, engine)
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     """
     PART (2)-1
     寫入 能源局產品 到 bureau_energy_products 表格-------------------------------------
-    This session is one-time procedure!
+    This session is one-time procedure and have to be done repeatedly if having the latest files.
     """
     # begin = timeCalculate()
     # multiSourceObject.bureauEnergyM.truncateTable(1, sourceDataFolderName=bureauEnergyFolder)
@@ -110,7 +110,7 @@ if __name__ == '__main__':
     """
     PART (3)-1
     寫入 電商商品 到 ecommerce_products 表格-------------------------------------
-    This session is one-time procedure!
+    This session is one-time procedure and have to be done repeatedly if having the latest files.
     """
     # begin = timeCalculate()
     # # multiSourceObject.ecommerceM.truncateTable(1, sourceDataFolderName=pchomeFoler)
@@ -152,7 +152,7 @@ if __name__ == '__main__':
     """
     PART (4)
     將氣象歷史資料 寫入  weather_records_by_months 表格-------------------------------------
-    This session is one-time procedure!
+    This session is one-time procedure  and have to be done repeatedly if having the latest files.
     """
     # begin = timeCalculate()
 
@@ -168,7 +168,7 @@ if __name__ == '__main__':
     """
     PART (5)-1
     將 新聞標題 歷史資料 寫入 news_title_from_selenium 表格-------------------------------------
-    This session is one-time procedure!
+    This session is one-time procedure!  No need to do it again if done.
     """
     # begin = timeCalculate()
 
@@ -182,7 +182,7 @@ if __name__ == '__main__':
     """
     PART (5)-2
     將 新聞標題 最新的資料 寫入 news_title_from_selenium 表格-------------------------------------
-    This session is one-time procedure!
+    This session is one-time procedure and have to be done repeatedly if having the latest files.
     """
     # begin = timeCalculate()
 

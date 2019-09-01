@@ -34,7 +34,7 @@ sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的mo
 
 from libs.sqlDDLAndsqlAlchemyORM import (
                                         sqlORMForTables,
-                                        sqlObjectInitail
+                                        sqlObjectInitial
                                         )
 from libs.sqlDMLAndsqlAlchemyORM import (
                                         referenceFiles, 
@@ -42,7 +42,8 @@ from libs.sqlDMLAndsqlAlchemyORM import (
                                         bureauEnergyMungingHistorical,
                                         ecommerceMunging,
                                         ecommerceMungingHistorical,
-                                        multiSourceObjectInitial
+                                        multiSourceObjectInitial,
+                                        writeDataWhenMunging
                                         )
 from libs.timeWidget import timeCalculate
 from libs.munging import bureauEnergyMunging as bureauSET
@@ -54,8 +55,9 @@ from libs.manipulateDir import (
 
 
 if __name__ == '__main__':
-    tableClassBase = sqlObjectInitail()._tableClassBase
-    engine = tableClassBase.connectToMySQLEngine()
+    tableClassBase = writeDataWhenMunging._tableClassBase
+
+    engine = sqlObjectInitial.loadCorrectEngine(tableClassBase, tableClassBase.databaseName)
     
     multiSourceObject = multiSourceObjectInitial(bureauEnergyM=bureauEnergyMungingHistorical(), 
                                         ecommerceM=ecommerceMungingHistorical())
@@ -71,7 +73,7 @@ if __name__ == '__main__':
     PART (1)-1
     歷史檔案 能源局產品 寫入bureau_energy_products_backup 表格-------------------------------------
 
-    This session is one-time procedure!
+    This session is one-time procedure!   No need to do it again if done.
     """
     # begin = timeCalculate()
     # multiSourceObject.writeHistoricalDataIntoDB(multiSourceObject.bureauEnergyM, 
@@ -104,7 +106,7 @@ if __name__ == '__main__':
     PART (2)-1
     歷史檔案 電商產品 寫入 ecommerce_products_backup 表格 
     ----------連同價格異動的情況送進 ecommerce_products_price_records資料表--------------------------
-    This session is one-time procedure!
+    This session is one-time procedure!   No need to do it again if done.
     """
     # begin = timeCalculate()
     # multiSourceObject.writeHistoricalDataIntoDB(multiSourceObject.ecommerceM, 
