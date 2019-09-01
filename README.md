@@ -23,14 +23,24 @@ beautifulsoup4==4.7.1
 certifi==2019.3.9
 chardet==3.0.4
 idna==2.8
+jieba==0.39
 pycodestyle==2.5.0
+pymssql==2.1.1
+PyMySQL==0.9.3
 requests==2.22.0
 selenium==3.141.0
 six==1.12.0
 soupsieve==1.9.1
 splinter==0.10.0
+SQLAlchemy==1.3.7
 urllib3==1.25.3
+lxml==4.4.1
+pip==19.2.3
+setuptools==41.0.1
+wheel==0.33.4
 
+
+Hignly recommend holding the version of pymssql at 2.1.1.
 ```
 
 
@@ -48,8 +58,23 @@ urllib3==1.25.3
     |___googleNews.py_____________________> Crawling data in one main process way(selenium) from search result page.
     |___googleNewsMulti.py________________> Crawling data in a multiprocess(selenium) manner from search result page.
     |___weatherObservationStation.py______> Crawling data in one main process way(selenium) from official web site.
-    |___weatherRecordMulti.py.py__________> Crawling date in a multiprocess manner from official web site.
+    |___weatherRecordMulti.py_____________> Crawling date in a multiprocess manner from official web site.
+    |___selectedNewsMulti.py______________> Crawling date in a multiprocess manner from a few select news Url.
+
+/database/
+    |___referenceJSON_____________________> offering the reference foreign mapping when writing data into DB.
+    |           |___administrative_divisions_of_Taiwan.json
+    |           |___classes_of_consumer_electronics.json
+    |           |___ecommerce.json
+    |           |___news_keywords.json
+    |           |___publishers_mapping.json
+    |           |___many other you name it.
+    |           
+    |___createForTablesAndDB.py____________> using SQLAlchemy ORM ro raw SQL string to create tables.
+    |___insertLatestDataIntoDB.py__________> write last data set into DB, such as bureau, ecommerce and so on.
+    |___insertHistoricalDataIntoDB.py______> write historical data set, known as local one, into DB.
     
+
 /dataMunging/
     |___pchomeMunging.py__________________> Munging date, json format, after having raw data in 
     |                                       "/rawData/pchome/冷暖空調/「24h」「kdn」「vdr」".
@@ -71,6 +96,9 @@ urllib3==1.25.3
     |       |___bureauEnergy/
     |       |___momo/
     |       |___news/
+    |       |___newsWithContent/
+    |       |___newsWithContent/
+    |       |___weather/
     |       |___observationStation/
     |       |___pchome/
     |
@@ -91,12 +119,14 @@ urllib3==1.25.3
             |       |___ many other you name it. Already have all categories of consumer electronics!
             |
             |___momo/
+            |   |___badRequest/
             |   |___冷暖空調/
             |   |   |___1_67_冷暖空調.txt
             |   |   |___many other you name it.
             |   |___ many other you name it.
             |
             |___pchome/
+            |   |___badRequest/
             |   |___冷暖空調/
             |           |___ 24h/
             |           |   |___1_62_1233_24h冷暖空調.json
@@ -129,6 +159,8 @@ urllib3==1.25.3
 
 /dataMining/
     |___dictionary/
+    |   |___decision/ (confidential)
+    |   |       |___testResultOfSelectedNewsUrl.txt
     |   |___jiebaCut_resultOfNewsTitle.json
     |   |___newsTitle_stop_words.txt
     |   |___newsTitle_wanted_words.txt
@@ -145,11 +177,14 @@ urllib3==1.25.3
     |___manipulateDir.py__________________> mkdir or rmdir whenever we wanna make crawling or munging.
     |___multiProcessing.py________________> Needed by programs those operations are in a mulitprocess manner.
     |___munging.py________________________> Needed by programs which are ready to process raw data.
+    |___minging.py________________________> Needed by programs which are ready to deal with text.
     |___regex.py__________________________> Used in the situations in which we wanna extract accurate data type
     |                                       from raw data.
     |___splinterBrowser.py________________> Used by programs which require chromdirver to start up browsers.
-    |___time.py___________________________> Used when the interval peiod is needed in programs' processing.
-    |___requests.py_______________________> Be imported while the useage of the fixed parameters.
+    |___timeWidget.py_____________________> Used when the interval peiod is needed in programs' processing.
+    |___httpRequests.py___________________> Be imported while the useage of the fixed parameters.
+    |___sqlDDLAndsqlAlchemyORM.py_________> Be imported while constructing database.(confidential)
+    |___sqlDMLAndsqlAlchemyORM.py_________> Be imported while manipulating database.(confidential)
 
 
 
@@ -157,8 +192,11 @@ urllib3==1.25.3
     |___iSelect3C使用案例圖.png______________> Overview for use case diagram.
     |___iSelect3C活動圖.png_________________> Overview for activity diagram.
     |___chromedriver_______________________> according to: http://chromedriver.chromium.org/downloads
-                                            editionInfo: ChromeDriver 75.0.3770.90
-                                            execute `sudo cp chromedriver /usr/local/bin/`
+    |                                       editionInfo: ChromeDriver 75.0.3770.90
+    |                                       execute `sudo cp chromedriver /usr/local/bin/`
+    |___config_website.ini__________________> test file. (confidential)
+    |___NOTE.md_____________________________> whole project note. (confidential)
+    |___UML.asta____________________________> design of this project. (confidential)
 
 /___
     |___README.md
@@ -170,6 +208,7 @@ urllib3==1.25.3
 
 
 ## 3. The process of executing the ".py" file:
+> You are supposed to measure your machine's condition and `modify the numbers of processes` which are set in *multi.py while executing programs with multiprocess design.
 
 - ### 3-1. pchome, the order of executing:
 
@@ -216,6 +255,23 @@ urllib3==1.25.3
     After doing 3-5., jiebaForNewsTitle.py  -->  copewithNewsUrl.py
 
     ```
+
+
+- ### 3-7-1. create database(confidential):
+
+    ```
+    createForTablesAndDB.py
+
+    ````
+
+- ### 3-7-2. insert data into database(confidential):
+
+    ```
+    insertHistoricalDataIntoDB.py   --> insertLatestDataIntoDB.py
+
+    ```
+
+
 
 - ### Reviewing the outcome after doing steps on the above.
 
