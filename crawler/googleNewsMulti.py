@@ -94,7 +94,7 @@ def humanSimulate(browser, topTabList):
             browser.find_by_xpath('//*[@id="logo"]/img').mouse_over()
         elif browser.is_element_present_by_xpath('//*[@id="logocont"]/a/img'):
             browser.find_by_xpath('//*[@id="logocont"]/a/img').mouse_over()
-    except AttributeError as e: # 找不到element 來mouse_over() ； //*[@id="logocont"]/a/img      //*[@id="logo"]/img    左上叫的google有兩種logo位置
+    except AttributeError as e: # 找不到element 來mouse_over() ； //*[@id="logocont"]/a/img      //*[@id="logo"]/img    左上r角的google有兩種logo位置
         print("擬人化操作找不到 Element。", e)
         pass
     
