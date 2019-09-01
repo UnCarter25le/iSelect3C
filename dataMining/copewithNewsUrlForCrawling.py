@@ -18,8 +18,14 @@ import sys
 _BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(_BASE_PATH)
 
-from libs.manipulateDir import mkdirForCleanData
-from libs.mining import _newsUrlCheckList
+from libs.manipulateDir import (
+                            mkdirForCleanData,
+                            initialFileFirstUnderscoreString
+                            )
+from libs.mining import (
+                        _newsUrlCheckList,
+                        newsMining
+                        )
 from libs.regex import searchWordTrueOrFalse
 from libs.timeWidget import timeStampGenerator
 
@@ -49,7 +55,15 @@ if __name__ == '__main__':
 
     dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/newsIntegration"
 
-    fileName = os.listdir(dirRoute).pop()
+    fileName = initialFileFirstUnderscoreString(dirRoute)[-1]
+    print(fileName)
+
+
+    # 提出所有的新聞標題
+    # with open(dirRoute + "/" + fileName)as f:
+    #     inn = json.load(f)
+    # for key in inn["newsUrl"]:
+    #     print(inn["newsUrl"][key][0])
 
     keyword, newsObject = loadNewsIntegration()
     newsString = ""
@@ -62,10 +76,8 @@ if __name__ == '__main__':
     # -----------------------------------------------------------------------------------------------------
     # 優化判斷
     # 1. 剔除非節能12類別的東西
-    # 2. 剔除非節能促銷、節能補助政策相關的新聞
-    # 3. 判定能決定新聞是否留存的關鍵字，例如：["春節", "年中慶", "週年慶", "父親節", "母親節", "618", "雙11", "88", "618",
-    #                                    "1111", "11.11", "6.18", "聰明用電", "機車", "汽機車", "老車", "計程車", "車齡",
-    #                                   "汽車", "柴油車", "貨車", "車種"]:
+    # 2. 剔除非「節能促銷」、「家電促銷」、「節能補助政策」、「家電補助政策」、「家電產業營收業績表現」相關的新聞；注意不要讓「公司股市表現、公司與公司競爭」等新聞入列
+    # 3. 判定能決定新聞是否留存的關鍵字，例如：["春節", "年中慶", "週年慶", "父親節", "母親節", ... _lastCheckForUnwantedWords]，如出現陣列內的字，權重必須扣1。
     readyLink = {}
     # readyLinkComparison = {}
     for key in newsObject:
@@ -92,9 +104,7 @@ if __name__ == '__main__':
                     targetNum += 1
                     if targetNum == 3:
                         # 排除不希望有的字詞
-                        for stopW in ["春節", "年中慶", "週年慶", "父親節", "母親節", "618", "雙11", "88", "618",
-                                    "1111", "11.11", "6.18", "聰明用電", "機車", "汽機車", "老車", "計程車", "車齡",
-                                    "汽車", "柴油車", "貨車", "車種"]:
+                        for stopW in newsMining._lastCheckForUnwantedWords:
                             if searchWordTrueOrFalse(stopW, newsTitle):
                                 targetNum -= 1
                                 # readyLinkComparison[key] = newsTitle
