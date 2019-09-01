@@ -31,7 +31,7 @@ from libs.manipulateDir import (
                                mkdirForCleanData
                                 )
 from libs.sqlDDLAndsqlAlchemyORM import (
-                                        sqlObjectInitail,
+                                        sqlObjectInitial,
                                         sqlORMForTables
                                         )
 
@@ -106,8 +106,6 @@ if __name__ == '__main__':
 
     timeStamp = timeStampGenerator()
 
-    tableClassBase = sqlObjectInitail()._tableClassBase
-    engine = tableClassBase.connectToMySQLEngine()
 
     # 清洗
     for searchword in _pchomeKeywordUrlPair:
