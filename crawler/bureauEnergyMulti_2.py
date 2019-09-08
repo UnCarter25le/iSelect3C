@@ -140,6 +140,10 @@ requests.exceptions.ConnectionError: HTTPSConnectionPool(host='ranking.energylab
 40 個進程：完成！一共耗時：5538.415146112442 秒
 
 20 個 完成！一共耗時：11191.768384218216 秒
+
+30 個 完成！一共耗時：7815.017035245895 秒
+
+
 """
 
 
@@ -158,18 +162,26 @@ import socket
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2])
 sys.path.append(_BASE_PATH)
 
-from libs.manipulateDir import mkdirForRawData
-from libs.manipulateDir import eraseRawData
-from libs.manipulateDir import initialFileZeroUnderscoreInt
-from libs.multiProcessing import distributeKeyword
-from libs.multiProcessing import _bureauEnergyKeywordUrlPair
-from libs.timeWidget import timeSleepRandomly
-from libs.timeWidget import timeSleepTwo
-from libs.timeWidget import timeSleepOne
-from libs.timeWidget import timeStampGenerator
-from libs.timeWidget import timeCalculate
-from libs.regex import bureauEnergyReplace
-from libs.regex import discardSpace
+from libs.manipulateDir import (
+                              mkdirForRawData,
+                              eraseRawData,
+                              initialFileZeroUnderscoreInt
+                              )
+from libs.multiProcessing import (
+                              distributeKeyword,
+                              _bureauEnergyKeywordUrlPair
+                              )
+from libs.timeWidget import (
+                          timeSleepRandomly,
+                          timeSleepTwo,
+                          timeSleepOne,
+                          timeStampGenerator,
+                          timeCalculate
+                          )
+from libs.regex import (
+                    bureauEnergyReplace,
+                    discardSpace
+                    )
 from libs.httpRequests import _headers
 
 
@@ -343,7 +355,7 @@ def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
 
         for i in range(3):
             try:
-              timeSleepOne()
+              timeSleepTwo()
               res = requests.get(url, headers=headers)
               res.encoding = 'utf-8'
               timeSleepRandomly()
@@ -354,29 +366,11 @@ def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
               print()
               timeSleepRandomly()
               timeSleepTwo()
+              timeSleepTwo()
               soup = ""
         
         judgeSoup(soup, searchword, url, txtFileRoute)
-        # if not soup:
-        #   badRequestRoute = "/".join(txtFileRoute.split("/")[:-3]) + "/badRequest"
-        #   with open(f"{badRequestRoute}/badRequest_{searchword}.txt", "a",  newline='', encoding='utf-8')as f: # newline沒作用...
-        #       errorMessage = url + "\n"
-        #       f.write(errorMessage)   #writelines作用在errorMessage是list時
-        # elif soup.select_one('head').text.strip() == 'Service Unavailable':
-        #   """
-
-        #   「
-        #   <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN""http://www.w3.org/TR/html4/strict.dtd">
-
-        #   <html><head><title>Service Unavailable</title>
-        #   <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/></head>
-        #   <body><h2>Service Unavailable</h2>
-        #   <hr/><p>HTTP Error 503. The service is unavailable.</p>
-        #   </body></html>
-        #   」
-
-        #   """
-        #   soup = ""
+        
 
 
         with open(txtFileRoute, 'w', encoding='utf-8')as f:
@@ -432,7 +426,7 @@ if __name__ == '__main__':
 
 
     Process_2 = [] # 接收detailUri，繼續爬蟲html。
-    for k in range(20):
+    for k in range(30):
         detailPageInARow_proc = mp.Process(target=detailPageInARow, args=(detailUri_queue, headers, objectiveFolder, objective,))
         detailPageInARow_proc.daemon = True
         detailPageInARow_proc.start()
