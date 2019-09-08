@@ -63,8 +63,15 @@ from libs.splinterBrowser import browserWaitTime
 
 def searchwordKeyInAndEnter(browser, searchword):
     # 輸入匡輸入
-    browser.find_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').fill(searchword)
-    timeSleepOne()
+    # //*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input
+    # //*[@id="tsf"]/div[2]/div[1]/div[1]/div/div[2]/input # 可以work
+    
+    try:
+        browser.find_by_xpath('//*[@id="tsf"]/div[2]/div[1]/div[1]/div/div[2]/input').fill(searchword)
+        timeSleepOne()
+    except AttributeError as e:
+        browser.find_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').fill(searchword)
+        timeSleepOne()
     # enter
     browser.find_by_xpath('//*[@id="tsf"]/div[2]/div/div[2]/div[2]/div/center/input[1]').click()
     timeSleepRandomly()
