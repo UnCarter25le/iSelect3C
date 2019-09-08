@@ -334,3 +334,12 @@ class numsHandler(object):
 # "能源局型號 EH1200TS4"
 # aa = "櫻花【儲熱式】電熱水器 EH-1200TS4【標準安裝+舊機清運】"
 # print(bureauEnergyReplace().productModelExtractAdvanced(aa))
+
+
+# aa = "【Kolin歌林】4-6坪四方吹變頻冷暖型分離式冷氣(KDV-36203/KSA-362DV03)"
+# bb= "【Panasonic國際牌】4坪+8坪變頻冷暖一對二分離式冷氣(CU-2J71BHA2+CS-PX22FA2+CS-PX50FA2)"
+# print(re.search("[0-9-]+坪{0,1}", aa).group())
+# print(re.search("變頻", aa).group())
+# print(re.search("冷暖", aa).group())
+# print(re.search("分離式", aa).group())
+# print(re.findall("[0-9]+坪", bb))
