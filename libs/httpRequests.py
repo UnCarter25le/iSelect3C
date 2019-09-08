@@ -84,7 +84,7 @@ class newsRequests(object):
     def intersectionForCrawl(self, publisherName, newsLink):
 
         if not publisherName:
-            videoLinkInContent, newsContent = "", ""
+            videoLinkInContent, newsContent = None, None
         
         elif publisherName == self._publisherUdn:
             videoLinkInContent, newsContent = udnRequests.requests(newsLink, self._headers)
@@ -131,15 +131,15 @@ class udnRequests(newsRequests):
                 newsContent = [textMiningRegex.discardSpace(textMiningRegex.replaceEscapeAlphabet(row.text)) 
                                     for row in soup.select_one("#story_body_content").select("p") 
                                             if row.text != ""]
-                videoLinkInContent = "" # 內文本身沒有影片
+                videoLinkInContent= None # 內文本身沒有影片
                 break
             except requests.exceptions.ConnectionError as e:
                 print(url, "發生問題。", e)
                 print()
                 timeSleepRandomly()
                 timeSleepTwo()
-                newsContent = ""
-                videoLinkInContent = ""
+                newsContent= None
+                videoLinkInContent= None
 
         return videoLinkInContent, newsContent
 
@@ -159,7 +159,7 @@ class udnMoneyRequests(newsRequests):
                 newsContent = [textMiningRegex.discardSpace(textMiningRegex.replaceEscapeAlphabet(row.text))
                                     for row in soup.select_one("#article_body").select("p") 
                                             if row.text != ""]
-                videoLinkInContent = "" # 內文本身沒有影片
+                videoLinkInContent= None # 內文本身沒有影片
 
                 break
             except requests.exceptions.ConnectionError as e:
@@ -167,8 +167,8 @@ class udnMoneyRequests(newsRequests):
                 print()
                 timeSleepRandomly()
                 timeSleepTwo()
-                newsContent = ""
-                videoLinkInContent = ""
+                newsContent= None
+                videoLinkInContent= None
 
         return videoLinkInContent, newsContent
 
@@ -188,12 +188,12 @@ class ltnRequests(newsRequests):
                 res.encoding = 'utf-8'
                 timeSleepRandomly()
 
-                soup = BeautifulSoup(res.text, 'html.parser')
+                soup = BeautifulSoup(res.text, 'lxml') # html.parser不夠力 https://ec.ltn.com.tw/article/paper/1295417 抓不到內容
                 try:
                     newsContent = [textMiningRegex.discardSpace(textMiningRegex.replaceEscapeAlphabet(row.text)) 
                                         for row in soup.select_one(".text").select("p") 
                                             if row.text != ""]
-                    videoLinkInContent = "" # 內文本身沒有影片
+                    videoLinkInContent= None # 內文本身沒有影片
                 except AttributeError as e:
                     # https://news.ltn.com.tw/news/consumer/paper/1284005  --> https://ent.ltn.com.tw/news/paper/1284005
                     print("error code:", e, url)
@@ -205,8 +205,8 @@ class ltnRequests(newsRequests):
                 print()
                 timeSleepRandomly()
                 timeSleepTwo()
-                newsContent = ""
-                videoLinkInContent = ""
+                newsContent= None
+                videoLinkInContent= None
 
         return videoLinkInContent, newsContent
 
@@ -223,15 +223,15 @@ class ltnRequests(newsRequests):
                 newsContent = [textMiningRegex.discardSpace(textMiningRegex.replaceEscapeAlphabet(row.text)) 
                                     for row in soup.select_one(".news_content").select("p") 
                                         if row.text != ""]
-                videoLinkInContent = "" # 內文本身沒有影片
+                videoLinkInContent= None # 內文本身沒有影片
                 break
             except requests.exceptions.ConnectionError as e:
                 print(url, "發生問題。", e)
                 print()
                 timeSleepRandomly()
                 timeSleepTwo()
-                newsContent = ""
-                videoLinkInContent = ""
+                newsContent= None
+                videoLinkInContent= None
 
         return videoLinkInContent, newsContent
 
@@ -251,7 +251,7 @@ class chinaTimesRequests(newsRequests):
                 newsContent = [textMiningRegex.discardSpace(textMiningRegex.replaceEscapeAlphabet(row.text)) 
                                     for row in soup.select_one(".article-body").select("p")
                                         if row.text != ""]
-                videoLinkInContent = "" # 內文本身沒有影片
+                videoLinkInContent= None # 內文本身沒有影片
 
                 break
             except requests.exceptions.ConnectionError as e:
@@ -259,8 +259,8 @@ class chinaTimesRequests(newsRequests):
                 print()
                 timeSleepRandomly()
                 timeSleepTwo()
-                newsContent = ""
-                videoLinkInContent = ""
+                newsContent= None
+                videoLinkInContent= None
 
         return videoLinkInContent, newsContent
     
@@ -279,7 +279,7 @@ class appleDailyRequests(newsRequests):
                 newsContent = [ textMiningRegex.discardSpace(textMiningRegex.replaceEscapeAlphabet(row.text))
                                     for row in soup.select_one(".ndArticle_margin").select("p") 
                                         if row.text != ""]
-                videoLinkInContent = "" # 內文本身沒有影片
+                videoLinkInContent= None # 內文本身沒有影片
 
                 break
             except requests.exceptions.ConnectionError as e:
@@ -287,8 +287,8 @@ class appleDailyRequests(newsRequests):
                 print()
                 timeSleepRandomly()
                 timeSleepTwo()
-                newsContent = ""
-                videoLinkInContent = ""
+                newsContent= None
+                videoLinkInContent= None
 
         return videoLinkInContent, newsContent
 
@@ -316,18 +316,18 @@ class yahooRequests(newsRequests):
                         # "https://tw.news.yahoo.com/%E9%BB%83%E9%87%91%E9%80%B1%E5%A4%A7%E5%90%8C3c%E9%85%AC%E8%B3%93%E7%9B%9B%E5%85%B8-%E6%B6%BC%E5%A4%8F%E6%9C%80%E5%BC%B7%E6%AA%94-081101070.html": [
                         # "黃金週大同3C酬賓盛典涼夏最強檔",
                         print("error code:", "這則新聞爆炸了！", url)
-                        newsContent = ""
+                        newsContent= None
 
 
-                videoLinkInContent = "" # 內文本身沒有影片
+                videoLinkInContent= None # 內文本身沒有影片
                 break
             except requests.exceptions.ConnectionError as e:
                 print(url, "發生問題。", e)
                 print()
                 timeSleepRandomly()
                 timeSleepTwo()
-                newsContent = ""
-                videoLinkInContent = "" 
+                newsContent= None
+                videoLinkInContent= None 
 
         return videoLinkInContent, newsContent
 
@@ -352,7 +352,7 @@ class ettodayRequests(newsRequests):
                     print("ETtoday 發現內文有影片：", videoLinkInContent)
                     
                 else:
-                    videoLinkInContent = ""
+                    videoLinkInContent= None
                 
                 break
             except requests.exceptions.ConnectionError as e:
@@ -360,8 +360,8 @@ class ettodayRequests(newsRequests):
                 print()
                 timeSleepRandomly()
                 timeSleepTwo()
-                newsContent = ""
-                videoLinkInContent = ""
+                newsContent= None
+                videoLinkInContent= None
 
         return videoLinkInContent, newsContent
 
@@ -381,15 +381,15 @@ class nowNewsRequests(newsRequests):
                 newsContent = [textMiningRegex.discardSpace(textMiningRegex.replaceEscapeAlphabet(row.text))
                                     for row in soup.find("span", {"itemprop":"articleBody"}).select("p") 
                                         if row.text != ""]
-                videoLinkInContent = "" # 內文本身沒有影片
+                videoLinkInContent= None # 內文本身沒有影片
                 break
             except requests.exceptions.ConnectionError as e:
                 print(url, "發生問題。", e)
                 print()
                 timeSleepRandomly()
                 timeSleepTwo()
-                newsContent = ""
-                videoLinkInContent = ""
+                newsContent= None
+                videoLinkInContent= None
 
         return videoLinkInContent, newsContent
 
@@ -419,7 +419,7 @@ class tvbsRequests(newsRequests):
                     print("TVBS 發現內文有影片：", videoLinkInContent)
                     
                 else:
-                    videoLinkInContent = ""
+                    videoLinkInContent= None
 
                 
                 break
@@ -428,8 +428,8 @@ class tvbsRequests(newsRequests):
                 print()
                 timeSleepRandomly()
                 timeSleepTwo()
-                newsContent = ""
-                videoLinkInContent = ""
+                newsContent= None
+                videoLinkInContent= None
 
         return videoLinkInContent, newsContent
     
