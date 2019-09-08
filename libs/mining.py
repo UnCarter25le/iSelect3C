@@ -102,7 +102,7 @@ class newsMining(object):
     _lastCheckForUnwantedWords = ["春節", "年中慶", "周年慶", "週年慶", "父親節", "母親節", "618", "雙11", "88", "618",
                                        "1111", "11.11", "6.18", "聰明用電", "機車", "汽機車", "老車", "計程車", "車齡",
                                       "汽車", "柴油車", "貨車", "車種", "新北富基漁港", "營收輸給", "業績輸給", "填息", "4K彩電", "816",
-                                      "這家電商"]
+                                      "這家電商", "飲品", "電視"]
 
 
 
@@ -186,7 +186,7 @@ class newsMining(object):
         針對切字切詞、出版社篩選後的新聞集，進型匹配的爬蟲。
         
         """
-        publisher_Id, publisher = "", ""
+        publisher_Id, publisher = None, None
 
         for checkLink in self._newsUrlCheckDict:    
             if searchWordTrueOrFalse(checkLink, newsLink):
