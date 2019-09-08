@@ -267,7 +267,12 @@ Hignly recommend holding the version of pymssql at 2.1.1.
 - ### 3-7-2. insert data into database(confidential):
 
     ```
-    insertHistoricalDataIntoDB.py   --> insertLatestDataIntoDB.py
+    writeReferenceData() in insertLatestDataIntoDB.py  --> insertHistoricalDataIntoDB.py   --> insertLatestDataIntoDB.py
+
+    *In the main() of insertLatestDataIntoDb.py, there are several comments for guiding how shall we do in order
+
+    in order to successfully write data into DB.
+
 
     ```
 
