@@ -170,7 +170,7 @@ if __name__ == '__main__':
     
     # 啟動進程
     Process_1 = []  #發送overviewUri，總計有12個分類
-    for x in range(4):
+    for x in range(2):
         overviewUriDistributor_proc = mp.Process(target=overviewUriDistributor, args=(keyword_queue, overviewUri_queue, _bureauEnergyKeywordUrlPair, headers,dirRoute,objectiveFolder, objective,))
         overviewUriDistributor_proc.daemon = True
         overviewUriDistributor_proc.start()
@@ -179,7 +179,7 @@ if __name__ == '__main__':
 
 
     Process_2 = []   # 爬overview html
-    for p in range(8):
+    for p in range(10):
         getPageInARow_proc = mp.Process(target=getPageInARow, args=(overviewUri_queue, headers, objectiveFolder, objective,))
         getPageInARow_proc.daemon = True  #共同行程
         getPageInARow_proc.start()
