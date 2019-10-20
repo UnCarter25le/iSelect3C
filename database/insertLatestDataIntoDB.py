@@ -277,12 +277,13 @@ if __name__ == '__main__':
     # """
     # writeNewsTitle(multiSourceObject, 
     #                         sourceDataFolderName=newsIntegraFolder, historyFile=1)
-    # """
-
-    # PART (5)-2 This session is one-time procedure and have to be done repeatedly if having the latest files.
-    # """
-    # writeNewsTitle(multiSourceObject, 
-    #                         sourceDataFolderName=newsIntegraFolder)
+    
+    
+    """
+    PART (5)-2 This session is one-time procedure and have to be done repeatedly if having the latest files.
+    """
+    writeNewsTitle(multiSourceObject, 
+                            sourceDataFolderName=newsIntegraFolder)
 
 
 
@@ -291,11 +292,12 @@ if __name__ == '__main__':
     # """
     # writeNewsContent(multiSourceObject, 
     #                         sourceDataFolderName=newsWithContentFolder, historyFile=1)
-    # """
-    # PART (6)-2 This session is one-time procedure and have to be done repeatedly if having the latest files.
-    # """
-    # writeNewsContent(multiSourceObject, 
-    #                         sourceDataFolderName=newsWithContentFolder)
+    
+    """
+    PART (6)-2 This session is one-time procedure and have to be done repeatedly if having the latest files.
+    """
+    writeNewsContent(multiSourceObject, 
+                            sourceDataFolderName=newsWithContentFolder)
     
 
 
