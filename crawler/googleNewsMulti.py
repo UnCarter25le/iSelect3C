@@ -45,20 +45,29 @@ _BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # å°ˆæ
 sys.path.append(_BASE_PATH)
 
 from libs.httpRequests import _headers
-from libs.regex import discardSpace
-from libs.timeWidget import timeSleepRandomly
-from libs.timeWidget import timeCalculate
-from libs.timeWidget import timeSleepOne
-from libs.timeWidget import timeStampGenerator
-from libs.timeWidget import timeStampCalculate
-from libs.manipulateDir import mkdirForRawData
-from libs.manipulateDir import eraseRawData
+from libs.regex import googleNewsRegex
+                        
+from libs.timeWidget import (
+                            timeSleepRandomly,
+                            timeCalculate,
+                            timeSleepOne,
+                            timeStampGenerator,
+                            timeStampCalculate
+                            )
+from libs.manipulateDir import (
+                                mkdirForRawData,
+                                eraseRawData
+                                )
 
-from libs.multiProcessing import distributeKeyword
-from libs.multiProcessing import _googleSearchWord
-from libs.splinterBrowser import buildSplinterBrowser
-from libs.splinterBrowser import buildSplinterBrowserHeadless
-from libs.splinterBrowser import browserWaitTime
+from libs.multiProcessing import (
+                                distributeKeyword, 
+                                _googleSearchWord
+                                )
+from libs.splinterBrowser import (
+                                buildSplinterBrowser,
+                                buildSplinterBrowserHeadless,
+                                browserWaitTime
+                                )
 
 
 def searchwordKeyInAndEnter(browser, searchword):
@@ -124,7 +133,10 @@ def elementUrlExtract(browser, firstPage, topTabList, elementUrl, newsDictInner,
             print(date)
             
             timeSleepRandomly()
-            newsDictInner[newsUrl] = [newsTitle, discardSpace(publisher), timeStampCalculate(date)]
+            
+            publisher = googleNewsRegex.publisherTooLong(googleNewsRegex.discardSpace(publisher))
+
+            newsDictInner[newsUrl] = [newsTitle, publisher, timeStampCalculate(date)]
 
             humanSimulate(browser, topTabList)
             
