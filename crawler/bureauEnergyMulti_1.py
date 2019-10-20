@@ -60,9 +60,12 @@ from libs.multiProcessing import (
 from libs.timeWidget import (
                             timeSleepRandomly,
                             timeCalculate,
-                            timeSleepOne
+                            timeSleepOne,
+                            timeSleepTwo
                             )
 from libs.httpRequests import _headers
+
+from crawler.bureauEnergyMulti_2 import (judgeSoup)
 
 
 
@@ -127,20 +130,41 @@ def getPageInARow(input, headers, objectiveFolder, objective, *args):
         # print('getPageInARow is in new process %s, %s ' % (getPageInARow_proc, os.getpid()))
         # print('------接下來要處理 ' + searchword + '第' ,page, '頁---------共', totalPage, '頁')
 
-        timeSleepOne()
-        timeSleepRandomly()
-        res = requests.get(correctUrl, headers=headers)
-        res.encoding = 'utf-8'
 
-        timeSleepRandomly()
+        for i in range(3):
+            try:
+              timeSleepRandomly()
+              res = requests.get(correctUrl, headers=headers)
+              res.encoding = 'utf-8'
+              timeSleepRandomly()
+              soup  = BeautifulSoup(res.text,'html.parser')
+              break
+            except requests.exceptions.ConnectionError as e:
+              print(correctUrl, "發生問題。", e)
+              print()
+              timeSleepRandomly()
+              timeSleepTwo()
+              soup = ""
 
-        soup  = BeautifulSoup(res.text,'html.parser')
+        # 若觸發第2個狀況，則強命為空字串。
+        if judgeSoup(soup, searchword, correctUrl, txtFileRoute) == "check":
+          soup = ""
+
+
+        # 原來
+        # timeSleepOne()
+        # timeSleepRandomly()
+        # res = requests.get(correctUrl, headers=headers)
+        # res.encoding = 'utf-8'
+        # timeSleepRandomly()
+        # soup  = BeautifulSoup(res.text,'html.parser')
+
 
         with open(txtFileRoute, 'w', encoding='utf-8')as f:
             f.write(str(soup))
         print(f"成功寫出  {searchword}  第 {page} 頁， 共 {totalPage} 頁。")
         end = timeCalculate()
-        print('getPageInARow 累計耗時：{0} 秒'.format(end-begin))
+        # print('getPageInARow 累計耗時：{0} 秒'.format(end-begin))
         input.task_done()  #通知main process此次的input處理完成！
         timeSleepOne() #暫停幾秒來模擬現實狀況。
 
