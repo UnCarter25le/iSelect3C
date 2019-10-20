@@ -126,7 +126,7 @@ def getPageInARow(input, output, keywordUrlPair, objectiveFolder, objective):
         print(thisPID,"===========================================")
         searchword = input.get()
         print('getPageInARow is in new process %s, %s ' % (getPageInARow_proc, thisPID))
-        print()
+        # print()
         eraseRawData(objectiveFolder, objective, searchword)
         mkdirForRawData(objectiveFolder, objective, searchword)
 
@@ -170,11 +170,11 @@ def getPageInARow(input, output, keywordUrlPair, objectiveFolder, objective):
             raise
         
         print('------接下來要處理 ' + searchword + ' 的頁數---------', totalPage, '頁')
-        print()
+        # print()
         
         with open(f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/{searchword}/1_{totalPage}_{searchword}.txt", 'w', encoding='utf-8')as f:
             f.write(str(soup))
-        print()
+        # print()
         print(f'成功寫出  {searchword}  第 1 頁')
 
         i_browser = 1
@@ -190,13 +190,14 @@ def getPageInARow(input, output, keywordUrlPair, objectiveFolder, objective):
         # 休息久一點，讓所有searchword的第一頁都有被讀到。
         timeSleepEight()
         timeSleepEight()
+        timeSleepEight()
         
         for num in range(2, totalPage+1):
             strNum = str(num)
             consecutiveData = searchword + "+" + strNum + "+" + str(totalPage) + "+" + re.sub(r"curPage=1",f"curPage={strNum}",url)
             output.put(consecutiveData)
             # print(f'這裡是getPageInARow，準備送給  getPageInARowAdvanced  處理:  {searchword} 的 第 {strNum} 頁，總共{totalPage}')
-            print()
+            # print()
         input.task_done()  #通知main process此次的input處理完成！
         end = timeCalculate()
         print(f'{thisPID}__getPageInARow 累計耗時：{end-begin} 秒')
@@ -206,11 +207,11 @@ def getPageInARow(input, output, keywordUrlPair, objectiveFolder, objective):
 def getPageInARowAdvanced(input, objectiveFolder, objective):
     thisPID = os.getpid()
     while True:
-        print(thisPID,"===========================================")
+        # print(thisPID,"===========================================")
         consecutiveUrl = input.get()
         searchword, page, totalPage, url = consecutiveUrl.split('+')
         # print(url)
-        print(f"{thisPID}__{getPageInARowAdvanced_proc} 開始處理 {searchword} 的第 {page} 頁：")
+        # print(f"{thisPID}__{getPageInARowAdvanced_proc} 開始處理 {searchword} 的第 {page} 頁：")
         
         # 建立browser的代碼放進while True裡面，就可以避免「同一個瀏覽器」持續拜訪網頁時，被拒絕的情況。
         for i in range(3):
@@ -230,7 +231,7 @@ def getPageInARowAdvanced(input, objectiveFolder, objective):
                 timeSleepRandomly()
                 
                 soup = BeautifulSoup(tempHtml,'html.parser')
-                print(f"讀取{searchword}第 {page} 頁，成功！")
+                # print(f"讀取{searchword}第 {page} 頁，成功！")
                 break
             except (ConnectionRefusedError, TimeoutException, WebDriverException) as e:
                 print(f"{thisPID}__{getPageInARowAdvanced_proc} 讀取 {searchword} 第 {page} 頁有問題。",e)
@@ -250,19 +251,19 @@ def getPageInARowAdvanced(input, objectiveFolder, objective):
         
         with open(f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/{searchword}/{page}_{totalPage}_{searchword}.txt", 'w', encoding='utf-8')as f:
             f.write(str(soup))
-        print()
-        print(f'{thisPID}  成功寫出  {searchword}  第{page}頁，總共{totalPage} 頁。')
+        # print()
+        # print(f'{thisPID}  成功寫出  {searchword}  第{page}頁，總共{totalPage} 頁。')
     
         try:
             browser.quit()
-            print(f"成功關閉 browser{thisPID}__{getPageInARowAdvanced_proc}++++++++++++++++++++++++++++++")
+            # print(f"成功關閉 browser{thisPID}__{getPageInARowAdvanced_proc}++++++++++++++++++++++++++++++")
         except:
             print(f"放棄 {thisPID}__{getPageInARowAdvanced_proc} 這個browser。")
             print(f"kill {thisPID}__{getPageInARowAdvanced_proc} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
             os.kill(thisPID, signal.SIGKILL)
         input.task_done()  #通知main process此次的input處理完成！
         end = timeCalculate()
-        print(f'{thisPID}__getPageInARowAdvanced 累計耗時：{end-begin} 秒')
+        # print(f'{thisPID}__getPageInARowAdvanced 累計耗時：{end-begin} 秒')
 
 if __name__ == '__main__':
     
@@ -286,7 +287,7 @@ if __name__ == '__main__':
 
     # 啟動進程
     Process_1 = []
-    for p in range(4):
+    for p in range(2):
         getPageInARow_proc = mp.Process(target=getPageInARow, args=(searchword_queue, url_queue, _momoKeywordUrlPair, objectiveFolder, objective,))
         getPageInARow_proc.daemon = True
         getPageInARow_proc.start()
