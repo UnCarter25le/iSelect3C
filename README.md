@@ -97,7 +97,6 @@ Hignly recommend holding the version of pymssql at 2.1.1.
     |       |___momo/
     |       |___news/
     |       |___newsWithContent/
-    |       |___newsWithContent/
     |       |___weather/
     |       |___observationStation/
     |       |___pchome/
