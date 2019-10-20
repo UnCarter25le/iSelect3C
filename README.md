@@ -157,8 +157,8 @@ Hignly recommend holding the version of pymssql at 2.1.1.
             more in the future!
 
 /dataMining/
-    |___dictionary/
-    |   |___decision/ (confidential)
+    |___dictionary/ (confidential)
+    |   |___decision/ 
     |   |       |___testResultOfSelectedNewsUrl.txt
     |   |___jiebaCut_resultOfNewsTitle.json
     |   |___newsTitle_stop_words.txt
@@ -204,7 +204,7 @@ Hignly recommend holding the version of pymssql at 2.1.1.
 
 
 ```
-- ### Note: Several files have been selected to be protected for concerns, and u are able to be notice about these signs by reading 「(confidentail)」.
+- ### Note: Several files have been selected to be protected for concerns, and u are able to be notice about these signs by reading 「(confidential)」.
 
 ## 3. The process of executing the ".py" file:
 > You are supposed to measure your machine's condition and `modify the numbers of processes` which are set in *multi.py while executing programs with multiprocess design.
