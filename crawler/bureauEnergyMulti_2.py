@@ -221,6 +221,11 @@ def dataMunging(input, output, dirRoute,objectiveFolder, objective, domainUrl, *
                 
             with open(dirNameAccepted + file)as f:
                 inn = f.read()
+            
+            # 處理soup=""的情況
+            if not inn:
+              continue
+            
             textSoup = BeautifulSoup(inn,'html.parser')
 
             a = 0
@@ -317,7 +322,7 @@ def badRequestComposed(searchword, url, txtFileRoute):
 def judgeSoup(soup, searchword, url, txtFileRoute):
   if not soup:
     badRequestComposed(searchword, url, txtFileRoute)
-  elif soup.select_one('head').text.strip() == 'Service Unavailable':
+  elif (soup.select_one('head').text.strip() == 'Service Unavailable') or ("�" in soup.select_one('head').text.strip()):
     """
 
     「
@@ -330,9 +335,24 @@ def judgeSoup(soup, searchword, url, txtFileRoute):
     </body></html>
     」
 
+    另外一種狀況(每個類別出錯時，亂碼不一樣)：
+
+    「
+    <html>
+    <head>
+    <title>�g�ٳ��෽���෽�Ĳv���żХܺ޲z�t��</title>
+    <meta content="0;url=https://ranking.energylabel.org.tw/" http-equiv="refresh"/>
+    </head>
+    <body>
+    </body>
+    </html>
+    」
+
+
     """
-    soup = ""
+    soup = "check"
     badRequestComposed(searchword, url, txtFileRoute)
+    return soup  #必須加return，這樣才能重新指定值給soup
   else:
     pass
 
@@ -369,7 +389,9 @@ def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
               timeSleepTwo()
               soup = ""
         
-        judgeSoup(soup, searchword, url, txtFileRoute)
+        # 若觸發第2個狀況，則強命為空字串。
+        if judgeSoup(soup, searchword, url, txtFileRoute) == "check":
+          soup = ""
         
 
 
@@ -426,7 +448,7 @@ if __name__ == '__main__':
 
 
     Process_2 = [] # 接收detailUri，繼續爬蟲html。
-    for k in range(30):
+    for k in range(20):
         detailPageInARow_proc = mp.Process(target=detailPageInARow, args=(detailUri_queue, headers, objectiveFolder, objective,))
         detailPageInARow_proc.daemon = True
         detailPageInARow_proc.start()
