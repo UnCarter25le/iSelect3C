@@ -68,7 +68,9 @@ from libs.manipulateDir import mkdirForCleanData
 
 # 清洗除濕機＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
-# detailJson檔案中，一加進overviewJson檔案的欄位。
+# detailJson檔案中，加進overviewJson檔案的欄位。
+# modelPoolDict是從detail頁面洗出來的product model，如果爬蟲有出錯的話，這邊overview的model對不上
+# detail的model。
 def zipJsonObject(modelPoolDict, comparedValue, bureauEnergyDetail):
     # index = modelPool.index(comparedValue)
     # KeyError: 'HO-K85H'  'CU-M130HA2'#冷氣
