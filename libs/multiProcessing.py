@@ -40,7 +40,7 @@ _weatherRecordAvailable = {"2009": _monthsAvailable,
                         "2016": _monthsAvailable,
                         "2017": _monthsAvailable,
                         "2018": _monthsAvailable,
-                        "2019": [str(row) for row in range(1,8)]}
+                        "2019": [str(row) for row in range(1,10)]}
 
 
 # 除濕機與電冰箱是採「107年新分級基準」。
@@ -89,7 +89,9 @@ _googleSearchWord = {"家電促銷":"https://www.google.com/",
                      "家電節能補助":"https://www.google.com/"}
 
 
-
+# https://www.momoshop.com.tw/search/searchShop.jsp?
+# keyword=%E7%93%A6%E6%96%AF%E7%86%B1%E6%B0%B4%E5%99%A8
+# &searchType=1&curPage=1&_isFuzzy=0&showType=chessboardType
 _momoKeywordUrlPair = {"冷暖空調":("https://www.momoshop.com.tw/search/searchShop.jsp"
                         "?keyword=%E5%86%B7%E6%9A%96%E7%A9%BA%E8%AA%BF"
                         "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType"),
@@ -123,7 +125,8 @@ _momoKeywordUrlPair = {"冷暖空調":("https://www.momoshop.com.tw/search/searc
                 "瓦斯爐":("https://www.momoshop.com.tw/search/searchShop.jsp"
                                 "?keyword=%E7%93%A6%E6%96%AF%E7%88%90"
                                 "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType"),
-                "安定器內藏式螢光燈泡":("https://www.momoshop.com.tw/search/searchShop.jsp"
+                # 安定器內藏式螢光燈泡 momo找不到品項，導致找到很多很多高價位汽車。
+                "節能燈泡":("https://www.momoshop.com.tw/search/searchShop.jsp"
                                 "?keyword=%E5%AE%89%E5%AE%9A%E5%99%A8%E5%85%A7%E8%97%8F%E5%BC%8F%E8%9E%A2%E5%85%89%E7%87%88%E6%B3%A1"
                                 "&searchType=3&curPage=1&_isFuzzy=1&showType=chessboardType")}
 
@@ -138,4 +141,4 @@ _pchomeKeywordUrlPair = {"冷暖空調":"https://ecshweb.pchome.com.tw/search/v3
                          "貯備型電熱水器":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
                          "瓦斯熱水器":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
                          "瓦斯爐":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
-                         "安定器內藏式螢光燈泡":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc"}
+                         "節能燈泡":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc"}
