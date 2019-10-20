@@ -276,10 +276,17 @@ class appleDailyRequests(newsRequests):
                 timeSleepRandomly()
 
                 soup = BeautifulSoup(res.text, 'html.parser')
-                newsContent = [ textMiningRegex.discardSpace(textMiningRegex.replaceEscapeAlphabet(row.text))
-                                    for row in soup.select_one(".ndArticle_margin").select("p") 
-                                        if row.text != ""]
-                videoLinkInContent= None # 內文本身沒有影片
+                try:
+                    newsContent = [ textMiningRegex.discardSpace(textMiningRegex.replaceEscapeAlphabet(row.text))
+                                        for row in soup.select_one(".ndArticle_margin").select("p") 
+                                            if row.text != ""]
+                    videoLinkInContent= None # 內文本身沒有影片
+                except AttributeError as e: # AttributeError: 'NoneType' object has no attribute 'select'
+                    # https://tw.appledaily.com/gadget/20190927/IFU7ML7HXNAL2GHDNKOZULDNOU/
+                    tmpStr = str(soup).split("""<script type="application/javascript">window.Fusion=""")[1].split("Fusion.globalContent=")[1].split('"content":"')[1].split("更多「")[0]
+                    newsContent = [row for row in tmpStr.split("<br />&nbsp;<br />") if row != ""]
+
+                    videoLinkInContent= None # 內文本身沒有影片
 
                 break
             except requests.exceptions.ConnectionError as e:
@@ -289,6 +296,7 @@ class appleDailyRequests(newsRequests):
                 timeSleepTwo()
                 newsContent= None
                 videoLinkInContent= None
+        
 
         return videoLinkInContent, newsContent
 
