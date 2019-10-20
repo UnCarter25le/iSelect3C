@@ -166,7 +166,7 @@ if __name__ == '__main__':
 
     # 啟動行程
     Process_1 = []
-    for p in range(6): #開5個進程時，沒有出錯。
+    for p in range(5): #開5個進程時，沒有出錯。
         getPageInARow_proc = mp.Process(target=getPageInARow, args=(keyword_queue, headers, objectiveFolder, objective,))#*args
         getPageInARow_proc.daemon = True
         getPageInARow_proc.start()
