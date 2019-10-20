@@ -175,10 +175,10 @@ Hignly recommend holding the version of pymssql at 2.1.1.
 /libs/
     |___manipulateDir.py__________________> mkdir or rmdir whenever we wanna make crawling or munging.
     |___multiProcessing.py________________> Needed by programs those operations are in a mulitprocess manner.
-    |___munging.py________________________> Needed by programs which are ready to process raw data.
-    |___minging.py________________________> Needed by programs which are ready to deal with text.
+    |___munging.py________________________> Needed by programs which are ready to process raw data.(confidential)
+    |___minging.py________________________> Needed by programs which are ready to deal with text.(confidential)
     |___regex.py__________________________> Used in the situations in which we wanna extract accurate data type
-    |                                       from raw data.
+    |                                       from raw data.(confidential)
     |___splinterBrowser.py________________> Used by programs which require chromdirver to start up browsers.
     |___timeWidget.py_____________________> Used when the interval peiod is needed in programs' processing.
     |___httpRequests.py___________________> Be imported while the useage of the fixed parameters.
