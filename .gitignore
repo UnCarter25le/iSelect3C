@@ -46,7 +46,11 @@ libs/sqlDDLAndsqlAlchemyORM.py
 
 libs/sqlDMLAndsqlAlchemyORM.py
 
+libs/mining.py
 
+libs/regex.py
+
+libs/munging.py
 
 
 requirements_ChineseLiterature.txt
