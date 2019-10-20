@@ -41,6 +41,26 @@ from libs.timeWidget import timeSleepOne
 
 
 def dataMunging(input, dirRoute, objectiveFolderClean, objective, domainUrl):
+    """
+    "Id": "6631009",
+      "name": "",
+      "originprice": "NaN",
+      "pics": "https://img1.momoshop.com.tw/goodsimg/0006/631/009/6631009_L.jpg?t=000",
+      "picb": "None",
+      "produrl": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=6631009&Area=search&mdiv=403&oid=55_8&cid=index&kw=%E5%86%B7%E6%9A%96%E7%A9%BA%E8%AA%BF"
+    },
+    
+    有的商品有連結，但是價格與品名不全，要處理。
+
+    {
+      "Id": "6574471",
+      "name": "【MITSUBISHI 三菱】16公升一級能效強力型除濕機(MJ-E160HN)",
+      "originprice": "NaN",
+      "pics": "https://img1.momoshop.com.tw/goodsimg/0006/574/471/6574471_L.jpg?t=000",
+      "picb": "None",
+      "produrl": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=6574471&Area=search&mdiv=403&oid=3_22&cid=index&kw=%E9%99%A4%E6%BF%95%E6%A9%9F"
+    }
+    """
     thisPID = os.getpid()
     while True:
         print(thisPID,"===========================================")
@@ -79,8 +99,21 @@ def dataMunging(input, dirRoute, objectiveFolderClean, objective, domainUrl):
                 for item in products:
                     innerDict = {}
                     innerDict['Id'] = item.attrs.get('gcode')
-                    innerDict['name'] = item.select_one('.goodsUrl').select_one('.prdName').text
-                    innerDict['originprice'] = item.select_one('.goodsUrl').select_one('.money .price').text.replace('$','').replace(',','')
+
+                    productName = item.select_one('.goodsUrl').select_one('.prdName').text
+                    originprice = item.select_one('.goodsUrl').select_one('.money .price').text.replace('$','').replace(',','')
+                    if productName:
+                        innerDict['name'] = productName
+
+                        if originprice == "NaN":
+                            innerDict['originprice'] = "0"  #"NaN"
+                        else:
+                            innerDict['originprice'] = originprice
+                            
+                    else:
+                        innerDict['name'] = "品名抓不到"
+                        innerDict['originprice'] = "0"  #"NaN"
+
                     innerDict['pics'] = item.select_one('.goodsUrl img').attrs.get('src') 
                     innerDict['picb'] = "None"
                     innerDict['produrl'] = domainUrl + item.select_one('.goodsUrl').attrs.get('href')
