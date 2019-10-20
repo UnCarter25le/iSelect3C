@@ -407,7 +407,7 @@ class bureauEnergyMunging(rawDataMunging):
                         # 處理soup=""的情況
                         if not inn:
                                 continue
-
+                        
                         productDetail = {}
                         textSoup = BeautifulSoup(inn,'html.parser')
 
