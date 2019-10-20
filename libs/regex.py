@@ -88,6 +88,7 @@ def fullMatchWordTrueOrFalse(regexword, wordsComparison):
         # raise
         return 0
 
+
 class textMiningRegex(object):
     def sanitize(self, txt):
         # 保留英數字, 中文 (\u4e00-\u9fa5) 及中文標點, 部分特殊符號
@@ -110,6 +111,23 @@ class textMiningRegex(object):
     @classmethod
     def discardSpace(cls, word):
         return word.replace(" ","")
+
+
+class googleNewsRegex(textMiningRegex):
+    """
+    "https://news.cnyes.com/news/id/4388344": [
+    "中國頻送政策利多法人提醒留意兩大隱憂",
+    "http://house.cnyes.com/global/index_all_news.aspx(新聞發布)",
+    "2019-09-30"
+    
+    """
+    @classmethod
+    def publisherTooLong(cls, publisher):
+        if "http://house.cnyes.com/global/index_all_news.aspx" in publisher:
+            return publisher.replace("http://house.cnyes.com/global/index_all_news.aspx", "鉅亨網")
+        else:
+            return publisher
+
 
 
 class urlParseDealing(object):
@@ -343,3 +361,7 @@ class numsHandler(object):
 # print(re.search("冷暖", aa).group())
 # print(re.search("分離式", aa).group())
 # print(re.findall("[0-9]+坪", bb))
+
+#燈泡
+aa = "Tornado_25W/D"
+print(bureauEnergyReplace().productModelExtractAdvanced(aa))
