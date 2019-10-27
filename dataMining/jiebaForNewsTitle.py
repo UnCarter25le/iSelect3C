@@ -108,7 +108,7 @@ if __name__ == '__main__':
             counterNum[word] = 1
 
     print("統計頻率字結果：")
-    print(counterNum.most_common(60))
+    print(counterNum.most_common(100))
 
     
     newsList = [newsObject[key][0] for key in newsObject]
@@ -129,14 +129,14 @@ if __name__ == '__main__':
     
     # print(TFIDF.most_common(3505)[3300:][::-1])
     print()
-    print(TFIDF.most_common(60))
+    print(TFIDF.most_common(80))
 
 
-    with open(f"{_BASE_PATH}/{objectiveFolderDataMining}/{objectiveFolderDictionary}/jiebaCut_resultOfNewsTitle.json", "w", encoding="utf-8") as f:
-        json.dump(counterNum.most_common(60),f, indent=2, ensure_ascii=False)
+    # with open(f"{_BASE_PATH}/{objectiveFolderDataMining}/{objectiveFolderDictionary}/jiebaCut_resultOfNewsTitle.json", "w", encoding="utf-8") as f:
+    #     json.dump(counterNum.most_common(100),f, indent=2, ensure_ascii=False)
 
-    with open(f"{_BASE_PATH}/{objectiveFolderDataMining}/{objectiveFolderDictionary}/TFIDF_resultOfNewsTitle.json", "w", encoding="utf-8") as f:
-        json.dump(TFIDF.most_common(60),f, indent=2, ensure_ascii=False)
+    # with open(f"{_BASE_PATH}/{objectiveFolderDataMining}/{objectiveFolderDictionary}/TFIDF_resultOfNewsTitle.json", "w", encoding="utf-8") as f:
+    #     json.dump(TFIDF.most_common(80),f, indent=2, ensure_ascii=False)
 
     
     
