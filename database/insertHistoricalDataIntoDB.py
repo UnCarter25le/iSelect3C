@@ -138,7 +138,7 @@ def writeEcommerceHistoricalData(multiSourceObject, sourceDataFolderName_1=None,
 if __name__ == '__main__':
     tableClassBase = writeDataWhenMunging._tableClassBase
 
-    engine = sqlObjectInitial.loadCorrectEngine(tableClassBase, tableClassBase.databaseName)
+    engine = sqlObjectInitial.loadCorrectEngine(tableClassBase, tableClassBase.engineSource)
     
     multiSourceObject = multiSourceObjectInitial(bureauEnergyM=bureauEnergyMungingHistorical(), 
                                         ecommerceM=ecommerceMungingHistorical())
@@ -150,35 +150,35 @@ if __name__ == '__main__':
     
     #-------------------------------------
 
-    """
-    PART (1)-1 This session is one-time procedure!   No need to do it again if done.
-    """
-    writeBureauHistoricalData(multiSourceObject, 
-                        sourceDataFolderName=bureauEnergyFolder, bureauSET=bureauSET())
+    # """
+    # PART (1)-1 This session is one-time procedure!   No need to do it again if done.
+    # """
+    # writeBureauHistoricalData(multiSourceObject, 
+    #                     sourceDataFolderName=bureauEnergyFolder, bureauSET=bureauSET())
   
 
-    """
-    PART (1)-2 This session is alternative;
-    We are allowed to execute programs here or at "insertLatestDataIntoDB.py  PART (2)-2"。
-    What worth giving attention is whether historical data in DB at first?
-    """
-    writeBureauHistoricalData(multiSourceObject, 
-                        sourceDataFolderName=bureauEnergyFolder, bureauSET=bureauSET(), alterStillWork=1)
+    # """
+    # PART (1)-2 This session is alternative;
+    # We are allowed to execute programs here or at "insertLatestDataIntoDB.py  PART (2)-2"。
+    # What worth giving attention is whether historical data in DB at first?
+    # """
+    # writeBureauHistoricalData(multiSourceObject, 
+    #                     sourceDataFolderName=bureauEnergyFolder, bureauSET=bureauSET(), alterStillWork=1)
 
 
-    """
-    PART (2)-1 This session is one-time procedure!   No need to do it again if done.
-    """
+    # """
+    # PART (2)-1 This session is one-time procedure!   No need to do it again if done.
+    # """
     
-    writeEcommerceHistoricalData(multiSourceObject, 
-                        sourceDataFolderName_1=pchomeFoler, sourceDataFolderName_2=momoFolder)
+    # writeEcommerceHistoricalData(multiSourceObject, 
+    #                     sourceDataFolderName_1=pchomeFoler, sourceDataFolderName_2=momoFolder)
 
-    """
-    PART (2)-2 This session is alternative;
-    We are allowed to execute programs here or at "insertLatestDataIntoDB.py  PART (3)-2"。
-    What worth giving attention is whether historical data in DB at first?
-    """
-    writeEcommerceHistoricalData(multiSourceObject, 
-                        sourceDataFolderName_1=pchomeFoler, sourceDataFolderName_2=momoFolder, alterStillWork=1)
+    # """
+    # PART (2)-2 This session is alternative;
+    # We are allowed to execute programs here or at "insertLatestDataIntoDB.py  PART (3)-2"。
+    # What worth giving attention is whether historical data in DB at first?
+    # """
+    # writeEcommerceHistoricalData(multiSourceObject, 
+    #                     sourceDataFolderName_1=pchomeFoler, sourceDataFolderName_2=momoFolder, alterStillWork=1)
 
 
