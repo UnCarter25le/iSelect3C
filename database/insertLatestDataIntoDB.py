@@ -213,7 +213,7 @@ def writeNewsContent(multiSourceObject, sourceDataFolderName=None, historyFile=N
 
 if __name__ == '__main__':
     tableClassBase = writeDataWhenMunging._tableClassBase
-    engine = sqlObjectInitial.loadCorrectEngine(tableClassBase, tableClassBase.databaseName)
+    engine = sqlObjectInitial.loadCorrectEngine(tableClassBase, tableClassBase.engineSource)
     
     multiSourceObject = multiSourceObjectInitial(bureauEnergyM=bureauEnergyMunging(), 
                                                 ecommerceM=ecommerceMunging(), 
@@ -238,12 +238,12 @@ if __name__ == '__main__':
     # """
     # writeReferenceData(tableClassBase, engine)
 
+
     # """
     # PART (2)-1 This session is one-time procedure and have to be done repeatedly if having the latest files.
     # """
     # writeBureauData(multiSourceObject, 
     #                         sourceDataFolderName=bureauEnergyFolder, bureauSET=bureauSET())
-    
     # """
     # PART (2)-2 This session is alternative;Please refer to 'inserHistoricalDataIntoDB.py  PART (1)-2".
     # """
@@ -256,9 +256,6 @@ if __name__ == '__main__':
     # """
     # writeEcommerceData(multiSourceObject, 
     #                         sourceDataFolderName_1=pchomeFoler, sourceDataFolderName_2=momoFolder)
-
-
-
     # """
     # PART (3)-2 This session is alternative;Please refer to 'inserHistoricalDataIntoDB.py PART (2)-2".
     # """
@@ -272,18 +269,18 @@ if __name__ == '__main__':
     # writeWeatherData(multiSourceObject,
     #                         sourceDataFolderName=weatherFolder)
 
+
+
     # """
     # PART (5)-1 This session is one-time procedure!  No need to do it again if done.
     # """
     # writeNewsTitle(multiSourceObject, 
     #                         sourceDataFolderName=newsIntegraFolder, historyFile=1)
-    
-    
-    """
-    PART (5)-2 This session is one-time procedure and have to be done repeatedly if having the latest files.
-    """
-    writeNewsTitle(multiSourceObject, 
-                            sourceDataFolderName=newsIntegraFolder)
+    # """
+    # PART (5)-2 This session is one-time procedure and have to be done repeatedly if having the latest files.
+    # """
+    # writeNewsTitle(multiSourceObject, 
+    #                         sourceDataFolderName=newsIntegraFolder)
 
 
 
@@ -292,7 +289,6 @@ if __name__ == '__main__':
     # """
     # writeNewsContent(multiSourceObject, 
     #                         sourceDataFolderName=newsWithContentFolder, historyFile=1)
-    
     """
     PART (6)-2 This session is one-time procedure and have to be done repeatedly if having the latest files.
     """
@@ -311,7 +307,7 @@ if __name__ == '__main__':
 
     # conn = engine.connect()
 
-    # # result = conn.execute(f"select product_model from {tableClassBase.table2} where 3C_Id = {1}".format("1"))
+    # # result = conn.execute(f"select product_model from {tableClassBase.table2} where Id_3C = {1}".format("1"))
     # Session = sessionmaker(bind=conn)
     # session = Session()
 
