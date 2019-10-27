@@ -176,7 +176,8 @@ from libs.timeWidget import (
                           timeSleepTwo,
                           timeSleepOne,
                           timeStampGenerator,
-                          timeCalculate
+                          timeCalculate,
+                          timeSleepEight
                           )
 from libs.regex import (
                     bureauEnergyReplace,
@@ -373,7 +374,8 @@ def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
         # print('detailPageInARow is in new process %s, %s ' % (detailPageInARow_proc, thisPID))
         # print()
 
-        for i in range(3):
+        for i in range(4):
+          if i <=2:
             try:
               timeSleepTwo()
               res = requests.get(url, headers=headers)
@@ -387,6 +389,18 @@ def detailPageInARow(input,  headers, objectiveFolder, objective, *args):
               timeSleepRandomly()
               timeSleepTwo()
               timeSleepTwo()
+              soup = ""
+          else:
+            try:
+              timeSleepEight()
+              res = requests.get(url, headers=headers)
+              res.encoding = 'utf-8'
+              timeSleepRandomly()
+              soup  = BeautifulSoup(res.text,'html.parser')
+              break
+            except requests.exceptions.ConnectionError as e:
+              print(txtFileRoute, "發生問題。", e)
+              print()
               soup = ""
         
         # 若觸發第2個狀況，則強命為空字串。
