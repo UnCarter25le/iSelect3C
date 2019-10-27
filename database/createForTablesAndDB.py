@@ -34,17 +34,24 @@ from libs.sqlDMLAndsqlAlchemyORM import writeDataWhenMunging
 
 
 
+# def aa(tableClassBase):
+#     """
+#     叫出所有表格名稱（字串）# 因為所有的class都繼承 Base，因此用Base呼叫metadata元資料方法，可以叫出表格的名稱。
+#     """
+#     for t in tableClassBase._Base.metadata.tables:  # 
+#         if t == "weather_records_by_months":
+#             print(1)
+#         print(type(t))
 
-
-def dropTables(engine, conn, sqlDDL=None):
-    
-    if not sqlDDL is None:
+def dropTables(engine, conn, sqlDDL=None, engineSource=None):
+    # Base.metadata.drop_all(engine)   # all tables are deleted
+    if (engineSource == "MySQL") and sqlDDL:
         """
-        使用raw sqlstring drop tables
+        使用MySQL raw SQLstring drop tables
         """
         for table in sqlDDL.getTables():
             conn.execute(f"DROP TABLE if exists {table}")
-    else:
+    elif (engineSource == "MySQL"):  # 效果同 delete from table
         """
         使用ORM 清空所有表格資料  <class 'sqlalchemy.sql.schema.Table'>
         綁定引擎的MetaData，等於是資料庫的元資料，可以用來操控資料表class。
@@ -54,34 +61,45 @@ def dropTables(engine, conn, sqlDDL=None):
         MetaData = sqla.MetaData(bind=engine, reflect=True) 
         trans = conn.begin() 
         for table in MetaData.sorted_tables:
-            print(table)
+            print("清空", table)
             conn.execute(table.delete())
+
         trans.commit()
         trans.close()
 
+    elif (engineSource == "MSSQLInDocker") or (engineSource == "Azure"):
 
-def aa(tableClassBase):
-    """
-    叫出所有表格名稱（字串）# 因為所有的class都繼承 Base，因此用Base呼叫metadata元資料方法，可以叫出表格的名稱。
-    """
-    for t in tableClassBase._Base.metadata.tables:  # 
-        if t == "weather_records_by_months":
-            print(1)
-        print(type(t))
+        MetaData = sqla.MetaData(bind=engine, reflect=True) 
+        trans = conn.begin() 
+        for table in MetaData.sorted_tables:
+            print("drop ", table)
+            table.drop(engine)
+            
+        trans.commit()
+        # trans.close()
+
+            
 
 
-
-def CreateTables(sqlDDL, conn, tableClassBase=None, MySQL=None, AzureMSSQL=None):
+def CreateTables(sqlDDL, conn, tableClassBase=None, engineSource=None):
     """
     利用 ORM 建立所有class資料表！----------------------若只想單獨重建表格「news_title_from_selenium」，則需要將相關聯的表格一起drop，才能重建。不想要同時重建的表格，必須註解。
     
     """
 
-    if AzureMSSQL and tableClassBase:
-        tableClassBase._BaseAzure.metadata.create_all(conn)
+    if (engineSource == "Azure") and tableClassBase:
+        tableClassBase._BaseAzureMSSQL.metadata.create_all(conn)
         for alterSyn in sqlDDL.getMySQLAlterSyntax():
             conn.execute(alterSyn)
-    elif MySQL and tableClassBase: #Mysql
+    
+    elif (engineSource == "MSSQLInDocker") and tableClassBase:
+        print(5566)
+        tableClassBase._BaseAzureMSSQL.metadata.create_all(bind=engine)
+        # for alterSyn in sqlDDL.getMySQLAlterSyntax():
+            # conn.execute(alterSyn)
+            # print(alterSyn)
+            
+    elif (engineSource == "MySQL") and tableClassBase: #Mysql
         tableClassBase._Base.metadata.create_all(conn)
         for alterSyn in sqlDDL.getMySQLAlterSyntax():
             conn.execute(alterSyn)
@@ -107,14 +125,14 @@ if __name__ == '__main__':
     """
     tableClassBase = writeDataWhenMunging._tableClassBase
     
-    engine = sqlObjectInitial.loadCorrectEngine(tableClassBase, tableClassBase.databaseName)
+    engine = sqlObjectInitial.loadCorrectEngine(tableClassBase, engineSource=tableClassBase.engineSource)
     
 
     # transaction 似乎只對DML有用。
     conn = engine.connect()
     trans = conn.begin()
 
-    foreignKeyClose, foreignKeyOpen = sqlObjectInitial().loadCorrectForeignKeyConstraintSet(tableClassBase.databaseName)
+    foreignKeyClose, foreignKeyOpen = sqlObjectInitial().loadCorrectForeignKeyConstraintSet(tableClassBase.engineSource)
 
     try:
         
@@ -122,11 +140,11 @@ if __name__ == '__main__':
         
         #--------------------------drop tables----------------------------------------------------------------
         
-        # dropTables(engine, conn, sqlDDL=sqlDDL)
+        dropTables(engine, conn, sqlDDL=sqlDDL, engineSource=tableClassBase.engineSource)
         
         #-------------------------establish tables-----------------------------------------------------------------
 
-        # CreateTables(sqlDDL, conn, tableClassBase=tableClassBase, AzureMSSQL=1)
+        CreateTables(sqlDDL, conn, tableClassBase=tableClassBase, engineSource=tableClassBase.engineSource)
         
         print()
     except (sqla.exc.InternalError, sqla.exc.ProgrammingError, sqla.exc.IntegrityError) as e:
