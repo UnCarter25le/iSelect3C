@@ -244,11 +244,11 @@ if __name__ == '__main__':
     # """
     # writeBureauData(multiSourceObject, 
     #                         sourceDataFolderName=bureauEnergyFolder, bureauSET=bureauSET())
-    # """
-    # PART (2)-2 This session is alternative;Please refer to 'inserHistoricalDataIntoDB.py  PART (1)-2".
-    # """
-    # writeBureauData(multiSourceObjectForBackupTable, 
-    #                         sourceDataFolderName=bureauEnergyFolder, bureauSET=bureauSET(), alterStillWork=1)
+    """
+    PART (2)-2 This session is alternative;Please refer to 'inserHistoricalDataIntoDB.py  PART (1)-2".
+    """
+    writeBureauData(multiSourceObjectForBackupTable, 
+                            sourceDataFolderName=bureauEnergyFolder, bureauSET=bureauSET(), alterStillWork=1)
 
 
     # """
@@ -289,11 +289,11 @@ if __name__ == '__main__':
     # """
     # writeNewsContent(multiSourceObject, 
     #                         sourceDataFolderName=newsWithContentFolder, historyFile=1)
-    """
-    PART (6)-2 This session is one-time procedure and have to be done repeatedly if having the latest files.
-    """
-    writeNewsContent(multiSourceObject, 
-                            sourceDataFolderName=newsWithContentFolder)
+    # """
+    # PART (6)-2 This session is one-time procedure and have to be done repeatedly if having the latest files.
+    # """
+    # writeNewsContent(multiSourceObject, 
+    #                         sourceDataFolderName=newsWithContentFolder)
     
 
 
