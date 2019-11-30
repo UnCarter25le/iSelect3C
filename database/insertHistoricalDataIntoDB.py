@@ -160,7 +160,7 @@ if __name__ == '__main__':
     # """
     # PART (1)-2 This session is alternative;
     # We are allowed to execute programs here or at "insertLatestDataIntoDB.py  PART (2)-2"。
-    # What worth giving attention is whether historical data in DB at first?
+    # What worth giving attention is whether "latest" data in DB at first? *cause writeDataIntoDBWithDataObjectInDB
     # """
     # writeBureauHistoricalData(multiSourceObject, 
     #                     sourceDataFolderName=bureauEnergyFolder, bureauSET=bureauSET(), alterStillWork=1)
@@ -176,7 +176,7 @@ if __name__ == '__main__':
     # """
     # PART (2)-2 This session is alternative;
     # We are allowed to execute programs here or at "insertLatestDataIntoDB.py  PART (3)-2"。
-    # What worth giving attention is whether historical data in DB at first?
+    # What worth giving attention is whether "latest" data in DB at first?  *cause writeDataIntoDBWithDataObjectInDB
     # """
     # writeEcommerceHistoricalData(multiSourceObject, 
     #                     sourceDataFolderName_1=pchomeFoler, sourceDataFolderName_2=momoFolder, alterStillWork=1)
