@@ -42,7 +42,7 @@ wheel==0.33.4
 
 Hignly recommend holding the version of pymssql at 2.1.1.
 
-To drive selenium model, I expect you guys to be equiped with chromedriver in localhost,
+To drive selenium module, I expect you guys to be equiped with chromedriver in localhost,
 and it's easy to see the reference:
     - according to: http://chromedriver.chromium.org/downloads
     - editionInfo: ChromeDriver 75.0.3770.90 (depending on your chrome version)
