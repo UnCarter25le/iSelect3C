@@ -105,7 +105,7 @@ def dataMunging(input, dirRoute, objectiveFolderClean, objective, domainUrl):
                     if productName:
                         innerDict['name'] = productName
 
-                        if originprice == "NaN":
+                        if originprice in ("NaN", "熱銷一空"):
                             innerDict['originprice'] = "0"  #"NaN"
                         else:
                             innerDict['originprice'] = originprice
