@@ -139,10 +139,11 @@ def getPageInARow(input, headers, objectiveFolder, objective, *args):
                     res = requests.get(correctUrl, headers=headers)
                     res.encoding = 'utf-8'
                     timeSleepRandomly()
+                    timeSleepOne()
                     soup  = BeautifulSoup(res.text,'html.parser')
                     break
                 except requests.exceptions.ConnectionError as e:
-                    print(correctUrl, "發生問題。", e)
+                    print(fileName, "發生問題。", i, e)
                     print()
                     timeSleepRandomly()
                     timeSleepTwo()
@@ -150,13 +151,14 @@ def getPageInARow(input, headers, objectiveFolder, objective, *args):
             else:
                 try:
                     timeSleepEight()
+                    timeSleepRandomly()
                     res = requests.get(correctUrl, headers=headers)
                     res.encoding = 'utf-8'
                     timeSleepRandomly()
                     soup  = BeautifulSoup(res.text,'html.parser')
                     break
                 except requests.exceptions.ConnectionError as e:
-                    print(fileName, "發生問題。", e)
+                    print(fileName, "發生問題。", i, e)
                     print()
                     soup = ""
 
