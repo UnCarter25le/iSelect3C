@@ -19,6 +19,7 @@ https://myapollo.com.tw/2019/08/04/sqlalchemy-truncate-tables/
 import os
 import sys
 import sqlalchemy as sqla
+import pymssql
 from sqlalchemy.ext.declarative import declarative_base
 
 _BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -68,14 +69,38 @@ def dropTables(engine, conn, sqlDDL=None, engineSource=None):
         trans.close()
 
     elif (engineSource == "MSSQLInDocker") or (engineSource == "Azure"):
+        """
+        以sqlalchemy的方法drop_all，會以忽略外部鍵的限制下，把表全部刪掉。懶人法。
+        """
+        try:
+            tableClassBase._BaseAzureMSSQL.metadata.drop_all(bind=engine, checkfirst=False)
+        except sqla.exc.OperationalError as e:
+            print("找不到某些資料表，因此不用drop到此。")
+            print("error code:", e)
 
-        MetaData = sqla.MetaData(bind=engine, reflect=True) 
-        trans = conn.begin() 
-        for table in MetaData.sorted_tables:
-            print("drop ", table)
-            table.drop(engine)
+        """
+        這種drop表的方式，在執行TSQL語句必須搭配「commit」取代「go」，才能使用！
+        """
+        # MetaData = sqla.MetaData(bind=engine, reflect=True) 
+        # conn.execute("""
+        # use iSelect3C; 
+        # EXEC sp_MSforeachtable "declare @name nvarchar(max); set @name = parsename('?', 1); 
+        # EXEC sp_MSdropconstraints @name";
+        # EXEC sp_MSforeachtable "drop table ?"; 
+        # commit;
+        # """)
+        # # engine.execute("""use iSelect3C; EXEC sp_MSforeachtable @command1="ALTER TABLE ? NOCHECK CONSTRAINT ALL"; EXEC sp_MSforeachtable @command1="ALTER TABLE ? DISABLE TRIGGER ALL";commit""")
+        
+        # trans = conn.begin() 
+        # for table in MetaData.sorted_tables:
+        #     try:
+        #         table.drop(engine)
+        #         print("drop ", table)
+        #     except (pymssql.OperationalError, sqla.exc.OperationalError) as e:
+        #         print(e)
             
-        trans.commit()
+            
+        # trans.commit()
         # trans.close()
 
             
@@ -88,12 +113,12 @@ def CreateTables(sqlDDL, conn, tableClassBase=None, engineSource=None):
     """
 
     if (engineSource == "Azure") and tableClassBase:
-        tableClassBase._BaseAzureMSSQL.metadata.create_all(conn)
-        for alterSyn in sqlDDL.getMySQLAlterSyntax():
-            conn.execute(alterSyn)
+        tableClassBase._BaseAzureMSSQL.metadata.create_all(bind=engine)
+        # for alterSyn in sqlDDL.getMySQLAlterSyntax():
+        #     conn.execute(alterSyn)
     
     elif (engineSource == "MSSQLInDocker") and tableClassBase:
-        print(5566)
+        print("開始建立table!")
         tableClassBase._BaseAzureMSSQL.metadata.create_all(bind=engine)
         # for alterSyn in sqlDDL.getMySQLAlterSyntax():
             # conn.execute(alterSyn)
@@ -140,14 +165,14 @@ if __name__ == '__main__':
         
         #--------------------------drop tables----------------------------------------------------------------
         
-        dropTables(engine, conn, sqlDDL=sqlDDL, engineSource=tableClassBase.engineSource)
+        # dropTables(engine, conn, sqlDDL=sqlDDL, engineSource=tableClassBase.engineSource)
         
-        #-------------------------establish tables-----------------------------------------------------------------
+        # #-------------------------establish tables-----------------------------------------------------------------
 
-        CreateTables(sqlDDL, conn, tableClassBase=tableClassBase, engineSource=tableClassBase.engineSource)
+        # CreateTables(sqlDDL, conn, tableClassBase=tableClassBase, engineSource=tableClassBase.engineSource)
         
         print()
-    except (sqla.exc.InternalError, sqla.exc.ProgrammingError, sqla.exc.IntegrityError) as e:
+    except (sqla.exc.InternalError, sqla.exc.ProgrammingError, sqla.exc.IntegrityError, sqla.exc.OperationalError) as e:
         trans.rollback()
         # conn.rollback()  # AttribueError
         print()
@@ -156,7 +181,7 @@ if __name__ == '__main__':
     else:
         print("establish table:\n", "\n".join([t for t in tableClassBase.getTables()]))
     finally:
-        # sqlObjectInitial.modifyForeignKeyConstraint(conn, foreignKeyOpen=foreignKeyOpen)
+        sqlObjectInitial.modifyForeignKeyConstraint(conn, engine, foreignKeyOpen=foreignKeyOpen)
         trans.close()
         conn.close()
     
