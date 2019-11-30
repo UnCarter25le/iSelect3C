@@ -111,19 +111,23 @@ if __name__ == '__main__':
     print(counterNum.most_common(100))
 
     
-    newsList = [newsObject[key][0] for key in newsObject]
+    newsList = [newsObject[key][0] for key in newsObject] #新聞標題陣列
     newsListNums = len(newsObject)  #總文章數
 
     for k, v in counterNum.items():
         specificwordTF = v
         specificwordFrequency = 0
 
+
         #計算個別字的IDF
         for news in newsList:
             specificwordFrequency += searchWordTrueOrFalse(k, news)
-        
-        specificwordIDF = math.log((newsListNums / specificwordFrequency), 10)
-        TFIDF[k] = specificwordTF * specificwordIDF
+        try:
+            specificwordIDF = math.log((newsListNums / specificwordFrequency), 10)
+            TFIDF[k] = specificwordTF * specificwordIDF
+        except ZeroDivisionError as e:
+            print("這個切詞有問題：", k)
+            raise
     
     print("個別字TFIDF結果：")
     
