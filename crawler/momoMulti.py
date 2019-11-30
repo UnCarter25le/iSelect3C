@@ -133,7 +133,7 @@ def getPageInARow(input, output, keywordUrlPair, objectiveFolder, objective):
         url = keywordUrlPair[searchword]
 
         # 建立browser的代碼放進while True裡面，就可以避免「同一個瀏覽器」持續拜訪網頁時，被拒絕的情況。
-        for i in range(3):
+        for i in range(4):
             try:
                 timeSleepOne()
                 timeSleepRandomly()
@@ -152,6 +152,17 @@ def getPageInARow(input, output, keywordUrlPair, objectiveFolder, objective):
                 timeSleepRandomly()
                 soup = BeautifulSoup(tempHtml,'html.parser')
                 print(f"讀取{searchword}第 1 頁>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>成功！")
+
+                try:
+                    totalPage = interDiv(searchNums(soup.select_one('.totalTxt').text),30)
+                    print(f"讀取{searchword} 總頁數 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>成功！")
+                except AttributeError as e:
+                    print(f"getPageInARow __{searchword}__出錯", e, "重抓一次！")
+                    # 讓程式強制停下來 # 觀察下來，「raise」只會讓當前執行的process停下來，並不會讓「整體」process停下來。
+                    # 因此不適合用「raise」。
+                    # raise
+                    totalPage = 3 # 自訂
+                    continue
                 break
             except (ConnectionRefusedError, TimeoutException, WebDriverException) as e:
                 print(f"{thisPID}__{getPageInARow_proc}  讀取{searchword}第 1 頁有問題。", e)
@@ -162,12 +173,7 @@ def getPageInARow(input, output, keywordUrlPair, objectiveFolder, objective):
             # else:
             #     print(f"讀取{searchword}第 1 頁>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>成功！")
 
-        try:
-            totalPage = interDiv(searchNums(soup.select_one('.totalTxt').text),30)
-        except AttributeError as e:
-            print("getPageInARow 出錯", e)
-            # 讓程式強制停下來
-            raise
+        
         
         print('------接下來要處理 ' + searchword + ' 的頁數---------', totalPage, '頁')
         # print()
@@ -214,7 +220,7 @@ def getPageInARowAdvanced(input, objectiveFolder, objective):
         # print(f"{thisPID}__{getPageInARowAdvanced_proc} 開始處理 {searchword} 的第 {page} 頁：")
         
         # 建立browser的代碼放進while True裡面，就可以避免「同一個瀏覽器」持續拜訪網頁時，被拒絕的情況。
-        for i in range(3):
+        for i in range(4):
             try:
                 timeSleepFour()
                 
