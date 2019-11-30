@@ -82,4 +82,15 @@ def timeStampIntervalSwitch(chineseIntervalTimeStr):
 
     return dashIntervalTimeStr
 
+
+def timeStampIntervalSwitchForMSSQL(chineseIntervalTimeStr):
+    """
+    2019-05-29-14-51  -->  2019-05-29 14:51:00
+
+    """
+    fmt = "%Y-%m-%d-%H-%M-%S"  #"%Y年%m月%d日"
+    return datetime.datetime.strptime(chineseIntervalTimeStr +"-00", fmt).__str__()
+
+
 # print(timeStampIntervalSwitch("2019年05月29日14時51分"))
+print(timeStampIntervalSwitchForMSSQL("2019-05-29-14-51"))
