@@ -134,9 +134,28 @@ if __name__ == '__main__':
          newsDictInner = {}
 
          for newsLink in differenceDict:
+            # debug
+            # if newsLink != "https://udn.com/news/story/7238/3600804":
+            #    continue
+            
             publisher_Id, publisher, videoLinkInContent, newsContent = newsMining.judgeHowToCrawl(newsLink, referenceFile)
 
-            if publisher and newsContent: #被捕捉到的新聞才做處理
+            
+            if publisher and newsContent == "404_None":# 新聞內容404
+               """
+               此新聞原先爬的到，但目前20200207爬不到，為避免將原先的新聞內容
+               覆蓋成None，因此這邊要以contine處理。
+               
+               "https://udn.com/news/story/7238/3600804": [
+               "經濟部家電補助台東：勢必向中央爭取經費",
+               "udn聯合新聞網",
+               "2019-01-17"
+               """
+               newsTitle = differenceDict[newsLink][0]
+               print(newsTitle, " 網頁404! ", newsLink)
+               continue
+            
+            elif publisher and newsContent: #被捕捉到的新聞才做處理
                newsTitle = differenceDict[newsLink][0]
                publishDate = differenceDict[newsLink][2]   
                # 組裝json
@@ -146,6 +165,7 @@ if __name__ == '__main__':
                                        "publishDate":publishDate,
                                        "videoLinkInContent":videoLinkInContent,
                                        "newsContent":newsContent}
+            
             elif publisher and not newsContent:# 爬取錯誤的處理
                newsTitle = differenceDict[newsLink][0]
                publishDate = differenceDict[newsLink][2]   
