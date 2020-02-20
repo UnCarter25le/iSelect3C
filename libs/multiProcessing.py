@@ -40,7 +40,7 @@ _weatherRecordAvailable = {"2009": _monthsAvailable,
                         "2016": _monthsAvailable,
                         "2017": _monthsAvailable,
                         "2018": _monthsAvailable,
-                        "2019": [str(row) for row in range(1,10)]}
+                        "2019": _monthsAvailable}
 
 
 # 除濕機與電冰箱是採「107年新分級基準」。
@@ -130,7 +130,7 @@ _momoKeywordUrlPair = {"冷暖空調":("https://www.momoshop.com.tw/search/searc
                                 "?keyword=%E7%AF%80%E8%83%BD%E7%87%88%E6%B3%A1"
                                 "&searchType=1&curPage=1&_isFuzzy=1&showType=chessboardType")}
 
-
+# https://ecshweb.pchome.com.tw/search/v3.3/24h/results?q=冷暖空調&page=1&sort=sale/dc
 _pchomeKeywordUrlPair = {"冷暖空調":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
                          "除濕機":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
                          "電冰箱":"https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc",
