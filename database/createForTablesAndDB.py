@@ -125,9 +125,17 @@ def CreateTables(sqlDDL, conn, tableClassBase=None, engineSource=None):
             # print(alterSyn)
             
     elif (engineSource == "MySQL") and tableClassBase: #Mysql
-        tableClassBase._Base.metadata.create_all(conn)
-        for alterSyn in sqlDDL.getMySQLAlterSyntax():
+        # 最剛開始
+        # tableClassBase._Base.metadata.create_all(conn)
+        # for alterSyn in sqlDDL.getMySQLAlterSyntax():
+        #     conn.execute(alterSyn)
+
+        #改良
+        tableClassBase._BaseMySQL.metadata.create_all(conn)
+        for alterSyn in sqlDDL.getMySQLAlterIndexSyntax():
             conn.execute(alterSyn)
+        
+        
     else: #raw SQLString
         """
         使用raw sqlString創建----------------------
@@ -152,7 +160,6 @@ if __name__ == '__main__':
     
     engine = sqlObjectInitial.loadCorrectEngine(tableClassBase, engineSource=tableClassBase.engineSource)
     
-
     # transaction 似乎只對DML有用。
     conn = engine.connect()
     trans = conn.begin()
@@ -161,15 +168,15 @@ if __name__ == '__main__':
 
     try:
         
-        # sqlObjectInitial.modifyForeignKeyConstraint(conn, foreignKeyClose=foreignKeyClose)
+        sqlObjectInitial.modifyForeignKeyConstraint(conn, foreignKeyClose=foreignKeyClose)
         
         #--------------------------drop tables----------------------------------------------------------------
         
-        # dropTables(engine, conn, sqlDDL=sqlDDL, engineSource=tableClassBase.engineSource)
+        dropTables(engine, conn, sqlDDL=sqlDDL, engineSource=tableClassBase.engineSource)
         
         # #-------------------------establish tables-----------------------------------------------------------------
 
-        # CreateTables(sqlDDL, conn, tableClassBase=tableClassBase, engineSource=tableClassBase.engineSource)
+        CreateTables(sqlDDL, conn, tableClassBase=tableClassBase, engineSource=tableClassBase.engineSource)
         
         print()
     except (sqla.exc.InternalError, sqla.exc.ProgrammingError, sqla.exc.IntegrityError, sqla.exc.OperationalError) as e:
