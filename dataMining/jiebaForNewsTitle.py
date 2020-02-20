@@ -109,6 +109,11 @@ if __name__ == '__main__':
 
     print("統計頻率字結果：")
     print(counterNum.most_common(100))
+    # print(counterNum["Digital"])
+    # print(counterNum["Panasonic"])
+    # print(counterNum["City"])
+    # print(counterNum["PChome"])
+    # print(counterNum["PChome24h"])
 
     
     newsList = [newsObject[key][0] for key in newsObject] #新聞標題陣列
@@ -133,14 +138,14 @@ if __name__ == '__main__':
     
     # print(TFIDF.most_common(3505)[3300:][::-1])
     print()
-    print(TFIDF.most_common(80))
+    print(TFIDF.most_common(100))
 
 
     # with open(f"{_BASE_PATH}/{objectiveFolderDataMining}/{objectiveFolderDictionary}/jiebaCut_resultOfNewsTitle.json", "w", encoding="utf-8") as f:
     #     json.dump(counterNum.most_common(100),f, indent=2, ensure_ascii=False)
 
     # with open(f"{_BASE_PATH}/{objectiveFolderDataMining}/{objectiveFolderDictionary}/TFIDF_resultOfNewsTitle.json", "w", encoding="utf-8") as f:
-    #     json.dump(TFIDF.most_common(80),f, indent=2, ensure_ascii=False)
+    #     json.dump(TFIDF.most_common(100),f, indent=2, ensure_ascii=False)
 
     
     
