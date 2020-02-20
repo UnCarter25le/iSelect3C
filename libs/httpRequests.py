@@ -18,7 +18,8 @@ from libs.timeWidget import (
                             )
 from libs.regex import (
                         textMiningRegex,
-                        urlParseDealing
+                        urlParseDealing,
+                        searchWordTrueOrFalse
                         )
 
 
@@ -131,6 +132,63 @@ class udnRequests(newsRequests):
                 newsContent = [textMiningRegex.discardSpace(textMiningRegex.replaceEscapeAlphabet(row.text)) 
                                     for row in soup.select_one("#story_body_content").select("p") 
                                             if row.text != ""]
+                videoLinkInContent= None # 內文本身沒有影片
+                break
+            except AttributeError as e:
+
+                try:
+                    # 20200207 udn網頁改版
+                    newsContent = [textMiningRegex.discardSpace(textMiningRegex.replaceEscapeAlphabet(row.text)) 
+                                        for row in soup.find("article", {"class" : "article-content"}).find_all("p")
+                                                if row.text != ""]                
+                except AttributeError as e:
+                    # 網頁拜訪若是404，html長的如下樣子。
+                    '''
+                    response404 = """<html>
+                                <head>
+                                <script>
+                                                        var d = new Date();
+                                                        d.setTime(d.getTime() + (300*1000));
+                                                        var expires = "expires="+ d.toUTCString();
+                                                        document.cookie = "burl=my-test-page01;" + expires + ";path=/";
+                                                </script>
+                                <!-- Google Tag Manager -->
+                                <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                                                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                                                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                                                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                                                })(window,document,'script','dataLayer','GTM-5CMHR66');</script>
+                                <!-- End Google Tag Manager --><script>
+                                                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                                                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                                                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                                                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+                                                        </script>
+                                <!-- #Location: /inc/meta/trace_ga -->
+                                </head>
+                                <body>
+                                <!-- Google Tag Manager (noscript) -->
+                                <noscript><iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5CMHR66" style="display:none;visibility:hidden" width="0"></iframe></noscript>
+                                <!-- End Google Tag Manager (noscript) -->
+                                <script>
+                                                window.location="/news/e404?nver";
+                                        </script>
+                                </body>
+                                </html>"""
+                    
+                    '''
+
+                    if searchWordTrueOrFalse("404", str(soup.select_one("body").select_one("script"))): #'<script>\n                window.location="/news/e404?nver";\n        </script>'
+                        # https://udn.com/news/story/7238/3600804
+                        print(url, "發生問題：404!")
+                        newsContent = "404_None"
+                    else:
+                        # 不知名情況查看
+                        print(soup)
+                        newsContent = "404_None"
+                        raise
+
+                
                 videoLinkInContent= None # 內文本身沒有影片
                 break
             except requests.exceptions.ConnectionError as e:
@@ -282,9 +340,32 @@ class appleDailyRequests(newsRequests):
                                             if row.text != ""]
                     videoLinkInContent= None # 內文本身沒有影片
                 except AttributeError as e: # AttributeError: 'NoneType' object has no attribute 'select'
-                    # https://tw.appledaily.com/gadget/20190927/IFU7ML7HXNAL2GHDNKOZULDNOU/
-                    tmpStr = str(soup).split("""<script type="application/javascript">window.Fusion=""")[1].split("Fusion.globalContent=")[1].split('"content":"')[1].split("更多「")[0]
-                    newsContent = [row for row in tmpStr.split("<br />&nbsp;<br />") if row != ""]
+                    soupStr = str(soup)
+                    if "<br> \xa0</p>" in soupStr:
+                        # "<br> \xa0</p>"  不需要變成 "<br> \\xa0</p>"
+                        """
+                        sqlalchemy.exc.OperationalError: (pymssql.OperationalError) (8152, b'String or binary data would be truncated.DB-Lib error message 8152, severity 16:\nGeneral SQL Server error: Check messages from the SQL Server\n')
+                        [SQL: INSERT INTO selected_news_with_tfidf ([news_title_Id], [series_Id], [publisher_Id], news_content, video_link_in_content) VALUES (%(news_title_Id)s, %(series_Id)s, %(publisher_Id)s, %(news_content)s, %(video_link_in_content)s)]
+                        [parameters: {'news_title_Id': '201912252', 'series_Id': UUID('9abd7eae-c361-496c-b10c-ae9fcf7be8bb'), 'publisher_Id': '5', 'news_content': '[\'<p> 今年農曆年節時間較早，家電採購需求較以往提早出現買氣，瞄準年前有汰換家中家電的需求，大同3C福利品特賣會特於12月底開跑，一路至明年1月初，提供消費者年前採購好選擇。<br> <br> 12月26日起至2020年1月8日止，全台各地共舉辦20場大同3C福利品特賣會，大小家電可在此一次 ... 
+                        (3925 characters truncated) ... aws.com/ap-ne-1-prod/public/FLCZDN5FBRQBN6E6E3S7RP7IW4.jpg","version":"0.10.3","width":640},{"_id":"IO25XHAIRJE3FCUWV7YTXI66CY","type":"raw_html",\']', 'video_link_in_content': None}]
+                        (Background on this error at: http://sqlalche.me/e/e3q8)
+                        """
+
+                        # https://tw.appledaily.com/property/20191226/WCUY7RP45D2V45RLRN3RULU2QU/
+                        tmpStr = soupStr.split("""<script type="application/javascript">window.Fusion=""")[1].split("Fusion.globalContent=")[1].split('"content":"')[1].split("<br> \xa0</p>")[0]
+                        newsContent = [row for row in BeautifulSoup(tmpStr, "html.parser").text.split(" ") if row != ""]
+                    else:
+                        # https://tw.appledaily.com/gadget/20190927/IFU7ML7HXNAL2GHDNKOZULDNOU/
+                        tmpStr = soupStr.split("""<script type="application/javascript">window.Fusion=""")[1].split("Fusion.globalContent=")[1].split('"content":"')[1].split("更多「")[0]
+                        newsContent = [row for row in tmpStr.split("<br />&nbsp;<br />") if row != ""]
+
+                        if len("".join(newsContent)) >= 3500:
+                            # elif '<br />&nbsp;"' in soupStr:
+                            # https://tw.appledaily.com/gadget/20191029/KSU3NPGRYURXTCI3COIUE6KMNM/
+                            print(f"appledaily news content exceeds 3500: {url}")
+                            tmpStr = soupStr.split("""<script type="application/javascript">window.Fusion=""")[1].split("Fusion.globalContent=")[1].split('"content":"')[1].split('<br />&nbsp;"}')[0]
+                            newsContent = [row for row in tmpStr.split("<br />&nbsp;<br />") if row != ""]
+
 
                     videoLinkInContent= None # 內文本身沒有影片
 
@@ -317,7 +398,7 @@ class yahooRequests(newsRequests):
                     newsContent = soup.find("article",{"itemprop":"articleBody"}).text.strip().split(" ")
                 except AttributeError as e:
                     # url = "https://tw.news.yahoo.com/video/%E7%AF%80%E8%83%BD%E5%AE%B6%E9%9B%BB%E8%A3%9C%E5%8A%A9%E5%86%8D%E5%8A%A0%E7%A2%BC-%E8%B2%A8%E7%89%A9%E7%A8%85%E6%B8%9B%E5%85%8D%E9%96%8B%E8%B7%91-053307068.html"
-                    print("error code:", e, url)
+                    # print("error code:", e, url)
                     try:
                         newsContent = soup.find("article").text.strip().split(" ")
                     except AttributeError as e:
