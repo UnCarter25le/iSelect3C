@@ -85,6 +85,12 @@ def getPageFirst(searchword, keyword, headers):
             timeSleepRandomly()
             totalPage = "99999"
             totalRows = "99999"
+        except requests.exceptions.ConnectionError as e:
+            print(f"getPageFirst {keyword}  {searchword} 這裡發生錯誤   "+str(e)+"正在處理中。")
+            timeSleepEight()
+            timeSleepRandomly()
+            totalPage = "99999"
+            totalRows = "99999"
     return totalPage, totalRows
 
 # 進程worker不能有關鍵字引數、以及**kwargs
@@ -124,6 +130,11 @@ def getPageInARow(input, headers, objectiveFolder, objective, *args):
                     timeSleepRandomly()
                     break
                 except (JSONDecodeError, ConnectionRefusedError) as e:#拜訪太密集的話，pchome回傳的json檔案格式就不會是正常的格式，因此會發生無法json反序列化的例外。
+                    print(f"getPageInARow這裡發生錯誤  {keyword}_{searchword}_{page} "+str(e)+"正在處理中。")
+                    timeSleepEight()
+                    timeSleepRandomly()
+                    jsonPage = ""
+                except requests.exceptions.ConnectionError as e:
                     print(f"getPageInARow這裡發生錯誤  {keyword}_{searchword}_{page} "+str(e)+"正在處理中。")
                     timeSleepEight()
                     timeSleepRandomly()
