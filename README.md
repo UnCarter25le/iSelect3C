@@ -33,6 +33,7 @@ six==1.12.0
 soupsieve==1.9.1
 splinter==0.10.0
 SQLAlchemy==1.3.7
+SQLAlchemy-Utils 0.36.0  
 urllib3==1.25.3
 lxml==4.4.1
 pip==19.2.3
