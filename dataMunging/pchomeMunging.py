@@ -62,16 +62,43 @@ def mungingPchome(_BASE_PATH, searchword, objectiveFolder, objectiveFolderClean,
                 # 處理soup=""的情況
                 if not inn:
                     continue
-
-                for fileinner in inn['prods']:
-                    productDict = {}
-                    productDict['Id'] = fileinner['Id']
-                    productDict['name'] = fileinner['name']
-                    productDict['originprice'] = fileinner['originPrice']
-                    productDict['pics'] = 'https://d.ecimg.tw'+fileinner['picS']
-                    productDict['picb'] = 'https://d.ecimg.tw'+fileinner['picB']
-                    productDict["produrl"] = "https://24h.pchome.com.tw/prod/" + fileinner["Id"]
-                    productArray.append(productDict)
+                try:
+                    for fileinner in inn['prods']:
+                        productDict = {}
+                        productDict['Id'] = fileinner['Id']
+                        productDict['name'] = fileinner['name']
+                        productDict['originprice'] = fileinner['originPrice']
+                        productDict['pics'] = 'https://d.ecimg.tw'+fileinner['picS']
+                        productDict['picb'] = 'https://d.ecimg.tw'+fileinner['picB']
+                        productDict["produrl"] = "https://24h.pchome.com.tw/prod/" + fileinner["Id"]
+                        productArray.append(productDict)
+                except KeyError as e:
+                    """沒有 prods的key值
+                                        {
+                    "QTime": 55,
+                    "totalRows": 1113,
+                    "totalPage": 56,
+                    "range": {
+                        "min": "",
+                        "max": ""
+                    },
+                    "cateName": "",
+                    "q": "除濕機",
+                    "subq": "",
+                    "token": [
+                        "除濕機",
+                        "除濕",
+                        "除",
+                        "濕",
+                        "機"
+                    ],
+                    "isMust": 1
+                    }
+                    
+                    """
+                    print(directory + file, "沒有prods的資料。")
+                    # raise
+                    pass
     # 每一個搜索字下的3個資料夾中，每個json檔案的 'prods' 陣列資料都append後，再統一指定。
     pchomeDict['product'] = productArray
 
