@@ -123,8 +123,20 @@ def writeEcommerceData(multiSourceObject, sourceDataFolderName_1=None, sourceDat
         begin = timeCalculate()
 
         multiSourceObject.ecommerceM.alterStillWorkToZero(alterStillWork)
+
+        #(1)記憶體操作  參考sqlDMLAndsqlAlchemyORM.py
+        # multiSourceObject.writeHistoricalDataIntoDB(multiSourceObject.ecommerceM, 
+        #                                 sourceDataFolderName=sourceDataFolderName_1, latestBoolean=1)
+        # end = timeCalculate()
+        # print(f"最新檔案 {sourceDataFolderName_1}, {sourceDataFolderName_2} 花費：", end-begin, "秒。")
+
+
+        #(2)本地檔案操作  參考sqlDMLAndsqlAlchemyORM.py
         multiSourceObject.writeHistoricalDataIntoDB(multiSourceObject.ecommerceM, 
                                         sourceDataFolderName=sourceDataFolderName_1, latestBoolean=1)
+
+        multiSourceObject.writeHistoricalDataIntoDB(multiSourceObject.ecommerceM, 
+                                        sourceDataFolderName=sourceDataFolderName_2, latestBoolean=1)
         end = timeCalculate()
         print(f"最新檔案 {sourceDataFolderName_1}, {sourceDataFolderName_2} 花費：", end-begin, "秒。")
 
@@ -244,23 +256,23 @@ if __name__ == '__main__':
     # """
     # writeBureauData(multiSourceObject, 
     #                         sourceDataFolderName=bureauEnergyFolder, bureauSET=bureauSET())
-    """
-    PART (2)-2 This session is alternative;Please refer to 'inserHistoricalDataIntoDB.py  PART (1)-2".
-    """
-    writeBureauData(multiSourceObjectForBackupTable, 
-                            sourceDataFolderName=bureauEnergyFolder, bureauSET=bureauSET(), alterStillWork=1)
+    # """
+    # PART (2)-2 This session is alternative;Please refer to 'inserHistoricalDataIntoDB.py  PART (1)-2".
+    # """
+    # writeBureauData(multiSourceObjectForBackupTable, 
+    #                         sourceDataFolderName=bureauEnergyFolder, bureauSET=bureauSET(), alterStillWork=1)
 
 
-    # """
-    # PART (3)-1 This session is one-time procedure and have to be done repeatedly if having the latest files.
-    # """
-    # writeEcommerceData(multiSourceObject, 
-    #                         sourceDataFolderName_1=pchomeFoler, sourceDataFolderName_2=momoFolder)
-    # """
-    # PART (3)-2 This session is alternative;Please refer to 'inserHistoricalDataIntoDB.py PART (2)-2".
-    # """
-    # writeEcommerceData(multiSourceObjectForBackupTable, 
-    #                         sourceDataFolderName_1=pchomeFoler, sourceDataFolderName_2=momoFolder, alterStillWork=1)
+    """
+    PART (3)-1 This session is one-time procedure and have to be done repeatedly if having the latest files.
+    """
+    writeEcommerceData(multiSourceObject, 
+                            sourceDataFolderName_1=pchomeFoler, sourceDataFolderName_2=momoFolder)
+    """
+    PART (3)-2 This session is alternative;Please refer to 'inserHistoricalDataIntoDB.py PART (2)-2".
+    """
+    writeEcommerceData(multiSourceObjectForBackupTable, 
+                            sourceDataFolderName_1=pchomeFoler, sourceDataFolderName_2=momoFolder, alterStillWork=1)
 
 
     # """
