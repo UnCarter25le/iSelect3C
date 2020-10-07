@@ -67,7 +67,7 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import re
-import csv
+# import csv
 import os
 # import shutil #high level os
 import sys
@@ -110,7 +110,8 @@ from libs.regex import (
                       )
 from libs.splinterBrowser import (
                               buildSplinterBrowserHeadless,
-                              browserWaitTime
+                              browserWaitTime,
+                              browserQuit
                                 )
 
 def requestsHandlingWhenTimeoutOccur(url, browserName):
@@ -167,6 +168,7 @@ def getPageInARow(input, output, keywordUrlPair, objectiveFolder, objective):
             except (ConnectionRefusedError, TimeoutException, WebDriverException) as e:
                 print(f"{thisPID}__{getPageInARow_proc}  讀取{searchword}第 1 頁有問題。", e)
                 print(f"{thisPID}__{getPageInARow_proc}  重建browser物件，進行再處理 {i} 次!")
+                browserQuit(browser, thisPID, getPageInARow_proc)
                 timeSleepFour()
                 timeSleepRandomly()
                 soup = ""
@@ -183,15 +185,16 @@ def getPageInARow(input, output, keywordUrlPair, objectiveFolder, objective):
         # print()
         print(f'成功寫出  {searchword}  第 1 頁')
 
-        i_browser = 1
-        try:
-            browser.quit()
-            print(f"成功關閉 browser{getPageInARow_proc}++++++++++++++++++++++++++++++")
-        except:
-            print(f"放棄 {thisPID}__{getPageInARow_proc} 的 第{i_browser}個browser。")
-            i_browser += 1
-            print(f"kill {thisPID}__{getPageInARow_proc} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-            os.kill(thisPID, signal.SIGKILL)
+        browserQuit(browser, thisPID, getPageInARow_proc)
+        # i_browser = 1
+        # try:
+        #     browser.quit()
+        #     print(f"成功關閉 browser{getPageInARow_proc}++++++++++++++++++++++++++++++")
+        # except:
+        #     print(f"放棄 {thisPID}__{getPageInARow_proc} 的 第{i_browser}個browser。")
+        #     i_browser += 1
+        #     print(f"kill {thisPID}__{getPageInARow_proc} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        #     os.kill(thisPID, signal.SIGKILL)
         
         # 休息久一點，讓所有searchword的第一頁都有被讀到。
         timeSleepEight()
@@ -242,6 +245,7 @@ def getPageInARowAdvanced(input, objectiveFolder, objective):
             except (ConnectionRefusedError, TimeoutException, WebDriverException) as e:
                 print(f"{thisPID}__{getPageInARowAdvanced_proc} 讀取 {searchword} 第 {page} 頁有問題。",e)
                 print(f"{thisPID}__{getPageInARowAdvanced_proc} 重建browser物件，進行再處理 {i} 次!")
+                browserQuit(browser, thisPID, getPageInARowAdvanced_proc)
                 timeSleepFour()
                 timeSleepRandomly()
                 soup = ""
@@ -260,13 +264,14 @@ def getPageInARowAdvanced(input, objectiveFolder, objective):
         # print()
         # print(f'{thisPID}  成功寫出  {searchword}  第{page}頁，總共{totalPage} 頁。')
     
-        try:
-            browser.quit()
-            # print(f"成功關閉 browser{thisPID}__{getPageInARowAdvanced_proc}++++++++++++++++++++++++++++++")
-        except:
-            print(f"放棄 {thisPID}__{getPageInARowAdvanced_proc} 這個browser。")
-            print(f"kill {thisPID}__{getPageInARowAdvanced_proc} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-            os.kill(thisPID, signal.SIGKILL)
+        browserQuit(browser, thisPID, getPageInARowAdvanced_proc)
+        # try:
+        #     browser.quit()
+        #     # print(f"成功關閉 browser{thisPID}__{getPageInARowAdvanced_proc}++++++++++++++++++++++++++++++")
+        # except:
+        #     print(f"放棄 {thisPID}__{getPageInARowAdvanced_proc} 這個browser。")
+        #     print(f"kill {thisPID}__{getPageInARowAdvanced_proc} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        #     os.kill(thisPID, signal.SIGKILL)
         input.task_done()  #通知main process此次的input處理完成！
         end = timeCalculate()
         # print(f'{thisPID}__getPageInARowAdvanced 累計耗時：{end-begin} 秒')
