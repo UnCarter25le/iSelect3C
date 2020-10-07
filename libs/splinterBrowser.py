@@ -2,6 +2,7 @@
 
 
 import os
+import signal
 import sys
 from splinter import Browser
 from selenium import webdriver
@@ -50,6 +51,22 @@ def buildSplinterBrowserHeadless(browserName):
 def browserWaitTime(browser):
     browser.wait_time
     timeSleepRandomly()
+
+
+def browserSetWindowSize(browser, horizon=1024, vertical=768):
+
+    browser.driver.set_window_size(horizon, vertical)
+    timeSleepRandomly()
+
+
+def browserQuit(browser, thisPID, process_proc):
+    try:
+        browser.quit()
+        # print(f"成功關閉 browser__{thisPID}__{process_proc}")
+    except:
+        print(f"放棄 {thisPID}__{process_proc} __這個browser。")
+        print(f"kill {thisPID}__{process_proc} ")
+        os.kill(thisPID, signal.SIGKILL)
 
 # scheme of making object
 # class bbb(object):
