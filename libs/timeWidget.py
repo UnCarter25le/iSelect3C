@@ -65,6 +65,53 @@ def timeStampCalculate(hoursOrMinutesAgo):
         # newsHour = str(int(programInitialHour) - 1)
         # timeList[-2] = newsHour
         return "-".join(timeList)
+    # 1個月前、1天前、1周前
+    elif "個月前" in hoursOrMinutesAgo: 
+        year, month, day = timeList
+        checkNum = int(month) - int(searchNums(hoursOrMinutesAgo))
+        if checkNum > 0:
+            month = checkNum
+        else:
+            month = 12 + checkNum
+            year = int(year) - 1
+
+        strfTime = f"{year}-{month}-{day}"   
+        fmt = "%Y-%m-%d"  #"%Y年%m月%d日"             
+        return datetime.datetime.strptime(strfTime, fmt).date().__str__()
+        
+    elif "天前" in hoursOrMinutesAgo: 
+        year, month, day = timeList
+        checkNum = int(day) - int(searchNums(hoursOrMinutesAgo))
+        if checkNum > 0:
+            day = checkNum
+        else:
+            day = 29 + checkNum
+            checkNumInner = int(month) - 1
+            if checkNumInner > 0:
+                month = checkNumInner
+            else:
+                month = 12
+                year = int(year) - 1
+        strfTime = f"{year}-{month}-{day}" 
+        fmt = "%Y-%m-%d"  #"%Y年%m月%d日"               
+        return datetime.datetime.strptime(strfTime, fmt).date().__str__()
+
+    elif "週前" in hoursOrMinutesAgo or "周前" in hoursOrMinutesAgo: 
+        year, month, day = timeList
+        checkNum = int(day) - 7 * int(searchNums(hoursOrMinutesAgo))
+        if checkNum > 0:
+            day = checkNum
+        else:
+            day = 29 + checkNum
+            checkNumInner = int(month) - 1
+            if checkNumInner > 0:
+                month = checkNumInner
+            else:
+                month = 12
+                year = int(year) - 1
+        strfTime = f"{year}-{month}-{day}"  
+        fmt = "%Y-%m-%d"  #"%Y年%m月%d日"              
+        return datetime.datetime.strptime(strfTime, fmt).date().__str__()
     else:
         strfTime = hoursOrMinutesAgo.replace("年","-").replace("月","-").replace("日","")
         fmt = "%Y-%m-%d"  #"%Y年%m月%d日"
