@@ -4,11 +4,88 @@
 
 import os
 import sys
+import json
 import shutil #high level os
 
 
 _BASE_PATH = "/".join(os.path.abspath(__file__).split("/")[:-2]) 
 # sys.path.append(_BASE_PATH) # 因為此行生效，所以才能引用他處的module
+
+class folderDataManipulate(object):
+    _BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    def __init__(self, **kwargs):
+        self.objectiveFolder = kwargs.get("objectiveFolder", "")
+        self.objective = kwargs.get("objective", "")
+        # self.searchword = kwargs.get("searchword", "")
+        # self.keyword = kwargs.get("keyword", "")
+    
+
+    def writeOutFile(self, directory, fileName, fileReadyToWriteOut, writeOutType="w", encodingWay="utf-8"):
+        """
+        if not soup:
+            badRequestRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/badRequest"
+            with open(f"{badRequestRoute}/badRequest_{searchword}.txt", "a",  newline='', encoding='utf-8')as f: # newline沒作用...
+                errorMessage = url + "\n"
+                f.write(errorMessage)   #writelines作用在errorMessage是list時
+        """
+        with open(f"{directory}/{fileName}", writeOutType, encoding=encodingWay)as f:
+            if not isinstance(fileReadyToWriteOut, str):
+                f.write(str(fileReadyToWriteOut))
+            else:
+                f.write(fileReadyToWriteOut) #writelines作用在errorMessage是list時
+            
+
+    def writeOutJsonFile(self, directory, fileName, fileReadyToWriteOut, writeOutType="w", encodingWay="utf-8", indentNum=2, ensureAscii=False):
+        with open(f"{directory}/{fileName}", writeOutType,encoding=encodingWay)as f:
+            json.dump(fileReadyToWriteOut, f, indent=indentNum, ensure_ascii=ensureAscii)
+
+    
+    def loadInJsonFile(self, directory, fileName):
+        with open(f"{directory}/{fileName}")as f:
+            jsonFile = json.load(f)
+        return jsonFile
+
+    def mkdirForRawData(self, searchword, keyword=""):
+        dirRoute = f"{self._BASE_PATH}/dataMunging/{self.objectiveFolder}/{self.objective}/{searchword}/{keyword}"
+        if not os.path.isdir(dirRoute):
+            os.makedirs(dirRoute)
+            print(f"創建 {dirRoute} 成功！")
+        else:
+            print(f"已經存在 {dirRoute} 的資料夾，不用再創建。")
+            pass
+
+
+    def eraseCleanData(self, searchword="", keyword=""):
+        dirRoute = f"{self._BASE_PATH}/dataMunging/{self.objectiveFolder}/{self.objective}/{searchword}/{keyword}"
+        if not os.path.isdir(dirRoute):
+            print(f"沒有存在 {dirRoute} 的資料夾，因此不用清空。")
+            pass
+        else:
+            shutil.rmtree(dirRoute)
+            print(f"已經清空 {dirRoute}")
+
+    def eraseRawData(self, searchword, keyword=""):
+        dirRoute = f"{self._BASE_PATH}/dataMunging/{self.objectiveFolder}/{self.objective}/{searchword}/{keyword}"
+        if not os.path.isdir(dirRoute):
+            print(f"沒有存在 {dirRoute} 的資料夾，因此不用清空。")
+            pass
+        else:
+            shutil.rmtree(dirRoute)
+            print(f"已經清空 {dirRoute}")
+
+    def mkdirForCleanData(self):
+        dirRoute = f"{self._BASE_PATH}/dataMunging/{self.objectiveFolderClean}/{self.objective}"
+        if not os.path.isdir(dirRoute):
+            os.mkdir(dirRoute)
+            print(f"創建 {dirRoute}")
+        else:
+            print(f"已經存在 {dirRoute} 的資料夾")
+            pass
+    
+        
+
+
 
 def mkdirForRawData(objectiveFolder, objective, searchword, keyword=""):
     dirRoute = f"{_BASE_PATH}/dataMunging/{objectiveFolder}/{objective}/{searchword}/{keyword}"
