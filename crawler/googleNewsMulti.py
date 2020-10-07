@@ -66,7 +66,8 @@ from libs.multiProcessing import (
 from libs.splinterBrowser import (
                                 buildSplinterBrowser,
                                 buildSplinterBrowserHeadless,
-                                browserWaitTime
+                                browserWaitTime, 
+                                browserSetWindowSize
                                 )
 
 
@@ -82,7 +83,15 @@ def searchwordKeyInAndEnter(browser, searchword):
         browser.find_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').fill(searchword)
         timeSleepOne()
     # enter
+    """
+    Message: unknown error: Element <input class="gNO89b" value="Google 搜尋" aria-label="Google 搜尋" name="btnK" type="submit" data-ved="0ahUKEwj79oGLmIPpAhULGqYKHRcCBy8Q4dUDCAk"> is not clickable at point (445, 567). Other element would receive the click: <div class="fbar">...</div>
+    (Session info: headless chrome=80.0.3987.122)
+    (Driver info: chromedriver=2.36.540471 (9c759b81a907e70363c6312294d30b6ccccc2752),platform=Linux 4.15.0-65-generic x86_64)
+    """
+    browser.driver.set_window_size(1920,1080)
     browser.find_by_xpath('//*[@id="tsf"]/div[2]/div/div[2]/div[2]/div/center/input[1]').click()
+    # browser.find_by_value("Google 搜尋").click()
+        
     timeSleepRandomly()
 
 def findOutNws(browser, topTabList):
@@ -97,6 +106,11 @@ def findOutNws(browser, topTabList):
     return findOutNws
 
 def humanSimulate(browser, topTabList):
+    # 2020/03/19發現，點擊『圖片』後，chrome的語系從中文變成英文，導致xpath變化。
+    # //*[@id="yDmH0d"]/div[2]/c-wiz/div[1]/div/div[1]/div[1]/div/div/a[2]
+    # //*[@id="yDmH0d"]/div[2]/c-wiz/div[1]/div/div[1]/div[1]/div/div/a[3]
+    # //*[@id="yDmH0d"]/div[2]/c-wiz/div[1]/div/div[1]/div[1]/div/div/a[4]
+    # AttributeError: 'ElementList' object has no attribute 'click'
     randomNum = random.choice(topTabList)
     print("對 topTabList 第",randomNum,"項，做擬人================")
     try:
@@ -118,25 +132,41 @@ def humanSimulate(browser, topTabList):
 def elementUrlExtract(browser, firstPage, topTabList, elementUrl, newsDictInner, searchword):
     try:
         for order in elementUrl:
-            broUrl = browser.find_by_xpath(f'//*[@id="rso"]/div/div[{order}]/div/div/h3/a')
-            broPublisher = browser.find_by_xpath(f'//*[@id="rso"]/div/div[{order}]/div/div/div[1]/span[1]')
-            broDate = browser.find_by_xpath(f'//*[@id="rso"]/div/div[{order}]/div/div/div[1]/span[3]')
-            newsUrl = broUrl["href"]
-            newsTitle = broUrl.text
-            publisher = broPublisher.text
-            date = broDate.text
+            # broUrl = browser.find_by_xpath(f'//*[@id="rso"]/div/div[{order}]/div/div/h3/a')
+            # broPublisher = browser.find_by_xpath(f'//*[@id="rso"]/div/div[{order}]/div/div/div[1]/span[1]')
+            # broDate = browser.find_by_xpath(f'//*[@id="rso"]/div/div[{order}]/div/div/div[1]/span[3]')
+            # 2020/03/19變化              //*[@id="rso"]/div[1]/div/div/h3/a
+            # 2020/10/02變化  //*[@id="rso"]/div[1]/g-card/div/div/div[2]/a
 
+            # 2020/10/02; 沒有縮圖的新聞物件，標題、出版社、時間的xpath都會變更。
+            newsUrl = browser.find_by_xpath(f'//*[@id="rso"]/div[{order}]/g-card/div/div/div[2]/a')["href"]
+            
+            
+            try:
+                newsTitle = browser.find_by_xpath(f'//*[@id="rso"]/div[{order}]/g-card/div/div/div[2]/a/div/div[2]/div[2]').text
+                publisher = browser.find_by_xpath(f'//*[@id="rso"]/div[{order}]/g-card/div/div/div[2]/a/div/div[2]/div[1]').text
+                date = browser.find_by_xpath(f'//*[@id="rso"]/div[{order}]/g-card/div/div/div[2]/a/div/div[2]/div[3]/div[2]/span/span/span').text
+            except AttributeError as e: # 沒有下一頁了！
+
+                #a/div/div[2]  的div[2]拿掉。
+                print(f"擷取 『{searchword}』  第 {firstPage} 頁 ， 第 {order} 項是沒有縮圖的新聞物件================", e)
+                newsTitle = browser.find_by_xpath(f'//*[@id="rso"]/div[{order}]/g-card/div/div/div[2]/a/div/div[2]').text
+                publisher = browser.find_by_xpath(f'//*[@id="rso"]/div[{order}]/g-card/div/div/div[2]/a/div/div[1]').text
+                date = browser.find_by_xpath(f'//*[@id="rso"]/div[{order}]/g-card/div/div/div[2]/a/div/div[3]/div[2]/span/span/span').text
+            
             print(f"擷取 『{searchword}』  第 {firstPage} 頁 ， 第 {order} 項================")
             print(newsUrl)
             print(newsTitle)
             print(publisher)
             print(date)
-            
+            date = timeStampCalculate(date)
+            print(date)
+
             timeSleepRandomly()
             
             publisher = googleNewsRegex.publisherTooLong(googleNewsRegex.discardSpace(publisher))
 
-            newsDictInner[newsUrl] = [newsTitle, publisher, timeStampCalculate(date)]
+            newsDictInner[newsUrl] = [newsTitle, publisher, date]
 
             humanSimulate(browser, topTabList)
             
@@ -178,7 +208,7 @@ def getPageInARow(input, url, firstPage, topTabList, elementUrl, objectiveFolder
         topTabList.remove(int(keyNews))
 
         print(f"點擊 topTabList {keyNews} 去到 新聞頁")
-        #點擊新聞tab
+        #點擊新聞tab：
         browser.find_by_xpath(f'//*[@id="hdtb-msb-vis"]/div[{keyNews}]/a').click()
         timeSleepRandomly()
 
@@ -186,6 +216,7 @@ def getPageInARow(input, url, firstPage, topTabList, elementUrl, objectiveFolder
         newsDictInner = {}
         while True:
             print(f"進行 {searchword} 第", firstPage, "頁")
+            # 萃取新聞連結的動作
             elementUrlExtract(browser, firstPage, topTabList, elementUrl, newsDictInner, searchword)
             judgment = judgeNextPage(browser, searchword)
             if judgment:
