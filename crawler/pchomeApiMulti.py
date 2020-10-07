@@ -119,7 +119,7 @@ def getPageInARow(input, headers, objectiveFolder, objective, *args):
         for page in range(1, totalPagePlusOne):
             url = 'https://ecshweb.pchome.com.tw/search/v3.3/{0}/results?q={1}&page={2}&sort=sale/dc'.format(keyword, searchword, page)
             
-            for i in range(3):
+            for i in range(4):
                 try:
                     timeSleepRandomly()
                     res = requests.get(url, headers=headers)
@@ -177,7 +177,7 @@ if __name__ == '__main__':
 
     # 啟動行程
     Process_1 = []
-    for p in range(5): #開5個進程時，沒有出錯。
+    for p in range(2): #開5個進程時，沒有出錯。
         getPageInARow_proc = mp.Process(target=getPageInARow, args=(keyword_queue, headers, objectiveFolder, objective,))#*args
         getPageInARow_proc.daemon = True
         getPageInARow_proc.start()
@@ -186,7 +186,7 @@ if __name__ == '__main__':
 
 
     # 主行程    
-    keywordList = ["24h", "vdr", "kdn"]# 24小時、購物中心、代購服務
+    keywordList = ["24h", "vdr"]# 24小時、購物中心、代購服務   # , "kdn"  2020/10/02發現沒用
     searchwordAndKeyword = [rowOutside + "+" + rowInside for rowOutside in _pchomeKeywordUrlPair for rowInside in keywordList]
     distributeKeyword(searchwordAndKeyword, keyword_queue)
 
