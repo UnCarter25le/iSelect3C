@@ -15,6 +15,7 @@
 
 ## 1. Environment:
 - python 3.6.8
+- Ubuntu 16.04
 - Packages my environment installed and it can be found in `requirements.txt`.
 
 ```
@@ -27,6 +28,7 @@ jieba==0.39
 pycodestyle==2.5.0
 pymssql==2.1.1
 PyMySQL==0.9.3
+pyodbc==4.0.30
 requests==2.22.0
 selenium==3.141.0
 six==1.12.0
@@ -36,12 +38,15 @@ SQLAlchemy==1.3.7
 SQLAlchemy-Utils 0.36.0  
 urllib3==1.25.3
 lxml==4.4.1
+uuid==1.30
 pip==19.2.3
 setuptools==41.0.1
 wheel==0.33.4
 
 
 Hignly recommend holding the version of pymssql at 2.1.1.
+
+Good to know that we are able to use pyodbc driver supported by MS to accomodate any interaction with SQL SERVER!
 
 To drive selenium module, I expect you guys to be equipped with chromedriver in localhost,
 and it's easy to see the reference:
