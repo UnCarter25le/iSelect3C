@@ -4,7 +4,7 @@ certifi==2019.3.9
 chardet==3.0.4
 idna==2.8
 jieba==0.39
-lxml==4.4.1
+lxml==4.6.3
 pycodestyle==2.5.0
 pymssql==2.1.1
 PyMySQL==0.9.3
